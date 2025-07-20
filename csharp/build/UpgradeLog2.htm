@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+ <html xmlns:msxsl="urn:schemas-microsoft-com:xslt"><head><meta content="en-us" http-equiv="Content-Language" /><meta content="text/html; charset=utf-16" http-equiv="Content-Type" /><title _locID="ConversionReport0">
+          Migration Report
+        </title><style> 
+                    /* Body style, for the entire document */
+                    body
+                    {
+                        background: #F3F3F4;
+                        color: #1E1E1F;
+                        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                        padding: 0;
+                        margin: 0;
+                    }
+
+                    /* Header1 style, used for the main title */
+                    h1
+                    {
+                        padding: 10px 0px 10px 10px;
+                        font-size: 21pt;
+                        background-color: #E2E2E2;
+                        border-bottom: 1px #C1C1C2 solid; 
+                        color: #201F20;
+                        margin: 0;
+                        font-weight: normal;
+                    }
+
+                    /* Header2 style, used for "Overview" and other sections */
+                    h2
+                    {
+                        font-size: 18pt;
+                        font-weight: normal;
+                        padding: 15px 0 5px 0;
+                        margin: 0;
+                    }
+
+                    /* Header3 style, used for sub-sections, such as project name */
+                    h3
+                    {
+                        font-weight: normal;
+                        font-size: 15pt;
+                        margin: 0;
+                        padding: 15px 0 5px 0;
+                        background-color: transparent;
+                    }
+
+                    /* Color all hyperlinks one color */
+                    a
+                    {
+                        color: #1382CE;
+                    }
+
+                    /* Table styles */ 
+                    table
+                    {
+                        border-spacing: 0 0;
+                        border-collapse: collapse;
+                        font-size: 10pt;
+                    }
+
+                    table th
+                    {
+                        background: #E7E7E8;
+                        text-align: left;
+                        text-decoration: none;
+                        font-weight: normal;
+                        padding: 3px 6px 3px 6px;
+                    }
+
+                    table td
+                    {
+                        vertical-align: top;
+                        padding: 3px 6px 5px 5px;
+                        margin: 0px;
+                        border: 1px solid #E7E7E8;
+                        background: #F7F7F8;
+                    }
+
+                    /* Local link is a style for hyperlinks that link to file:/// content, there are lots so color them as 'normal' text until the user mouse overs */
+                    .localLink
+                    {
+                        color: #1E1E1F;
+                        background: #EEEEED;
+                        text-decoration: none;
+                    }
+
+                    .localLink:hover
+                    {
+                        color: #1382CE;
+                        background: #FFFF99;
+                        text-decoration: none;
+                    }
+
+                    /* Center text, used in the over views cells that contain message level counts */ 
+                    .textCentered
+                    {
+                        text-align: center;
+                    }
+
+                    /* The message cells in message tables should take up all avaliable space */
+                    .messageCell
+                    {
+                        width: 100%;
+                    }
+
+                    /* Padding around the content after the h1 */ 
+                    #content 
+                    {
+	                    padding: 0px 12px 12px 12px; 
+                    }
+
+                    /* The overview table expands to width, with a max width of 97% */ 
+                    #overview table
+                    {
+                        width: auto;
+                        max-width: 75%; 
+                    }
+
+                    /* The messages tables are always 97% width */
+                    #messages table
+                    {
+                        width: 97%;
+                    }
+
+                    /* All Icons */
+                    .IconSuccessEncoded, .IconInfoEncoded, .IconWarningEncoded, .IconErrorEncoded
+                    {
+                        min-width:18px;
+                        min-height:18px; 
+                        background-repeat:no-repeat;
+                        background-position:center;
+                    }
+
+                    /* Success icon encoded */
+                    .IconSuccessEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconSuccess#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABcElEQVR4Xq2TsUsCURzHv15g8ZJcBWlyiYYgCIWcb9DFRRwMW5TA2c0/QEFwFkxxUQdxVlBwCYWOi6IhWgQhBLHJUCkhLr/BW8S7gvrAg+N+v8/v+x68Z8MGy+XSCyABQAXgBgHGALoASkIIDWSLeLBetdHryMjd5IxQPWT4rn1c/P7+xxp72Cs9m5SZ0Bq2vPnbPFafK2zDvmNHypdC0BPkLlQhxJsCAhQoZwdZU5mwxh720qGo8MzTxTTKZDPCx2HoVzp6lz0Q9tKhyx0kGs8Ny+TkWRKk8lCROwEduhyg9l/6lunOPSfmH3NUH6uQ0KHLAe7JYvJjevm+DAMGJHToKtigE+vwvIidxLamb8IBY9e+C5LiXREkfho3TSd06HJA13/oh6T51MTsfQbHrsMynQ5dDihFjiK8JJAU9AKIWTp76dCVN7HWHrajmUEGvyF9nkbAE6gLIS7kTUyuf2gscLoJrElZo/Mvj+nPz/kLTmfnEwP3tB0AAAAASUVORK5CYII=);
+                    }
+
+                    /* Information icon encoded */
+                    .IconInfoEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconInformation#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHElEQVR4Xs2TsUoDQRRF7wwoziokjZUKadInhdhukR9YP8DMX1hYW+QvdsXa/QHBbcXC7W0CamWTQnclFutceIQJwwaWNLlwm5k5d94M76mmaeCrrmsLYOocY12FcxZFUeozCqKqqgYA8uevv1H6VuPxcwlfk5N92KHBxfFeCSAxxswlYAW/Xr989x/mv9gkhtyMDhcAxgzRsp7flj8B/HF1RsMXq+NZMkopaHe7lbKxQUEIGbKsYNoGn969060hZBkQex/W8oRQwsQaW2o3Ago2SVcJUzAgY3N0lTCZZm+zPS8HB51gMmS1DEYyOz9acKO1D8JWTlafKIMxdhvlfdyT94Vv5h7P8Ky7nQzACmhvKq3zk3PjW9asz9D/1oigecsioooAAAAASUVORK5CYII=);
+                    }
+
+                    /* Warning icon encoded */
+                    .IconWarningEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconWarning#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAx0lEQVR4XpWSMQ7CMAxFf4xAyBMLCxMrO8dhaBcuwdCJS3RJBw7SA/QGTCxdWJgiQYWKXJWKIXHIlyw5lqr34tQgEOdcBsCOx5yZK3hCCKdYXneQkh4pEfqzLfu+wVDSyyzFoJjfz9NB+pAF+eizx2Vruts0k15mPgvS6GYvpVtQhB61IB/dk6AF6fS4Ben0uIX5odtFe8Q/eW1KvFeH4e8khT6+gm5B+t3juyDt7n0jpe+CANTd+oTUjN/U3yVaABnSUjFz/gFq44JaVSCXeQAAAABJRU5ErkJggg==);
+                    }
+
+                    /* Error icon encoded */
+                    .IconErrorEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconError#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABQElEQVR4XqWTvUoEQRCE6wYPZUA80AfwAQz23uCMjA7MDRQEIzPBVEyNTQUFIw00vcQTTMzuAh/AxEQQT8HF/3G/oGGnEUGuoNnd6qoZuqltyKEsyzVJq5I6rnUp6SjGeGhESikzzlc1eL7opfuVbrqbU1Zw9NCgtQMaZpY0eNnaaL2fHusvTK5vKu7sjSS1Y4y3QUA6K3e3Mau5UFDyMP7tYF9o8cAHZv68vipoIJg971PZIZ5HiwdvYGGvFVFHmGmZ2MxwmQYPXubPl9Up0tfoMQGetXd6mRbvhBw+boZ6WF7Mbv1+GsHRk0fQmPAH1GfmZirbCfDJ61tw3Px8/8pZsPAG4jlVhcPgZ7adwNWBB68lkRQWFiTgFlbnLY3DGGM7izIJIyT/jjIvEJw6fdJTc6krDzh6aMwMP9bvDH4ADSsa9uSWVJkAAAAASUVORK5CYII=);
+                    }
+                 </style><script type="text/javascript" language="javascript"> 
+          
+            // Startup 
+            // Hook up the the loaded event for the document/window, to linkify the document content
+            var startupFunction = function() { linkifyElement("messages"); };
+            
+            if(window.attachEvent)
+            {
+              window.attachEvent('onload', startupFunction);
+            }
+            else if (window.addEventListener) 
+            {
+              window.addEventListener('load', startupFunction, false);
+            }
+            else 
+            {
+              document.addEventListener('load', startupFunction, false);
+            } 
+            
+            // Toggles the visibility of table rows with the specified name 
+            function toggleTableRowsByName(name)
+            {
+               var allRows = document.getElementsByTagName('tr');
+               for (i=0; i < allRows.length; i++)
+               {
+                  var currentName = allRows[i].getAttribute('name');
+                  if(!!currentName && currentName.indexOf(name) == 0)
+                  {
+                      var isVisible = allRows[i].style.display == ''; 
+                      isVisible ? allRows[i].style.display = 'none' : allRows[i].style.display = '';
+                  }
+               }
+            }
+            
+            function scrollToFirstVisibleRow(name) 
+            {
+               var allRows = document.getElementsByTagName('tr');
+               for (i=0; i < allRows.length; i++)
+               {
+                  var currentName = allRows[i].getAttribute('name');
+                  var isVisible = allRows[i].style.display == ''; 
+                  if(!!currentName && currentName.indexOf(name) == 0 && isVisible)
+                  {
+                     allRows[i].scrollIntoView(true); 
+                     return true; 
+                  }
+               }
+               
+               return false;
+            }
+            
+            // Linkifies the specified text content, replaces candidate links with html links 
+            function linkify(text)
+            {
+                 if(!text || 0 === text.length)
+                 {
+                     return text; 
+                 }
+
+                 // Find http, https and ftp links and replace them with hyper links 
+                 var urlLink = /(http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+(:[a-zA-Z0-9]*)?\/?([a-zA-Z0-9\-\._\?\,\/\\\+&%\$#\=~;\{\}])*/gi;
+                 
+                 return text.replace(urlLink, '<a href="$&">$&</a>') ;
+            }
+            
+            // Linkifies the specified element by ID
+            function linkifyElement(id)
+            {
+                var element = document.getElementById(id);
+                if(!!element)
+                {
+                  element.innerHTML = linkify(element.innerHTML); 
+                }
+            }
+            
+            function ToggleMessageVisibility(projectName)
+            {
+              if(!projectName || 0 === projectName.length)
+              {
+                return; 
+              }
+              
+              toggleTableRowsByName("MessageRowClass" + projectName);
+              toggleTableRowsByName('MessageRowHeaderShow' + projectName);
+              toggleTableRowsByName('MessageRowHeaderHide' + projectName); 
+            }
+            
+            function ScrollToFirstVisibleMessage(projectName)
+            {
+              if(!projectName || 0 === projectName.length)
+              {
+                return; 
+              }
+              
+              // First try the 'Show messages' row
+              if(!scrollToFirstVisibleRow('MessageRowHeaderShow' + projectName))
+              {
+                // Failed to find a visible row for 'Show messages', try an actual message row 
+                scrollToFirstVisibleRow('MessageRowClass' + projectName); 
+              }
+            }
+           </script></head><body><h1 _locID="ConversionReport">
+          Migration Report - DirectProject</h1><div id="content"><h2 _locID="OverviewTitle">Overview</h2><div id="overview"><table><tr><th></th><th _locID="ProjectTableHeader">Project</th><th _locID="PathTableHeader">Path</th><th _locID="ErrorsTableHeader">Errors</th><th _locID="WarningsTableHeader">Warnings</th><th _locID="MessagesTableHeader">Messages</th></tr><tr><td class="IconErrorEncoded" /><td><strong><a href="#AdminMvc">AdminMvc</a></strong></td><td>..\admin\AdminMvc\AdminMvc.csproj</td><td class="textCentered"><a href="#AdminMvcError">1</a></td><td class="textCentered"><a href="#AdminMvcWarning">4</a></td><td class="textCentered"><a href="#" onclick="ScrollToFirstVisibleMessage('AdminMvc'); return false;">144</a></td></tr></table></div><h2 _locID="SolutionAndProjectsTitle">Solution and projects</h2><div id="messages"><a name="AdminMvc" /><h3>AdminMvc</h3><table><tr id="AdminMvcHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr name="ErrorRowClassAdminMvc"><td class="IconErrorEncoded"><a name="AdminMvcError" /></td><td class="messageCell"><strong>packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll:
+        </strong><span>Failed to backup file as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\AutoMapper.Net4.dll</span></td></tr><tr name="WarningRowClassAdminMvc"><td class="IconWarningEncoded"><a name="AdminMvcWarning" /></td><td class="messageCell"><strong>..\admin\AdminMvc\AdminMvc.csproj:
+        </strong><span>Visual Studio needs to make non-functional changes to this project in order to enable the project to open in released versions of Visual Studio newer than Visual Studio 2010 SP1 without impacting project behavior.</span></td></tr><tr name="WarningRowClassAdminMvc"><td class="IconWarningEncoded"><a name="AdminMvcWarning" /></td><td class="messageCell"><strong>..\GlobalAssemblyInfo.cs:
+        </strong><span>Backed up project may not build.  Project contains linked file: C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Properties\GlobalAssemblyInfo.cs</span></td></tr><tr name="WarningRowClassAdminMvc"><td class="IconWarningEncoded"><a name="AdminMvcWarning" /></td><td class="messageCell"><strong>packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll:
+        </strong><span>Backed up project may not build.  Project contains linked file: C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\AutoMapper.Net4.dll</span></td></tr><tr name="WarningRowClassAdminMvc"><td class="IconWarningEncoded"><a name="AdminMvcWarning" /></td><td class="messageCell"><strong>..\admin\AdminMvc\AdminMvc.csproj:
+        </strong><span>Visual Studio has made non-functional changes to this project in order to enable the project to open in released versions of Visual Studio newer than Visual Studio 2010 SP1 without impacting project behavior.</span></td></tr><tr name="MessageRowHeaderShowAdminMvc"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="ShowAdditionalMessages" href="#" name="AdminMvcMessage" onclick="ToggleMessageVisibility('AdminMvc'); return false;">
+          Show 144 additional messages
+        </a></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\AdminMvc.csproj:
+        </strong><span>Project file successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\AdminMvc.csproj</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\AdminMvc.csproj.user:
+        </strong><span>Project user file successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\AdminMvc.csproj.user</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\GlobalAssemblyInfo.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Properties\GlobalAssemblyInfo.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Common\DirectMembershipProvider.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Common\DirectMembershipProvider.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Common\DomainNameAttribute.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Common\DomainNameAttribute.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Controllers\AccountController.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Controllers\AccountController.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Controllers\AddressesController.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Controllers\AddressesController.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Controllers\AnchorsController.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Controllers\AnchorsController.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Controllers\CertificatesController.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Controllers\CertificatesController.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Controllers\ControllerBase.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Controllers\ControllerBase.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Controllers\ControllerErrorBase.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Controllers\ControllerErrorBase.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Controllers\DnsRecordsController.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Controllers\DnsRecordsController.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Controllers\DomainsController.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Controllers\DomainsController.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Controllers\HomeController.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Controllers\HomeController.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Controllers\MdnRecordsController.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Controllers\MdnRecordsController.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\AddressRecordModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\AddressRecordModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\DnsRecordModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\DnsRecordModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\MdnModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\MdnModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\IMdnRecordRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\IMdnRecordRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\MdnRecordRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\MdnRecordRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\ResolveModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\ResolveModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Global.asax.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Global.asax.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\AnchorModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\AnchorModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Common\Formatter.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Common\Formatter.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\AnchorUploadModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\AnchorUploadModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\CertificateModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\CertificateModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\CertificateUploadModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\CertificateUploadModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\MxRecordModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\MxRecordModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\ModelProfiles.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\ModelProfiles.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\AccountModels.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\AccountModels.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\AddressModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\AddressModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\DomainModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\DomainModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\PropertiesMustMatchAttribute.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\PropertiesMustMatchAttribute.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\AddressRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\AddressRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\AnchorRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\AnchorRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\AuthRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\AuthRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\CertificateRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\CertificateRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\DnsRecordRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\DnsRecordRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\DomainRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\DomainRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\IAddressRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\IAddressRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\IAnchorRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\IAnchorRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\IAuthRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\IAuthRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\ICertificateRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\ICertificateRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\IDnsRecordRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\IDnsRecordRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\IDomainRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\IDomainRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\IRepository.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\IRepository.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\Repositories\RepositoryModule.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\Repositories\RepositoryModule.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Models\SoaRecordModel.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Models\SoaRecordModel.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Properties\AssemblyInfo.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Properties\AssemblyInfo.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Common\HtmlHelperExtensions.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Common\HtmlHelperExtensions.cs</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\packages.config:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\packages.config</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Global.asax:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Global.asax</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Domains\NotFound.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Domains\NotFound.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Web.config:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Web.config</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\Site.css:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\Site.css</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Account\LogOn.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Account\LogOn.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Home\Index.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Home\Index.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Shared\Error.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Shared\Error.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Shared\LogOnUserControl.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Shared\LogOnUserControl.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Shared\Site.Master:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Shared\Site.Master</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Web.config:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Web.config</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery-1.4.4.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery-1.4.4.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery-1.4.4-vsdoc.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery-1.4.4-vsdoc.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery-1.4.4.min.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery-1.4.4.min.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery-ui.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery-ui.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery-ui.min.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery-ui.min.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery.validate.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery.validate.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery.validate-vsdoc.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery.validate-vsdoc.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery.validate.min.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery.validate.min.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\MicrosoftAjax.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\MicrosoftAjax.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\MicrosoftAjax.debug.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\MicrosoftAjax.debug.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\MicrosoftMvcAjax.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\MicrosoftMvcAjax.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\MicrosoftMvcAjax.debug.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\MicrosoftMvcAjax.debug.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\MicrosoftMvcValidation.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\MicrosoftMvcValidation.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\MicrosoftMvcValidation.debug.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\MicrosoftMvcValidation.debug.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery.unobtrusive-ajax.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery.unobtrusive-ajax.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery.unobtrusive-ajax.min.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery.unobtrusive-ajax.min.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery.validate.unobtrusive.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery.validate.unobtrusive.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\jquery.validate.unobtrusive.min.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\jquery.validate.unobtrusive.min.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-icons_222222_256x240.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-icons_222222_256x240.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-icons_2e83ff_256x240.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-icons_2e83ff_256x240.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-icons_454545_256x240.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-icons_454545_256x240.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-icons_888888_256x240.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-icons_888888_256x240.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\images\ui-icons_cd0a0a_256x240.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\images\ui-icons_cd0a0a_256x240.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\themes\base\jquery-ui.css:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\themes\base\jquery-ui.css</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Config\dev.client.config:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Config\dev.client.config</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\calendar.gif:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\calendar.gif</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\logo.png:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\logo.png</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\Common.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\Common.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Addresses\Add.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Addresses\Add.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Addresses\AddressDetailsDialog.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Addresses\AddressDetailsDialog.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Addresses\AddressList.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Addresses\AddressList.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Addresses\Edit.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Addresses\Edit.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Addresses\Index.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Addresses\Index.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Addresses\NotFound.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Addresses\NotFound.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Anchors\Add.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Anchors\Add.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Anchors\AnchorList.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Anchors\AnchorList.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Anchors\AnchorDetailsDialog.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Anchors\AnchorDetailsDialog.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Certificates\Add.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Certificates\Add.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Certificates\CertificateList.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Certificates\CertificateList.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Certificates\CertificateDetailsDialog.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Certificates\CertificateDetailsDialog.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\DnsRecordList.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\DnsRecordList.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\Index.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\Index.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\NotFound.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\NotFound.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Shared\AllItemsReminder.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Shared\AllItemsReminder.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Shared\FilterReminder.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Shared\FilterReminder.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Anchors\Index.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Anchors\Index.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Certificates\Index.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Certificates\Index.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Certificates\NotFound.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Certificates\NotFound.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Domains\Add.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Domains\Add.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Domains\DomainDetailsDialog.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Domains\DomainDetailsDialog.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Domains\DomainList.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Domains\DomainList.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Domains\Index.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Domains\Index.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Content\favicon.ico:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Content\favicon.ico</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\Master.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\Master.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Scripts\OwnerAutocomplete.js:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Scripts\OwnerAutocomplete.js</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Anchors\NotFound.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Anchors\NotFound.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Certificates\Resolve.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Certificates\Resolve.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Certificates\ResolveResult.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Certificates\ResolveResult.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\AddMx.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\AddMx.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\AddAname.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\AddAname.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\AddSoa.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\AddSoa.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\AnameDetails.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\AnameDetails.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\DnsRecordDetailsDialog.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\DnsRecordDetailsDialog.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\EditAname.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\EditAname.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\EditMx.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\EditMx.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\EditSoa.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\EditSoa.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\MxDetails.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\MxDetails.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\DnsRecords\SoaDetails.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\DnsRecords\SoaDetails.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\MdnRecords\Index.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\MdnRecords\Index.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\MdnRecords\MdnList.ascx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\MdnRecords\MdnList.ascx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Shared\ConfigStoreError.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Shared\ConfigStoreError.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Shared\ServiceDownError.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Shared\ServiceDownError.aspx</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\Views\Shared\UnAuthSite.Master:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup1\Views\Shared\UnAuthSite.Master</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\AdminMvc.csproj:
+        </strong><span>Project migrated successfully</span></td></tr><tr name="MessageRowClassAdminMvc" style="display: none"><td class="IconInfoEncoded"><a name="AdminMvcMessage" /></td><td class="messageCell"><strong>..\admin\AdminMvc\AdminMvc.csproj:
+        </strong><span>Scan complete: Migration not required for project files.</span></td></tr><tr style="display: none" name="MessageRowHeaderHideAdminMvc"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="HideAdditionalMessages" href="#" name="AdminMvcMessage" onclick="ToggleMessageVisibility('AdminMvc'); return false;">
+          Hide 144 additional messages
+        </a></td></tr></table></div></div></body></html>
