@@ -26,7 +26,6 @@ using Health.Direct.Common.Mail.Notifications;
 using Health.Direct.Common.Mime;
 using ADODB;
 using CDO;
-using Health.Direct.Config.Store;
 using Health.Direct.SmtpAgent.Config;
 
 namespace Health.Direct.SmtpAgent

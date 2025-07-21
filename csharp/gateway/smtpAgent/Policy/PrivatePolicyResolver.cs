@@ -20,7 +20,7 @@ using System.Net.Mail;
 
 using Health.Direct.Common.Caching;
 using Health.Direct.Common.Policies;
-using Health.Direct.Config.Store;
+using Health.Direct.Config.Client.DomainManager;
 using Health.Direct.SmtpAgent.Config;
 
 namespace Health.Direct.SmtpAgent.Policy

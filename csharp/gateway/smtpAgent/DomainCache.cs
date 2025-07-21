@@ -17,7 +17,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 using System;
 using System.Collections.Generic;
 using Health.Direct.Common.Caching;
-using Health.Direct.Config.Store;
+using Health.Direct.Config.Client.DomainManager;
 
 namespace Health.Direct.SmtpAgent
 {

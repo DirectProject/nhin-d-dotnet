@@ -14,15 +14,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using System.IO;
 using Health.Direct.Agent;
 using Health.Direct.Common.Diagnostics;
-using Health.Direct.Config.Store;
-using Health.Direct.Common.Extensions;
-using System.Threading;
+using Health.Direct.Config.Client.DomainManager;
 
 namespace Health.Direct.SmtpAgent
 {

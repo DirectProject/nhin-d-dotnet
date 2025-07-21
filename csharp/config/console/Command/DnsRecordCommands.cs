@@ -16,10 +16,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 using System;
 using System.IO;
-using System.Collections.Generic;
 using Health.Direct.Common.Extensions;
 using Health.Direct.Config.Client.DomainManager;
-using Health.Direct.Config.Store;
 using Health.Direct.Config.Tools;
 using Health.Direct.Config.Tools.Command;
 using Health.Direct.Common.DnsResolver;

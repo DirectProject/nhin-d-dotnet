@@ -27,7 +27,6 @@ using Health.Direct.Common.DnsResolver;
 using Health.Direct.Common.Extensions;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.CertificateService;
-using Health.Direct.Config.Store;
 using Health.Direct.Config.Tools;
 using Health.Direct.Config.Tools.Command;
 

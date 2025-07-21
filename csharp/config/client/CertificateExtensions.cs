@@ -20,7 +20,6 @@ using System.Security.Cryptography.X509Certificates;
 using Health.Direct.Common.Certificates;
 using Health.Direct.Common.Extensions;
 using Health.Direct.Config.Client.CertificateService;
-using Health.Direct.Config.Store;
 
 namespace Health.Direct.Config.Client
 {
@@ -105,7 +104,7 @@ namespace Health.Direct.Config.Client
         {
             return Certificate.ToX509Collection(client.GetCertificatesForOwner(owner));
         }
-        
+
         public static void RemoveCertificate(this CertificateStoreClient client, long certificateID)
         {
             client.RemoveCertificates(new long[] {certificateID});

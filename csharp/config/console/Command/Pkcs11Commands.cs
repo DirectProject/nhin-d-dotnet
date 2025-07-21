@@ -27,7 +27,6 @@ using Health.Direct.Common.Certificates;
 using Health.Direct.Common.Cryptography;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.CertificateService;
-using Health.Direct.Config.Store;
 using Health.Direct.Config.Tools;
 using Health.Direct.Config.Tools.Command;
 using Net.Pkcs11Interop.Common;

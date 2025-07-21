@@ -14,14 +14,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Health.Direct.Common.Extensions;
-using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.SettingsManager;
-using Health.Direct.Config.Store;
-using Health.Direct.Config.Tools;
 using Health.Direct.Config.Tools.Command;
 
 namespace Health.Direct.Config.Console.Command

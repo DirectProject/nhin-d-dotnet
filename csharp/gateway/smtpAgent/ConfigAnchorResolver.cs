@@ -20,7 +20,6 @@ using System.Security.Cryptography.X509Certificates;
 using Health.Direct.Common.Certificates;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.CertificateService;
-using Health.Direct.Config.Store;
 using Health.Direct.Common.Caching;
 
 namespace Health.Direct.SmtpAgent

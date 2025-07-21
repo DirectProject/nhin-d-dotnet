@@ -1,0 +1,18 @@
+{
+  "ExtendedData": {
+    "inputs": [
+      "http://localhost:6692/DomainManagerService.svc?wsdl"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "enableDataBinding": true,
+    "namespaceMappings": [
+      "*, Health.Direct.Config.Client.DomainManager"
+    ],
+    "sync": true,
+    "targetFramework": "net48",
+    "typeReuseMode": "None"
+  }
+}

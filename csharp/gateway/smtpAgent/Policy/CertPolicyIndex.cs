@@ -20,7 +20,6 @@ using System.Linq;
 using Health.Direct.Common.Policies;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.DomainManager;
-using Health.Direct.Config.Store;
 using Health.Direct.Policy.Extensions;
 using Health.Direct.Policy.Impl;
 

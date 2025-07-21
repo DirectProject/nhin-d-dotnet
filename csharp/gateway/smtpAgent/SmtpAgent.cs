@@ -29,8 +29,8 @@ using Health.Direct.Common.Diagnostics;
 using Health.Direct.Common.Extensions;
 using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mail.DSN;
-using Health.Direct.Config.Store;
 using Health.Direct.Common.Mail.Notifications;
+using Health.Direct.Config.Client.DomainManager;
 using Health.Direct.Diagnostics.NLog;
 using Health.Direct.SmtpAgent.Config;
 using Health.Direct.SmtpAgent.Diagnostics;
@@ -412,15 +412,15 @@ namespace Health.Direct.SmtpAgent
             }
         }
 
-        private static bool IsMdnFault(FaultException<ConfigStoreFault> fe)
+        private static bool IsMdnFault(FaultException<Health.Direct.Config.Store.ConfigStoreFault> fe)
         {
-            return fe.Detail.Error == ConfigStoreError.MdnPreviouslyProcessed 
-                   || fe.Detail.Error == ConfigStoreError.MdnPreviouslyFailed
-                   || fe.Detail.Error == ConfigStoreError.MdnUncorrelated 
-                   || fe.Detail.Error == ConfigStoreError.DuplicateDispatchedMdn
-                   || fe.Detail.Error == ConfigStoreError.DuplicateProcessedMdn
-                   || fe.Detail.Error == ConfigStoreError.DuplicateFailedMdn
-                   || fe.Detail.Error == ConfigStoreError.DuplicateMdnStart;
+            return fe.Detail.Error == Health.Direct.Config.Store.ConfigStoreError.MdnPreviouslyProcessed 
+                   || fe.Detail.Error == Health.Direct.Config.Store.ConfigStoreError.MdnPreviouslyFailed
+                   || fe.Detail.Error == Health.Direct.Config.Store.ConfigStoreError.MdnUncorrelated 
+                   || fe.Detail.Error == Health.Direct.Config.Store.ConfigStoreError.DuplicateDispatchedMdn
+                   || fe.Detail.Error == Health.Direct.Config.Store.ConfigStoreError.DuplicateProcessedMdn
+                   || fe.Detail.Error == Health.Direct.Config.Store.ConfigStoreError.DuplicateFailedMdn
+                   || fe.Detail.Error == Health.Direct.Config.Store.ConfigStoreError.DuplicateMdnStart;
         }
 
         protected virtual void PreProcessMessage(ISmtpMessage message)

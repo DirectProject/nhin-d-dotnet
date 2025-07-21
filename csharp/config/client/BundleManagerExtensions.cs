@@ -16,10 +16,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Health.Direct.Common.Extensions;
 using Health.Direct.Config.Client.CertificateService;
-using Health.Direct.Config.Store;
+
 
 namespace Health.Direct.Config.Client
 {

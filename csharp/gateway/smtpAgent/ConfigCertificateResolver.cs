@@ -21,7 +21,6 @@ using Health.Direct.Common.Certificates;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.CertificateService;
 using Health.Direct.Config.Client.DomainManager;
-using Health.Direct.Config.Store;
 
 namespace Health.Direct.SmtpAgent
 {

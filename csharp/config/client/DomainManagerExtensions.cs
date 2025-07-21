@@ -19,7 +19,6 @@ using System.Net.Mail;
 
 using Health.Direct.Common.Extensions;
 using Health.Direct.Config.Client.DomainManager;
-using Health.Direct.Config.Store;
 
 namespace Health.Direct.Config.Client
 {

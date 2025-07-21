@@ -355,7 +355,7 @@ namespace Health.Direct.Common.Certificates
             var certificate = generator.Generate(new Asn1SignatureFactory(SignatureAlgorithmName, (IssuerKeyPair ?? SubjectKeyPair).Private, SecureRandom));
 
             // Create a PKCS12 store (a.PFX file) in memory, and add the public and private key to that.
-            var store = new Pkcs12Store();
+            var store = new Pkcs12StoreBuilder().Build();
             var certificateEntry = new X509CertificateEntry(certificate);
 
             string friendlyName = certificate.SubjectDN.ToString();

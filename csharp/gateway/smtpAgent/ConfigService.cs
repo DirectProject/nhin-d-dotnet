@@ -27,6 +27,8 @@ using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.DomainManager;
 using Health.Direct.Config.Store;
 using Health.Direct.SmtpAgent.Config;
+using Address = Health.Direct.Config.Client.DomainManager.Address;
+using Domain = Health.Direct.Config.Client.DomainManager.Domain;
 
 namespace Health.Direct.SmtpAgent
 {
@@ -101,7 +103,7 @@ namespace Health.Direct.SmtpAgent
             
             using (var client = _settings.DomainManagerService.CreateDomainManagerClient())
             {
-                var domains = client.GetDomains(domainNames, EntityStatus.Enabled);
+                var domains = client.GetDomains(domainNames, Health.Direct.Config.Client.DomainManager.EntityStatus.Enabled);
                 managedDomains = new List<Domain>();
 
                 foreach (Domain domain in domains)
@@ -138,11 +140,11 @@ namespace Health.Direct.SmtpAgent
             {
                 if (_enabledDomainSearch)
                 {
-                    managedAddress = client.GetAddressesOrDomain(address, EntityStatus.Enabled);
+                    managedAddress = client.GetAddressesOrDomain(address, Health.Direct.Config.Client.DomainManager.EntityStatus.Enabled);
                 }
                 else
                 {
-                    managedAddress = client.GetAddress(address, EntityStatus.Enabled);
+                    managedAddress = client.GetAddress(address, Health.Direct.Config.Client.DomainManager.EntityStatus.Enabled);
                 }
             }
 
@@ -183,11 +185,11 @@ namespace Health.Direct.SmtpAgent
 
                 if (_enabledDomainSearch)
                 {
-                    addressesFound = client.GetAddressesOrDomain(emailAddresses, EntityStatus.Enabled);
+                    addressesFound = client.GetAddressesOrDomain(emailAddresses, Health.Direct.Config.Client.DomainManager.EntityStatus.Enabled);
                 }
                 else
                 {
-                    addressesFound = client.GetAddresses(emailAddresses, EntityStatus.Enabled);
+                    addressesFound = client.GetAddresses(emailAddresses, Health.Direct.Config.Client.DomainManager.EntityStatus.Enabled);
                 }
 
                 managedAddresses = addressesFound.ToList();

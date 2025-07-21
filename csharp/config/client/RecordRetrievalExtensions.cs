@@ -20,7 +20,6 @@ using System.Net.Mail;
 
 using Health.Direct.Common.Extensions;
 using Health.Direct.Config.Client.RecordRetrieval;
-using Health.Direct.Config.Store;
 using Health.Direct.Common.DnsResolver;
 
 namespace Health.Direct.Config.Client
@@ -29,30 +28,30 @@ namespace Health.Direct.Config.Client
     {
         public static void GetANAMERecords(this RecordRetrievalServiceClient client, string domain, DnsResourceRecordCollection recordCollection)
         {
-            client.GetMatches(domain, recordCollection, DnsStandard.RecordType.ANAME);
+            client.GetMatches(domain, recordCollection, DnsStandardRecordType.ANAME);
         }
 
         public static void GetMXRecords(this RecordRetrievalServiceClient client, string domain, DnsResourceRecordCollection recordCollection)
         {
-            client.GetMatches(domain, recordCollection, DnsStandard.RecordType.MX);
+            client.GetMatches(domain, recordCollection, DnsStandardRecordType.MX);
         }
 
         public static void GetSOARecords(this RecordRetrievalServiceClient client, string domain, DnsResourceRecordCollection recordCollection)
         {
-            client.GetMatches(domain, recordCollection, DnsStandard.RecordType.SOA);
+            client.GetMatches(domain, recordCollection, DnsStandardRecordType.SOA);
         }
 
         public static void GetCNAMERecords(this RecordRetrievalServiceClient client, string domain, DnsResourceRecordCollection recordCollection)
         {
-            client.GetMatches(domain, recordCollection, DnsStandard.RecordType.CNAME);
+            client.GetMatches(domain, recordCollection, DnsStandardRecordType.CNAME);
         }
 
         public static void GetNSRecords(this RecordRetrievalServiceClient client, string domain, DnsResourceRecordCollection recordCollection)
         {
-            client.GetMatches(domain, recordCollection, DnsStandard.RecordType.NS);
+            client.GetMatches(domain, recordCollection, DnsStandardRecordType.NS);
         }
 
-        public static void GetMatches(this RecordRetrievalServiceClient client, string domain, DnsResourceRecordCollection resourceRecords, DnsStandard.RecordType recordType)
+        public static void GetMatches(this RecordRetrievalServiceClient client, string domain, DnsResourceRecordCollection resourceRecords, DnsStandardRecordType recordType)
         {
             DnsRecord[] matches = client.GetMatchingDnsRecords(domain, recordType);
             if (matches.IsNullOrEmpty())
@@ -63,7 +62,7 @@ namespace Health.Direct.Config.Client
             foreach (DnsRecord record in matches)
             {
                 DnsResourceRecord responseRecord = record.Deserialize();
-                if (responseRecord != null && responseRecord.Type == recordType)
+                if (responseRecord != null && (int)responseRecord.Type == (int)recordType)
                 {
                     resourceRecords.Add(responseRecord);
                 }
