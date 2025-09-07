@@ -17,7 +17,7 @@ using System;
 using System.Data.Linq.Mapping;
 using System.Security.Cryptography.X509Certificates;
 using System.Runtime.Serialization;
-
+using Health.Direct.Common;
 using Health.Direct.Common.Extensions;
 
 namespace Health.Direct.Config.Store

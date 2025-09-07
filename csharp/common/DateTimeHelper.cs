@@ -1,6 +1,6 @@
 using System;
 
-namespace Health.Direct.Config.Store
+namespace Health.Direct.Common
 {
     /// <summary>
     /// A factory to localize access to <see cref="DateTime"/> objects. If we wish to store

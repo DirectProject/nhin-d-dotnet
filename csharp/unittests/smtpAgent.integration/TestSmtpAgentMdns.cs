@@ -22,6 +22,7 @@ using Health.Direct.Agent;
 using Health.Direct.Agent.Tests;
 using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mail.Notifications;
+using Health.Direct.Common.Mdn;
 using Health.Direct.Common.Mime;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Store;

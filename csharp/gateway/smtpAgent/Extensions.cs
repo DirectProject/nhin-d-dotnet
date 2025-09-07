@@ -20,12 +20,13 @@ using System.IO;
 using System.Net.Mail;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using ADODB;
 using Health.Direct.Agent;
 using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mail.Notifications;
 using Health.Direct.Common.Mime;
-using ADODB;
-using CDO;
+
+
 using Health.Direct.SmtpAgent.Config;
 
 namespace Health.Direct.SmtpAgent
@@ -148,7 +149,7 @@ namespace Health.Direct.SmtpAgent
             message.Send();
         }
         
-        public static void SetMessageStatus(this CDO.Message message, CdoMessageStat status)
+        public static void SetMessageStatus(this CDO.Message message, CDO.CdoMessageStat status)
         {
             Fields fields = message.GetEnvelopeFields();
             if (fields == null || fields.Count == 0)
@@ -160,12 +161,12 @@ namespace Health.Direct.SmtpAgent
 
         public static void AbortMessage(this CDO.Message message)
         {
-            message.SetMessageStatus(CdoMessageStat.cdoStatAbortDelivery);
+            message.SetMessageStatus(CDO.CdoMessageStat.cdoStatAbortDelivery);
         }
 
         public static void BadMessage(this CDO.Message message)
         {
-            message.SetMessageStatus(CdoMessageStat.cdoStatBadMail);
+            message.SetMessageStatus(CDO.CdoMessageStat.cdoStatBadMail);
         }
         
         public static string GetMessageText(this CDO.Message message)

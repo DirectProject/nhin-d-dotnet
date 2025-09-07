@@ -20,8 +20,10 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.IO;
 using System.Linq;
+using Health.Direct.Common;
 using Health.Direct.Common.Certificates;
 using Health.Direct.Common.DnsResolver;
+using Health.Direct.Common.Mdn;
 using Health.Direct.Policy.Extensions;
 using Xunit;
 

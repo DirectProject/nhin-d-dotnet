@@ -25,7 +25,6 @@ using Health.Direct.Agent;
 using Health.Direct.Common.Caching;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.DomainManager;
-using Health.Direct.Config.Store;
 using Health.Direct.SmtpAgent.Config;
 using Address = Health.Direct.Config.Client.DomainManager.Address;
 using Domain = Health.Direct.Config.Client.DomainManager.Domain;

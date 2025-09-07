@@ -20,6 +20,7 @@ using System.Text;
 using System.Data.Linq.Mapping;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using Health.Direct.Common;
 using Health.Direct.Common.Extensions;
 
 namespace Health.Direct.Config.Store

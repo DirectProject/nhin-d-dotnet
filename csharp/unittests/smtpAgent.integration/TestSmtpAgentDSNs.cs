@@ -25,6 +25,7 @@ using Health.Direct.Agent.Tests;
 using Health.Direct.Common.Cryptography;
 using Health.Direct.Common.Mail.DSN;
 using Health.Direct.Common.Mail.Notifications;
+using Health.Direct.Common.Mdn;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Store;
 using Health.Direct.SmtpAgent.Config;

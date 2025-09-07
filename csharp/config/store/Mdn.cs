@@ -19,6 +19,8 @@ using System.Data.Linq.Mapping;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
+using Health.Direct.Common;
+using Health.Direct.Common.Mdn;
 
 namespace Health.Direct.Config.Store
 {

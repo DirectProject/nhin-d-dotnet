@@ -88,7 +88,7 @@ namespace Health.Direct.SmtpAgent
         {
             using(CertificateStoreClient client = this.CreateCertClient())
             {
-                return Certificate.ToX509Collection(client.GetCertificatesForOwner(name, EntityStatus.Enabled));
+                return Certificate.ToX509Collection(client.GetCertificatesForOwner(name, Health.Direct.Config.Client.CertificateService.EntityStatus.Enabled));
             }
         }
         

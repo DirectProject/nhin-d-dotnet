@@ -18,6 +18,7 @@ using System.Data.Linq.Mapping;
 using System.Security.Cryptography.X509Certificates;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using Health.Direct.Common;
 using Health.Direct.Common.Certificates;
 using Health.Direct.Common.Extensions;
 

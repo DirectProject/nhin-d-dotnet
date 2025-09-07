@@ -23,6 +23,7 @@ using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Runtime.Serialization;
+using Health.Direct.Common;
 using Health.Direct.Common.Extensions;
 
 

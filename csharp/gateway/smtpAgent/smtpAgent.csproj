@@ -33,8 +33,8 @@
   <ItemGroup>
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="Interop.ADODB">
-      <HintPath>..\..\build\libraries\smtpagent_com_interop\Interop.ADODB.dll</HintPath>
+    <Reference Include="ADODB">
+      <HintPath>..\..\build\libraries\smtpagent_com_interop\ADODB.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.CDO">
