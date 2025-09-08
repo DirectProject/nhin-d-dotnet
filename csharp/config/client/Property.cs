@@ -1,9 +1,9 @@
 ﻿/* 
- Copyright (c) 2016, Direct Project
+ Copyright (c) 2010-2025, Direct Project
  All rights reserved.
 
- Authors:    
-    Joseph Shook      Joseph.Shook@Surescripts.com
+ Authors:
+    Joseph Shook    Joseph.Shook@Surescripts.com
   
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
@@ -14,42 +14,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 
-
-using System.Collections.Generic;
-using System.Linq;
-using Health.Direct.Common.Policies;
-
-namespace Health.Direct.Common.Tests.Certificates
+namespace Health.Direct.Config.Client.SettingsManager
 {
-    public class CertPolicyIndexStub : IPolicyIndex
+    public partial class Property
     {
-        private IDictionary<string, IPolicyExpression> m_policyExpressions;
-
-        public CertPolicyIndexStub()
+        public Property(string name, string value)
         {
-            m_policyExpressions = new Dictionary<string, IPolicyExpression>();
-        }
-
-        public IList<IPolicyExpression> this[string domain]
-        {
-            get
-            {
-                var expressions = m_policyExpressions
-                    .Where(e => e.Key == domain)
-                    .Select(e => e.Value)
-                    .ToList();
-
-                return expressions;
-            }
-        }
-
-
-        public void Add(string domain, IPolicyExpression policyExpression)
-        {
-            lock (m_policyExpressions)
-            {
-                m_policyExpressions.Add(domain, policyExpression);
-            }
+            this.Name = name;
+            this.Value = value;
         }
     }
 }

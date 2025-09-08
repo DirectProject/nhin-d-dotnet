@@ -25,7 +25,6 @@ using Health.Direct.Common.Extensions;
 using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mime;
 using Health.Direct.Config.Client.SettingsManager;
-using Health.Direct.Config.Store;
 
 namespace Health.Direct.Hsm
 {
@@ -134,7 +133,7 @@ namespace Health.Direct.Hsm
             try
             {
                 IPropertyManager client = resolverSettings.ClientSettings.CreatePropertyManagerClient();
-                Property[] properties = client.GetProperties(new [] {"TokenSettings"});
+                var properties = client.GetProperties(new [] {"TokenSettings"});
                 string tokenSettingsXml = properties.SingleOrDefault().Value;
                 var tokenSettings = tokenSettingsXml.FromXml<TokenSettings>();
 

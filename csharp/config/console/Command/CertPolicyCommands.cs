@@ -601,7 +601,7 @@ namespace Health.Direct.Config.Console.Command
             CommandUI.Print("Description", policy.Description);
             CommandUI.Print("CreateDate", policy.CreateDate);
             CommandUI.Print("Data", policy.Data.ToUtf8String());
-            CommandUI.Print("# of Groups", policy.CertPolicyGroups == null ? 0 : policy.CertPolicyGroups.Count);
+            //CommandUI.Print("# of Groups", policy.CertPolicyGroups == null ? 0 : policy.CertPolicyGroups.Count);
         }
 
         public void Print(IEnumerable<CertPolicyGroup> policies)
