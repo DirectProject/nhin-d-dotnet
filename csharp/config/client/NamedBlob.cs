@@ -14,25 +14,24 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 
-namespace Health.Direct.Config.Client.DomainManager
-{
-    public partial class CertPolicyGroup
-    {
-        public CertPolicyGroup(string name, string description)
-        {
-            Name = name;
-            Description = description;
-        }
-    }
 
-    public partial class CertPolicy
+using Health.Direct.Common;
+
+namespace Health.Direct.Config.Client.SettingsManager
+{
+    public partial class NamedBlob
     {
-        public CertPolicy(string name, string description, byte[] data)
+        public NamedBlob()
         {
-            Name = name;
-            Description = description;
-            Lexicon = "SimpleText";
-            Data = data;
+            this.CreateDate = DateTimeHelper.Now;
+            this.UpdateDate = this.CreateDate;
+        }
+
+        public NamedBlob(string name, byte[] data)
+            : this()
+        {
+            this.Name = name;
+            this.Data = data;
         }
     }
 }

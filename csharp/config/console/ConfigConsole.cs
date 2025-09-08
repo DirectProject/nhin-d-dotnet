@@ -24,6 +24,7 @@ using Health.Direct.Config.Client.MonitorService;
 using Health.Direct.Config.Client.SettingsManager;
 using Health.Direct.Config.Console.Command;
 using Health.Direct.Config.Tools.Command;
+using ConfigStoreFault = Health.Direct.Config.Client.SettingsManager.ConfigStoreFault;
 
 namespace Health.Direct.Config.Console
 {

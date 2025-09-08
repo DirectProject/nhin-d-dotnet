@@ -59,7 +59,7 @@ namespace Health.Direct.Config.Client
                 return;
             }
 
-            foreach (DnsRecord record in matches)
+            foreach (Health.Direct.Config.Client.RecordRetrieval.DnsRecord record in matches)
             {
                 DnsResourceRecord responseRecord = record.Deserialize();
                 if (responseRecord != null && (int)responseRecord.Type == (int)recordType)

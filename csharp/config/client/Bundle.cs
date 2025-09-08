@@ -14,25 +14,24 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 
-namespace Health.Direct.Config.Client.DomainManager
-{
-    public partial class CertPolicyGroup
-    {
-        public CertPolicyGroup(string name, string description)
-        {
-            Name = name;
-            Description = description;
-        }
-    }
 
-    public partial class CertPolicy
+using System;
+
+namespace Health.Direct.Config.Client.CertificateService
+{
+    public partial class Bundle
     {
-        public CertPolicy(string name, string description, byte[] data)
+        public Uri Uri
         {
-            Name = name;
-            Description = description;
-            Lexicon = "SimpleText";
-            Data = data;
+            get
+            {
+                if (string.IsNullOrEmpty(this.Url))
+                {
+                    return null;
+                }
+
+                return new Uri(this.Url);
+            }
         }
     }
 }

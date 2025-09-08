@@ -189,7 +189,7 @@ namespace Health.Direct.Config.Console.Command
         {
             string path = args.GetRequiredValue(0);
             this.ImportRecord<MXRecord>(path
-                , (int)DnsStandard.RecordType.MX);
+                , (int)DnsStandardRecordType.MX);
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Health.Direct.Config.Console.Command
         {
             string path = args.GetRequiredValue(0);
             this.ImportRecord<SOARecord>(path
-                , (int)DnsStandard.RecordType.SOA);
+                , (int)DnsStandardRecordType.SOA);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Health.Direct.Config.Console.Command
         {
             string path = args.GetRequiredValue(0);
             this.ImportRecord<AddressRecord>(path
-                , (int)DnsStandard.RecordType.ANAME);
+                , (int)DnsStandardRecordType.ANAME);
         }       
 
         /// <summary>
@@ -424,34 +424,34 @@ namespace Health.Direct.Config.Console.Command
         [Command(Name = "Dns_SOA_Match", Usage = "Resolve SOA records for the given domain")]
         public void MatchSOA(string[] args)
         {
-            this.Match(args.GetRequiredValue(0), DnsStandard.RecordType.SOA);
+            this.Match(args.GetRequiredValue(0), DnsStandardRecordType.SOA);
         }
         
         [Command(Name = "Dns_ANAME_Match", Usage = "Resolve Address records for the given domain")]
         public void MatchAName(string[] args)
         {
-            this.Match(args.GetRequiredValue(0), DnsStandard.RecordType.ANAME);
+            this.Match(args.GetRequiredValue(0), DnsStandardRecordType.ANAME);
         }
 
         [Command(Name = "Dns_MX_Match", Usage = "Resolve MX records for the given domain")]
         public void MatchMX(string[] args)
         {
-            this.Match(args.GetRequiredValue(0), DnsStandard.RecordType.MX);
+            this.Match(args.GetRequiredValue(0), DnsStandardRecordType.MX);
         }
 
         [Command(Name = "Dns_NS_Match", Usage = "Resolve NS records for the given domain")]
         public void MatchNS(string[] args)
         {
-            this.Match(args.GetRequiredValue(0), DnsStandard.RecordType.NS);
+            this.Match(args.GetRequiredValue(0), DnsStandardRecordType.NS);
         }
 
         [Command(Name = "Dns_CNAME_Match", Usage = "Resolve CNAME records for the given domain")]
         public void MatchCNAME(string[] args)
         {
-            this.Match(args.GetRequiredValue(0), DnsStandard.RecordType.CNAME);
+            this.Match(args.GetRequiredValue(0), DnsStandardRecordType.CNAME);
         }
         
-        void Match(string domain, DnsStandard.RecordType type)
+        void Match(string domain, DnsStandardRecordType type)
         {
             DnsRecord[] records = this.GetRecords(domain, type);
             if (records.IsNullOrEmpty())
@@ -476,7 +476,7 @@ namespace Health.Direct.Config.Console.Command
             return dr;
         }
         
-        DnsRecord[] GetRecords(string domain, DnsStandard.RecordType type)
+        DnsRecord[] GetRecords(string domain, DnsStandardRecordType type)
         {
             DnsRecord[] records = Client.GetMatchingDnsRecordsByType(domain, type);
             if (records.IsNullOrEmpty())
@@ -610,7 +610,7 @@ namespace Health.Direct.Config.Console.Command
             AddressRecord record = new AddressRecord(domainName
                , ipAddress) { TTL = ttl };
 
-            return new DnsRecord(domainName, DnsStandard.RecordType.ANAME, record.Serialize(), notes);
+            return new DnsRecord(domainName, DnsStandardRecordType.ANAME, record.Serialize(), notes);
         }
                 
         public DnsRecord ParseSOA(string[] args)
@@ -636,7 +636,7 @@ namespace Health.Direct.Config.Console.Command
                , expire
                , minimum) { TTL = ttl };
 
-            return new DnsRecord(domainName, DnsStandard.RecordType.SOA, record.Serialize(), notes);
+            return new DnsRecord(domainName, DnsStandardRecordType.SOA, record.Serialize(), notes);
         }
                 
         public DnsRecord ParseMX(string[] args)
@@ -651,7 +651,7 @@ namespace Health.Direct.Config.Console.Command
                 , exchange
                 , pref) { TTL = ttl };
 
-            DnsRecord dnsRecord = new DnsRecord(domainName, DnsStandard.RecordType.MX, record.Serialize(), notes);
+            DnsRecord dnsRecord = new DnsRecord(domainName, DnsStandardRecordType.MX, record.Serialize(), notes);
             return dnsRecord;
         }
         
@@ -672,7 +672,7 @@ namespace Health.Direct.Config.Console.Command
             string notes = args.GetOptionalValue(3, string.Empty);
             
             NSRecord nsRecord = new NSRecord(domainName, nameServer) {TTL = ttl};
-            DnsRecord dnsRecord = new DnsRecord(domainName, DnsStandard.RecordType.NS, nsRecord.Serialize(), notes);
+            DnsRecord dnsRecord = new DnsRecord(domainName, DnsStandardRecordType.NS, nsRecord.Serialize(), notes);
             return dnsRecord;
         }
         
@@ -684,7 +684,7 @@ namespace Health.Direct.Config.Console.Command
             string notes = args.GetOptionalValue(3, string.Empty);
 
             CNameRecord cnameRecord = new CNameRecord(domainName, cname) {TTL = ttl};
-            DnsRecord dnsRecord = new DnsRecord(domainName, DnsStandard.RecordType.CNAME, cnameRecord.Serialize(), notes);
+            DnsRecord dnsRecord = new DnsRecord(domainName, DnsStandardRecordType.CNAME, cnameRecord.Serialize(), notes);
             return dnsRecord;
         }
                 
