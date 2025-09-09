@@ -19,7 +19,6 @@ using System.IO;
 using System.Linq;
 using Health.Direct.Common.Certificates;
 using Health.Direct.Common.DnsResolver;
-using Health.Direct.Config.Store;
 using Xunit;
 
 namespace Health.Direct.DnsResponder.Tests
@@ -226,37 +225,40 @@ namespace Health.Direct.DnsResponder.Tests
         /// </remarks>
         protected void InitDnsRecords()
         {
-            List<string> domains = DnsRecordDomainNames.ToList<string>();
-            List<DnsStandard.RecordType> recTypes = DnsRecordTypes.ToList<DnsStandard.RecordType>();
+            // TODO:  should use in memory or mock for testing:
 
-            DnsRecordManager mgr = new DnsRecordManager(new ConfigStore(ConnectionString));
-            mgr.RemoveAll();
 
-            //----------------------------------------------------------------------------------------------------
-            //---go through all domains and load up the corresponding record types
-            foreach (string domainName in domains)
-            {
-                mgr.Add(new DnsRecord(
-                    domainName,
-                    (int)DnsStandard.RecordType.MX,
-                    LoadAndVerifyDnsRecordFromBin<MXRecord>(
-                        Path.Combine(DnsRecordsPath, string.Format("mx.{0}.bin", domainName))),
-                    string.Format("some test notes for mx domain{0}", domainName)));
-
-                mgr.Add(new DnsRecord(
-                    domainName,
-                    (int)DnsStandard.RecordType.SOA,
-                    LoadAndVerifyDnsRecordFromBin<SOARecord>(
-                        Path.Combine(DnsRecordsPath, string.Format("soa.{0}.bin", domainName))),
-                    string.Format("some test notes for soa domain{0}", domainName)));
-
-                mgr.Add(new DnsRecord(
-                    domainName,
-                    (int)DnsStandard.RecordType.ANAME,
-                    LoadAndVerifyDnsRecordFromBin<AddressRecord>(
-                        Path.Combine(DnsRecordsPath, string.Format("aname.{0}.bin", domainName))),
-                    string.Format("some test notes for aname domain{0}", domainName)));
-            }
+            // List<string> domains = DnsRecordDomainNames.ToList<string>();
+            // List<DnsStandard.RecordType> recTypes = DnsRecordTypes.ToList<DnsStandard.RecordType>();
+            //
+            // DnsRecordManager mgr = new DnsRecordManager(new ConfigStore(ConnectionString));
+            // mgr.RemoveAll();
+            //
+            // //----------------------------------------------------------------------------------------------------
+            // //---go through all domains and load up the corresponding record types
+            // foreach (string domainName in domains)
+            // {
+            //     mgr.Add(new DnsRecord(
+            //         domainName,
+            //         (int)DnsStandard.RecordType.MX,
+            //         LoadAndVerifyDnsRecordFromBin<MXRecord>(
+            //             Path.Combine(DnsRecordsPath, string.Format("mx.{0}.bin", domainName))),
+            //         string.Format("some test notes for mx domain{0}", domainName)));
+            //
+            //     mgr.Add(new DnsRecord(
+            //         domainName,
+            //         (int)DnsStandard.RecordType.SOA,
+            //         LoadAndVerifyDnsRecordFromBin<SOARecord>(
+            //             Path.Combine(DnsRecordsPath, string.Format("soa.{0}.bin", domainName))),
+            //         string.Format("some test notes for soa domain{0}", domainName)));
+            //
+            //     mgr.Add(new DnsRecord(
+            //         domainName,
+            //         (int)DnsStandard.RecordType.ANAME,
+            //         LoadAndVerifyDnsRecordFromBin<AddressRecord>(
+            //             Path.Combine(DnsRecordsPath, string.Format("aname.{0}.bin", domainName))),
+            //         string.Format("some test notes for aname domain{0}", domainName)));
+            // }
         }
 
         /// <summary>
@@ -290,14 +292,19 @@ namespace Health.Direct.DnsResponder.Tests
         /// </summary>
         protected void InitCertRecords()
         {
-            List<string> certs = CertFiles.ToList<string>();
-            CertificateManager mgr = new CertificateManager(new ConfigStore(ConnectionString));
-            mgr.RemoveAll();
-            foreach (string s in certs)
-            {
-                mgr.Add(LoadAndVerifyCertFromFile(s));
-            }
+            // TODO:  should use in memory or mock for testing:
+
+            // List<string> certs = CertFiles.ToList<string>();
+            // CertificateManager mgr = new CertificateManager(new ConfigStore(ConnectionString));
+            // mgr.RemoveAll();
+            // foreach (string s in certs)
+            // {
+            //     mgr.Add(LoadAndVerifyCertFromFile(s));
+            // }
         }
+
+
+        // TODO:  should use in memory or mock for testing:
 
         /// <summary>
         /// loads and verifies the cert records from the files, ensuring that the types
@@ -306,23 +313,23 @@ namespace Health.Direct.DnsResponder.Tests
         /// <typeparam name="T">Type of record that is expected</typeparam>
         /// <param name="path">path to the bin file to be loaded</param>
         /// <returns>bytes from the bin file</returns>
-        protected Certificate LoadAndVerifyCertFromFile(string path)
-        {
-            byte[] bytes = null;
-
-            //----------------------------------------------------------------------------------------------------
-            //---read the stream from the bytes
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-                //Console.WriteLine("checking [{0}]", path);
-                bytes = new BinaryReader(fs).ReadBytes((int)new FileInfo(path).Length);
-
-                using (DisposableX509Certificate2 x509 = new DisposableX509Certificate2(bytes))
-                {
-                    Certificate cert = new Certificate(x509.FriendlyName, x509, false);
-                    return cert;
-                }
-            }
-        }
+        // protected Certificate LoadAndVerifyCertFromFile(string path)
+        // {
+        //     byte[] bytes = null;
+        //
+        //     //----------------------------------------------------------------------------------------------------
+        //     //---read the stream from the bytes
+        //     using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+        //     {
+        //         //Console.WriteLine("checking [{0}]", path);
+        //         bytes = new BinaryReader(fs).ReadBytes((int)new FileInfo(path).Length);
+        //
+        //         using (DisposableX509Certificate2 x509 = new DisposableX509Certificate2(bytes))
+        //         {
+        //             Certificate cert = new Certificate(x509.FriendlyName, x509, false);
+        //             return cert;
+        //         }
+        //     }
+        // }
     }
 }

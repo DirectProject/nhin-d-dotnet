@@ -19,10 +19,8 @@ using System.IO;
 using System.Linq;
 using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mail.DSN;
-using Health.Direct.Config.Store;
 using Health.Direct.Config.Store.Tests;
 using Quartz;
-using Quartz.Spi;
 using Xunit;
 
 namespace Health.Direct.MdnMonitor.MdnMonitor.Tests
@@ -42,10 +40,7 @@ namespace Health.Direct.MdnMonitor.MdnMonitor.Tests
         [Fact]
         public void TestProcessedTimeOutToDSNFail()
         {
-            //
-            // Sample data
-            //
-            MdnManager target = CreateManager();
+            var target = CreateManager();
             InitMdnRecords();
             CleanMessages(PickupFolder);
             
@@ -53,39 +48,36 @@ namespace Health.Direct.MdnMonitor.MdnMonitor.Tests
             var mdns = target.GetExpiredProcessed(TimeSpan.FromMinutes(10), 40);
             Assert.Equal(20, mdns.Count());
 
+            var processedTimeout = new MdnProcessedTimeout();
 
-            MdnProcessedTimeout processedTimeout = new MdnProcessedTimeout();
+            // > 10 minutes (nothing processed)
+            var context = CreateProcessedJobExecutionContext(11, 10);
+            processedTimeout.Execute(context).GetAwaiter().GetResult();
 
-            //Execute unprocessed records over 11 minutes old.
-            JobExecutionContext context = CreateProcessedJobExecutionContext(11, 10);
-            processedTimeout.Execute(context); 
-
-            //Nothing was processed 
             mdns = target.GetExpiredProcessed(TimeSpan.FromMinutes(10), 40);
             Assert.Equal(20, mdns.Count());
 
-            //Execute unprocessed records over 10 minutes old.
+            // == 10 minutes (process 10)
             context = CreateProcessedJobExecutionContext(10, 10);
-            processedTimeout.Execute(context); 
+            processedTimeout.Execute(context).GetAwaiter().GetResult();
 
-            //10 records left
             mdns = target.GetExpiredProcessed(TimeSpan.FromMinutes(10), 40);
             Assert.Equal(10, mdns.Count());
 
             var files = Directory.GetFiles(PickupFolder);
-            Assert.Equal(10, files.Count());
+            Assert.Equal(10, files.Length);
 
-            //Do it again
-            processedTimeout.Execute(context);
+            // again (process remaining 10)
+            processedTimeout.Execute(context).GetAwaiter().GetResult();
             mdns = target.GetExpiredProcessed(TimeSpan.FromMinutes(10), 40);
             Assert.Equal(0, mdns.Count());
 
             files = Directory.GetFiles(PickupFolder);
-            Assert.Equal(20, files.Count());
+            Assert.Equal(20, files.Length);
 
             foreach (var file in files)
             {
-                Message loadedMessage = Message.Load(File.ReadAllText(file));
+                var loadedMessage = Message.Load(File.ReadAllText(file));
                 Assert.True(loadedMessage.IsDSN());
                 Assert.Equal("multipart/report", loadedMessage.ParsedContentType.MediaType);
                 Assert.Equal("Rejected:To dispatch or not dispatch", loadedMessage.SubjectValue);
@@ -93,60 +85,49 @@ namespace Health.Direct.MdnMonitor.MdnMonitor.Tests
                 Assert.Equal(DSNStandard.DSNAction.Failed, dsnActual.PerRecipient.First().Action);
                 Assert.Equal("5.4.71", dsnActual.PerRecipient.First().Status);
             }
-            
-
         }
-
 
         [Fact]
         public void TestDispatchedTimeOutToDSNFail()
         {
-            //
-            // Sample data
-            //
-            MdnManager target = CreateManager();
+            var target = CreateManager();
             InitMdnRecords();
             CleanMessages(PickupFolder);
 
-            //timespan and max records set
             var mdns = target.GetExpiredDispatched(TimeSpan.FromMinutes(10), 40);
             Assert.Equal(10, mdns.Count());
 
-            MdnDispatchedTimeout dispatchedTimeout = new MdnDispatchedTimeout();
+            var dispatchedTimeout = new MdnDispatchedTimeout();
 
-            //Execute unprocessed records over 11 minutes old.
-            JobExecutionContext context = CreateDispatchedJobExecutionContext(11, 5);
-            dispatchedTimeout.Execute(context);
+            // > 10 minutes (none)
+            var context = CreateDispatchedJobExecutionContext(11, 5);
+            dispatchedTimeout.Execute(context).GetAwaiter().GetResult();
 
-            //Nothing was processed 
             mdns = target.GetExpiredDispatched(TimeSpan.FromMinutes(10), 40);
             Assert.Equal(10, mdns.Count());
+            Assert.Empty(Directory.GetFiles(PickupFolder));
 
-            var files = Directory.GetFiles(PickupFolder);
-            Assert.Equal(0, files.Count());
-
-            //Execute unprocessed records over 10 minutes old.
+            // == 10 minutes (process 5)
             context = CreateDispatchedJobExecutionContext(10, 5);
-            dispatchedTimeout.Execute(context);
-            
-            //10 records left
+            dispatchedTimeout.Execute(context).GetAwaiter().GetResult();
+
             mdns = target.GetExpiredDispatched(TimeSpan.FromMinutes(10), 40);
             Assert.Equal(5, mdns.Count());
 
-            files = Directory.GetFiles(PickupFolder);
-            Assert.Equal(5, files.Count());
+            var files = Directory.GetFiles(PickupFolder);
+            Assert.Equal(5, files.Length);
 
-            //Do it again
-            dispatchedTimeout.Execute(context);
+            // again (process remaining 5)
+            dispatchedTimeout.Execute(context).GetAwaiter().GetResult();
             mdns = target.GetExpiredDispatched(TimeSpan.FromMinutes(10), 40);
             Assert.Equal(0, mdns.Count());
 
             files = Directory.GetFiles(PickupFolder);
-            Assert.Equal(10, files.Count());
+            Assert.Equal(10, files.Length);
 
             foreach (var file in files)
             {
-                Message loadedMessage = Message.Load(File.ReadAllText(file));
+                var loadedMessage = Message.Load(File.ReadAllText(file));
                 Assert.True(loadedMessage.IsDSN());
                 Assert.Equal("multipart/report", loadedMessage.ParsedContentType.MediaType);
                 Assert.Equal("Rejected:To dispatch or not dispatch", loadedMessage.SubjectValue);
@@ -156,57 +137,43 @@ namespace Health.Direct.MdnMonitor.MdnMonitor.Tests
             }
         }
 
-
-        protected virtual JobExecutionContext CreateProcessedJobExecutionContext(int minutes, int count)
+        protected virtual IJobExecutionContext CreateProcessedJobExecutionContext(int minutes, int count)
         {
-            SimpleTrigger trigger = new SimpleTrigger();
-            
-            JobExecutionContext ctx = new JobExecutionContext(
-                null,
-                CreateFiredBundleWithTypedJobDetail(typeof(MdnProcessedTimeout), trigger),
-                null);
-            ctx.JobDetail.JobDataMap.Put("BulkCount", count);
-            ctx.JobDetail.JobDataMap.Put("ExpiredMinutes", minutes);
-            ctx.JobDetail.JobDataMap.Put("PickupFolder", PickupFolder);
-            return ctx;
+            var jobDetail = JobBuilder.Create<MdnProcessedTimeout>()
+                                      .WithIdentity("processedTimeout", "tests")
+                                      .Build();
+            jobDetail.JobDataMap.Put("BulkCount", count);
+            jobDetail.JobDataMap.Put("ExpiredMinutes", minutes);
+            jobDetail.JobDataMap.Put("PickupFolder", PickupFolder);
+
+            var trigger = TriggerBuilder.Create()
+                                        .WithIdentity("processedTrigger", "tests")
+                                        .StartNow()
+                                        .Build();
+
+            return new TestJobExecutionContext(jobDetail, trigger);
         }
 
-
-        protected virtual JobExecutionContext CreateDispatchedJobExecutionContext(int minutes, int count)
+        protected virtual IJobExecutionContext CreateDispatchedJobExecutionContext(int minutes, int count)
         {
-            SimpleTrigger trigger = new SimpleTrigger();
-            
-            JobExecutionContext ctx = new JobExecutionContext(
-                null,
-                CreateFiredBundleWithTypedJobDetail(typeof(MdnDispatchedTimeout), trigger),
-                null);
-            ctx.JobDetail.JobDataMap.Put("BulkCount", count);
-            ctx.JobDetail.JobDataMap.Put("ExpiredMinutes", minutes);
-            ctx.JobDetail.JobDataMap.Put("PickupFolder", PickupFolder);
-            return ctx;
+            var jobDetail = JobBuilder.Create<MdnDispatchedTimeout>()
+                                      .WithIdentity("dispatchedTimeout", "tests")
+                                      .Build();
+            jobDetail.JobDataMap.Put("BulkCount", count);
+            jobDetail.JobDataMap.Put("ExpiredMinutes", minutes);
+            jobDetail.JobDataMap.Put("PickupFolder", PickupFolder);
+
+            var trigger = TriggerBuilder.Create()
+                                        .WithIdentity("dispatchedTrigger", "tests")
+                                        .StartNow()
+                                        .Build();
+
+            return new TestJobExecutionContext(jobDetail, trigger);
         }
-
-        
-
-        /// <summary>
-        /// Creates a simple fired bundle
-        /// </summary>
-        /// <param name="jobType">Type of job.</param>
-        /// <param name="trigger">Trigger instance</param>
-        /// <returns>Simple TriggerFiredBundle</returns>
-        public static TriggerFiredBundle CreateFiredBundleWithTypedJobDetail(Type jobType, Trigger trigger)
-        {
-            JobDetail jobDetail = new JobDetail("jobName", "jobGroup", jobType);
-            TriggerFiredBundle bundle = new TriggerFiredBundle(
-                jobDetail, trigger, null, false, null, null, null, null);
-            return bundle;
-        }
-
 
         private void CleanMessages(string path)
         {
-            var files = Directory.GetFiles(path);
-            foreach (var file in files)
+            foreach (var file in Directory.GetFiles(path))
             {
                 File.Delete(file);
             }

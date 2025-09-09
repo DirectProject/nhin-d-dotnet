@@ -1,11 +1,12 @@
 ﻿/* 
- Copyright (c) 2012, Direct Project
+ Copyright (c) 2012-2025, Direct Project
  All rights reserved.
 
  Authors:
     Sean Nolan      sean.nolan@microsoft.com
     Umesh Madan     umeshma@microsoft.com
- 
+    Joseph Shook      Joseph.Shook@Surescripts.com
+
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
 Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
@@ -16,16 +17,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography.Pkcs;
-using Health.Direct.Common.Container;
 using Health.Direct.Common.Diagnostics;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.CertificateService;
-using Health.Direct.Config.Store;
-using Health.Direct.Common.Caching;
 using Health.Direct.Common.Certificates;
 
 namespace Health.Direct.ResolverPlugins

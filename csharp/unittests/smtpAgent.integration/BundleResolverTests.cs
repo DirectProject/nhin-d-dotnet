@@ -52,8 +52,8 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
         {
             this.CleanupTestBundles();
             m_client.AddBundles(TestBundles);
-            m_client.SetBundleStatusForOwner(BundleGoodSubject, EntityStatus.Enabled);
-            m_client.SetBundleStatusForOwner(BundleBadSubject, EntityStatus.Enabled);
+            m_client.SetBundleStatusForOwner(BundleGoodSubject, Health.Direct.Config.Client.CertificateService.EntityStatus.Enabled);
+            m_client.SetBundleStatusForOwner(BundleBadSubject, Health.Direct.Config.Client.CertificateService.EntityStatus.Enabled);
         }
 
         private void CleanupTestBundles()
@@ -87,16 +87,16 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
         [Fact]
         public void EnsureTestBundlesExist()
         {
-            List<Bundle> bundles = new List<Bundle>();
+            List<Health.Direct.Config.Client.CertificateService.Bundle> bundles = new List<Health.Direct.Config.Client.CertificateService.Bundle>();
             bundles.AddRange(m_client.GetBundlesForOwner(BundleGoodSubject));
             bundles.AddRange(m_client.GetBundlesForOwner(BundleBadSubject));
 
             Assert.Equal(bundles.Count, TestBundles.Length);
 
-            foreach (Bundle bundleFound in bundles)
+            foreach (Health.Direct.Config.Client.CertificateService.Bundle bundleFound in bundles)
             {
                 bool found = false;
-                foreach (Bundle bundleTest in TestBundles)
+                foreach (Health.Direct.Config.Client.CertificateService.Bundle bundleTest in TestBundles)
                 {
                     if (this.BundlesMatch(bundleFound, bundleTest))
                     {
@@ -134,7 +134,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             Assert.True(certs == null || certs.Count == 0);
         }
 
-        private bool BundlesMatch(Bundle bundle1, Bundle bundle2)
+        private bool BundlesMatch(Health.Direct.Config.Client.CertificateService.Bundle bundle1, Health.Direct.Config.Client.CertificateService.Bundle bundle2)
         {
             // note we don't match everything... e.g., create date and such
             if ((bundle1.ForIncoming == bundle2.ForIncoming) &&
@@ -162,12 +162,16 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
         public const string BundleGoodUrl = "https://bundles.nate-trust.org/NateService/admin/download?type=.p7b&bundleName=NATE%20Blue%20Button%20For%20Consumers%20(NBB4C)";
         public const string BundleBadUrl = "https://secure.bluebuttontrust-bogus.org/banana";
 
-        public static Bundle GoodBundleIncoming = new Bundle(BundleGoodSubject, BundleGoodUrl, true, false);
-        public static Bundle GoodBundleOutgoing = new Bundle(BundleGoodSubject, BundleGoodUrl, false, true);
-        public static Bundle GoodBundleBidi = new Bundle(BundleGoodSubject, BundleGoodUrl, true, true);
-        public static Bundle BadBundleBidirectional = new Bundle(BundleBadSubject, BundleBadUrl, true, true);
+        public static Health.Direct.Config.Client.CertificateService.Bundle GoodBundleIncoming = 
+            new Health.Direct.Config.Client.CertificateService.Bundle(BundleGoodSubject, BundleGoodUrl, true, false);
+        public static Health.Direct.Config.Client.CertificateService.Bundle GoodBundleOutgoing =
+            new Health.Direct.Config.Client.CertificateService.Bundle(BundleGoodSubject, BundleGoodUrl, false, true);
+        public static Health.Direct.Config.Client.CertificateService.Bundle GoodBundleBidi = 
+            new Health.Direct.Config.Client.CertificateService.Bundle(BundleGoodSubject, BundleGoodUrl, true, true);
+        public static Health.Direct.Config.Client.CertificateService.Bundle BadBundleBidirectional = 
+            new Health.Direct.Config.Client.CertificateService.Bundle(BundleBadSubject, BundleBadUrl, true, true);
 
-        public static Bundle[] TestBundles = { GoodBundleIncoming, GoodBundleOutgoing, GoodBundleBidi, BadBundleBidirectional };
+        public static Health.Direct.Config.Client.CertificateService.Bundle[] TestBundles = { GoodBundleIncoming, GoodBundleOutgoing, GoodBundleBidi, BadBundleBidirectional };
 
         public const string BundleClientSettingsXml = @"
             <ClientSettings>

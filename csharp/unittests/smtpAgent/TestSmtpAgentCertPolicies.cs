@@ -46,7 +46,7 @@ namespace Health.Direct.SmtpAgent.Tests
             SmtpAgentSettings settings = SmtpAgentSettings.LoadSettings(configPath);
 
             CleanMessages(settings);
-            CleanMonitor();
+            
 
             SetPolicyTestSettings(settings);
 
@@ -103,7 +103,7 @@ namespace Health.Direct.SmtpAgent.Tests
             SmtpAgentSettings settings = SmtpAgentSettings.LoadSettings(configPath);
 
             CleanMessages(settings);
-            CleanMonitor();
+            
 
             SetPolicyTestSettings(settings);
 
@@ -238,7 +238,7 @@ namespace Health.Direct.SmtpAgent.Tests
             SmtpAgentSettings settings = SmtpAgentSettings.LoadSettings(configPath);
 
             CleanMessages(settings);
-            CleanMonitor();
+            
 
             SetPolicyTestSettings(settings);
 
@@ -298,7 +298,7 @@ namespace Health.Direct.SmtpAgent.Tests
             SmtpAgentSettings settings = SmtpAgentSettings.LoadSettings(configPath);
 
             CleanMessages(settings);
-            CleanMonitor();
+            
 
             SetPolicyTestSettings(settings);
 
@@ -346,7 +346,7 @@ namespace Health.Direct.SmtpAgent.Tests
             SmtpAgentSettings settings = SmtpAgentSettings.LoadSettings(configPath);
 
             CleanMessages(settings);
-            CleanMonitor();
+            
 
             SetPolicyTestSettings(settings);
 
@@ -395,7 +395,7 @@ namespace Health.Direct.SmtpAgent.Tests
             SmtpAgentSettings settings = SmtpAgentSettings.LoadSettings(configPath);
 
             CleanMessages(settings);
-            CleanMonitor();
+            
 
             SetPolicyTestSettings(settings);
 
@@ -444,7 +444,7 @@ namespace Health.Direct.SmtpAgent.Tests
             SmtpAgentSettings settings = SmtpAgentSettings.LoadSettings(configPath);
 
             CleanMessages(settings);
-            CleanMonitor();
+            
 
             SetPolicyTestSettings(settings);
 
@@ -492,7 +492,6 @@ namespace Health.Direct.SmtpAgent.Tests
             SmtpAgentSettings settings = SmtpAgentSettings.LoadSettings(configPath);
 
             CleanMessages(settings);
-            CleanMonitor();
 
             SetPolicyTestSettings(settings);
 

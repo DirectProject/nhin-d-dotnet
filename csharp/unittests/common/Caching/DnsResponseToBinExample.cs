@@ -19,8 +19,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Health.Direct.Common.DnsResolver;
-using Security.Cryptography;
-using Security.Cryptography.X509Certificates;
 using Xunit;
 
 namespace Health.Direct.Common.Tests.Caching
@@ -365,56 +363,78 @@ namespace Health.Direct.Common.Tests.Caching
 
         public X509Certificate2 CreateNamedKeyCertificate(CertData data)
         {
+            if (data == null) throw new ArgumentNullException(nameof(data));
+
+            X509Certificate2 cert = null;
             try
             {
-                CngKeyCreationParameters keyCreationParameters
-                    = new CngKeyCreationParameters
-                    {
-                        ExportPolicy =
-                                  CngExportPolicies.AllowExport |
-                                  CngExportPolicies.AllowPlaintextExport |
-                                  CngExportPolicies.AllowPlaintextArchiving |
-                                  CngExportPolicies.AllowArchiving,
-                        KeyUsage = CngKeyUsages.AllUsages
-                    };
+                // Prepare date range (same fixed dates as original code)
+                var notBefore = DateTime.Parse(
+                    "01/01/2010",
+                    System.Globalization.DateTimeFormatInfo.InvariantInfo,
+                    System.Globalization.DateTimeStyles.AssumeLocal);
 
-                X509Certificate2 cert;
-                X509CertificateCreationParameters configCreate
-                    = new X509CertificateCreationParameters(new X500DistinguishedName(data.DistinguishedName))
-                    {
-                        EndTime =
-                                  DateTime.Parse("01/01/2020",
-                                                 System.Globalization.
-                                                     DateTimeFormatInfo.
-                                                     InvariantInfo),
-                        StartTime =
-                                  DateTime.Parse("01/01/2010",
-                                                 System.Globalization.
-                                                     DateTimeFormatInfo.
-                                                     InvariantInfo)
-                    };
+                var notAfter = DateTime.Parse(
+                    "01/01/2020",
+                    System.Globalization.DateTimeFormatInfo.InvariantInfo,
+                    System.Globalization.DateTimeStyles.AssumeLocal);
 
-                using (CngKey namedKey = CngKey.Create(CngAlgorithm2.Rsa, data.Key, keyCreationParameters))
+                // Create a named CNG RSA key (persisted) with liberal export policies like original
+                var keyCreationParameters = new CngKeyCreationParameters
                 {
-                    cert = namedKey.CreateSelfSignedCertificate(configCreate);
+                    ExportPolicy =
+                        CngExportPolicies.AllowExport |
+                        CngExportPolicies.AllowPlaintextExport |
+                        CngExportPolicies.AllowPlaintextArchiving |
+                        CngExportPolicies.AllowArchiving,
+                    KeyUsage = CngKeyUsages.AllUsages,
+                    Provider = CngProvider.MicrosoftSoftwareKeyStorageProvider
+                };
+
+                using (var cngKey = CngKey.Create(CngAlgorithm.Rsa, data.Key, keyCreationParameters))
+                using (var rsa = new RSACng(cngKey))
+                {
+                    // Build certificate request
+                    var dn = new X500DistinguishedName(data.DistinguishedName);
+                    // Choose SHA256 (old helper chose defaults; adjust if you need a different digest)
+                    var request = new CertificateRequest(dn, rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+                    // (Optional) Add minimal extensions – keep it simple to mirror legacy behavior
+                    // request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, false));
+                    // request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment, false));
+
+                    cert = request.CreateSelfSigned(notBefore, notAfter);
+
                     cert.FriendlyName = data.Friendlyname;
+
+                    // Assertions equivalent to original intent
                     Assert.True(cert.HasPrivateKey);
-                    Assert.True(cert.HasCngKey());
-                    using (CngKey certKey = cert.GetCngPrivateKey())
+                    using (var pk = cert.GetRSAPrivateKey())
                     {
-                        Assert.Equal(CngAlgorithm2.Rsa, certKey.Algorithm);
+                        Assert.NotNull(pk);
+                        // Ensure backing implementation is CNG (RSACng) to approximate HasCngKey()
+                        Assert.IsType<RSACng>(pk);
                     }
                 }
+
                 return cert;
             }
             finally
             {
-                if (CngKey.Exists(data.Key))
+                // Clean up the persisted named key like original logic did
+                try
                 {
-                    using (CngKey key = CngKey.Open(data.Key))
+                    if (CngKey.Exists(data.Key))
                     {
-                        key.Delete();
+                        using (var k = CngKey.Open(data.Key))
+                        {
+                            k.Delete();
+                        }
                     }
+                }
+                catch
+                {
+                    // Swallow any cleanup errors to keep legacy behavior tolerant
                 }
             }
         }

@@ -1,10 +1,11 @@
 ﻿/* 
- Copyright (c) 2013, Direct Project
+ Copyright (c) 2013-2025, Direct Project
  All rights reserved.
 
  Authors:
     Joe Shook     jshook@kryptiq.com
- 
+    Joseph Shook      Joseph.Shook@Surescripts.com
+
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
 Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
@@ -15,13 +16,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using Org.BouncyCastle.Cms;
-using Org.BouncyCastle.X509.Store;
 
 namespace Health.Direct.Trust
 {
@@ -41,23 +42,47 @@ namespace Health.Direct.Trust
             CmsSignedData s;
             var validMetadata = ValidMetaData(bundleResources.Metadata);
 
-            IList certs = bundleResources.LoadCertificates();
-            IX509Store x509Certs = X509StoreFactory.Create("Certificate/Collection", new X509CollectionStoreParameters(certs));
-            CmsSignedDataGenerator gen = new CmsSignedDataGenerator();
-            gen.AddCertificates(x509Certs);
-            
+            IList rawCerts = bundleResources.LoadCertificates();
+
+            var bcCerts = new List<Org.BouncyCastle.X509.X509Certificate>();
+
+            // If provider already returns BC certs
+            foreach (var c in rawCerts)
+            {
+                if (c is Org.BouncyCastle.X509.X509Certificate bc)
+                {
+                    bcCerts.Add(bc);
+                }
+            }
+
+            // Fallback: convert from X509Certificate2 if necessary
+            if (bcCerts.Count == 0 && rawCerts.Count > 0 && rawCerts[0] is System.Security.Cryptography.X509Certificates.X509Certificate2)
+            {
+                var parser = new Org.BouncyCastle.X509.X509CertificateParser();
+                foreach (System.Security.Cryptography.X509Certificates.X509Certificate2 c2 in rawCerts)
+                {
+                    bcCerts.Add(parser.ReadCertificate(c2.RawData));
+                }
+            }
+
+            var gen = new CmsSignedDataGenerator();
+            foreach (var cert in bcCerts)
+            {
+                gen.AddCertificate(cert);
+            }
+
             if (!string.IsNullOrEmpty(validMetadata))
             {
                 byte[] metadataBytes = Encoding.ASCII.GetBytes(validMetadata);
                 CmsProcessable msg = new CmsProcessableByteArray(metadataBytes);
                 s = gen.Generate(CmsSignedGenerator.Data, msg, true);
             }
-            else{ 
+            else
+            {
                 s = gen.Generate(CmsSignedGenerator.Data, null, false);
             }
-            
-            var p7BData = s.GetEncoded();
-            return p7BData;
+
+            return s.GetEncoded();
         }
 
 

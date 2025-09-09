@@ -15,12 +15,27 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 
+using Health.Direct.Common;
 using System;
 
 namespace Health.Direct.Config.Client.CertificateService
 {
     public partial class Bundle
     {
+        public Bundle()
+        {
+            this.CreateDate = DateTimeHelper.Now;
+        }
+
+        public Bundle(string owner, string url, bool forIncoming, bool forOutgoing)
+        {
+            this.Owner = owner;
+            this.Url = url;
+            this.CreateDate = DateTimeHelper.Now;
+            this.ForIncoming = forIncoming;
+            this.ForOutgoing = forOutgoing;
+        }
+
         public Uri Uri
         {
             get

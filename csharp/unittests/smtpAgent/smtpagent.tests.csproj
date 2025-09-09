@@ -100,7 +100,7 @@
     <ProjectReference Include="..\..\auditors\DatabaseAuditor\DatabaseAuditor.csproj" />
     <ProjectReference Include="..\..\common\common.csproj" />
     <ProjectReference Include="..\..\config\client\config.client.csproj" />
-    <ProjectReference Include="..\..\config\store\config.store.csproj" />
+    <!-- <ProjectReference Include="..\..\config\store\config.store.csproj" /> -->
     <ProjectReference Include="..\..\context.receiver\context.loopback.receiver.csproj" />
     <ProjectReference Include="..\..\gateway\smtpAgent\smtpAgent.csproj" />
     <ProjectReference Include="..\..\policy\policy.csproj" />
@@ -122,9 +122,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.0.0" />
     <PackageReference Include="EntityFramework" Version="6.1.3" />
-    <PackageReference Include="Moq" Version="4.5.30" />
+    <PackageReference Include="Castle.Core" Version="5.2.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="xunit" Version="2.1.0" />
     <PackageReference Include="xunit.abstractions" Version="2.0.0" />
     <PackageReference Include="xunit.assert" Version="2.1.0" />

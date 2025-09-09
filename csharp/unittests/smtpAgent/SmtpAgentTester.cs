@@ -1,11 +1,12 @@
 ﻿/* 
- Copyright (c) 2010, Direct Project
+ Copyright (c) 2010-2025, Direct Project
  All rights reserved.
 
  Authors:
     Umesh Madan     umeshma@microsoft.com
     Joe Shook	    jshook@kryptiq.com
-   
+    Joseph Shook      Joseph.Shook@Surescripts.com
+
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
 Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
@@ -26,9 +27,9 @@ using Health.Direct.Common.Extensions;
 using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mail.DSN;
 using Health.Direct.Common.Mail.Notifications;
-using Health.Direct.Config.Store;
 using Health.Direct.SmtpAgent.Config;
 using Xunit;
+using Health.Direct.Config.Client.MonitorService;
 
 namespace Health.Direct.SmtpAgent.Tests
 {
@@ -181,13 +182,7 @@ Yo. Wassup?";
                     }
                 });
         }
-
-        public void CleanMonitor()
-        {
-            var mdnManager = CreateConfigStore().Mdns;
-            mdnManager.RemoveAll();
-        }
-
+        
         private void CleanMessages(string path)
         {
             var files = Directory.GetFiles(path);
@@ -324,10 +319,10 @@ Yo. Wassup?";
             return new Mdn(messageId, recipient, sender);
         }
 
-        protected static ConfigStore CreateConfigStore()
-        {
-            return new ConfigStore(ConnectionString);
-        }
+        // protected static ConfigStore CreateConfigStore()
+        // {
+        //     return new ConfigStore(ConnectionString);
+        // }
     }
 
     public class DummySmtpMessage : ISmtpMessage

@@ -1,31 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <!-- Default values for configuration variables -->
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TargetFramework>net48</TargetFramework>
     <ErrorReport>send</ErrorReport>
-    <!-- Project name -->
-    <ProjectGuid>{5763F70E-D4EA-4299-9C6D-1C01DFC003DB}</ProjectGuid>
     <RootNamespace>Health.Direct.Monitor.WinSrv</RootNamespace>
     <AssemblyName>DirectMonitorWinSrv</AssemblyName>
-    <!-- Project output -->
     <OutputType>Exe</OutputType>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\build\DirectProject.snk</AssemblyOriginatorKeyFile>
-    <!-- Framework dependencies -->
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-    <!-- Default build options -->
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <FileAlignment>512</FileAlignment>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <!-- Deployment options -->
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -40,51 +24,33 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Quartz, Version=1.0.3.2, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\external\Quartz\Quartz.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.ServiceProcess" />
-  </ItemGroup>
+
+	<ItemGroup>
+		<!-- Explicit framework assembly needed for Windows Service APIs -->
+		<Reference Include="System.ServiceProcess" />
+		<!-- Uncomment if you add a ProjectInstaller (ServiceInstaller/ServiceProcessInstaller)
+    <Reference Include="System.Configuration.Install" />
+    -->
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Quartz" Version="3.6.2" />
+	</ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Diagnostics.cs" />
-    <Compile Include="MdnMonitorWinSrv.cs">
+    <Compile Update="MdnMonitorWinSrv.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="MdnMonitorWinSrv.Designer.cs">
+    <Compile Update="MdnMonitorWinSrv.Designer.cs">
       <DependentUpon>MdnMonitorWinSrv.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\common\common.csproj">
-      <Project>{87A47BBF-C056-43C8-8C4A-34D25A63D1F9}</Project>
-      <Name>common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <ProjectReference Include="..\..\common\common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="jobs.xml">
@@ -123,5 +89,4 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

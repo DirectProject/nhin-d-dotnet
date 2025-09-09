@@ -1,10 +1,11 @@
 /* 
- Copyright (c) 2013, Direct Project
+ Copyright (c) 2013-2025, Direct Project
  All rights reserved.
 
  Authors:
     Joe Shook     jshook@kryptiq.com
- 
+    Joseph Shook      Joseph.Shook@Surescripts.com
+
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
 Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
@@ -14,8 +15,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -23,7 +22,6 @@ using System.Security.Cryptography.X509Certificates;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Security;
-using Org.BouncyCastle.X509.Store;
 using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
 namespace Health.Direct.Trust
@@ -59,30 +57,38 @@ namespace Health.Direct.Trust
 
         public byte[] Sign(byte[] cmsData)
         {
-            IList certs = new List<X509Certificate>();
-
+            // Load signing cert (PFX)
             byte[] signBytes = File.ReadAllBytes(GetFile());
-            X509Certificate2 signCert = new X509Certificate2(signBytes, Key, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
-            certs.Add(DotNetUtilities.FromX509Certificate(signCert));
-            IX509Store x509Certs = X509StoreFactory.Create("Certificate/Collection", new X509CollectionStoreParameters(certs));
+            var signCert = new X509Certificate2(
+                signBytes,
+                Key,
+                X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
 
-            CmsSignedDataGenerator gen = new CmsSignedDataGenerator();
+            // Convert to BouncyCastle certificate
+            X509Certificate bcCert = DotNetUtilities.FromX509Certificate(signCert);
+
+            // Extract key pair
+#pragma warning disable 618
             AsymmetricCipherKeyPair pair = DotNetUtilities.GetKeyPair(signCert.PrivateKey);
-            X509Certificate bX509Certificate = DotNetUtilities.FromX509Certificate(signCert);
-            gen.AddSigner(pair.Private, bX509Certificate, CmsSignedGenerator.DigestSha1);
-            gen.AddSigner(pair.Private, bX509Certificate, CmsSignedGenerator.DigestSha256);
-            CmsSignedData unsignedData = new CmsSignedData(cmsData);
+#pragma warning restore 618
 
-            
-            gen.AddCertificates(x509Certs);
+            var gen = new CmsSignedDataGenerator();
+
+            // Add desired signer infos (both SHA-1 and SHA-256 kept to mirror legacy behavior)
+            gen.AddSigner(pair.Private, bcCert, CmsSignedGenerator.DigestSha1);
+            gen.AddSigner(pair.Private, bcCert, CmsSignedGenerator.DigestSha256);
+
+            // Include certificate in the bundle (replaces IX509Store/X509StoreFactory usage)
+            gen.AddCertificate(bcCert);
+
+            // Wrap existing CMS content
+            CmsSignedData unsignedData = new CmsSignedData(cmsData);
             CmsProcessable msg = new CmsProcessableByteArray(unsignedData.GetEncoded());
+
             CmsSignedData cmsSignedData = gen.Generate(CmsSignedGenerator.Data, msg, true);
-            
-            byte[] p7MData = cmsSignedData.GetEncoded();
-            return p7MData;
+            return cmsSignedData.GetEncoded();
         }
 
-        
         private string GetFile()
         {
             if (File.Exists(Signature))
