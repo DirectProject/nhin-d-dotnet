@@ -25,7 +25,9 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Added: keep output path as bin\Debug (no net48 subfolder) so C++ #import finds the TLB -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,7 +66,6 @@
     <ProjectReference Include="..\..\diagnostics\diagnostics.nlog.csproj" />
     <ProjectReference Include="..\..\policy\policy.csproj" />
   </ItemGroup>
-
   <Target Name="ExportTypeLibraries" AfterTargets="CopyFilesToOutputDirectory" Outputs="$(OutputPath)$(AssemblyName).tlb" Inputs="$(OutputPath)$(AssemblyName)$(TargetExt)">
     <Exec Command="&quot;$(TargetFrameworkSDKToolsDirectory)tlbexp.exe&quot; /silent /verbose $(TargetPath)" WorkingDirectory="$(OutputPath)" />
   </Target>
