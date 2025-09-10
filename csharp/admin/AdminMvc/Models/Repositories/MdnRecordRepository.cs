@@ -1,9 +1,5 @@
-using System;
 using System.Linq;
-
-using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.MonitorService;
-using Health.Direct.Config.Store;
 
 namespace Health.Direct.Admin.Console.Models.Repositories
 {

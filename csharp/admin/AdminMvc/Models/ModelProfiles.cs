@@ -15,8 +15,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 using AutoMapper;
-
-using Health.Direct.Config.Store;
+using Health.Direct.Config.Client.CertificateService;
+using Health.Direct.Config.Client.DomainManager;
+using Health.Direct.Config.Client.MonitorService;
 
 namespace Health.Direct.Admin.Console.Models
 {

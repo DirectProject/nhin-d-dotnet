@@ -16,19 +16,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 using System;
 using System.Linq;
 using System.Web.Mvc;
-
 using Health.Direct.Admin.Console.Models;
 using Health.Direct.Admin.Console.Models.Repositories;
-
 using AutoMapper;
-
-using Health.Direct.Config.Store;
-
-using MvcContrib.Pagination;
+using Health.Direct.Admin.Console.Models.Pagination;
+using Health.Direct.Config.Client.CertificateService;
+using Health.Direct.Config.Client.DomainManager;
+using EntityStatus = Health.Direct.Config.Client.CertificateService.EntityStatus; // added
 
 namespace Health.Direct.Admin.Console.Controllers
 {
-    public class AnchorsController : ControllerBase<Anchor, AnchorModel, IAnchorRepository>
+    public class AnchorsController : ControllerBase<Anchor, AnchorModel, IAnchorRepository, EntityStatus>
     {
         private readonly IDomainRepository m_domainRepository;
 
@@ -55,10 +53,23 @@ namespace Health.Direct.Admin.Console.Controllers
                 filter = anchor => anchor.Owner.Equals(domain.Name, StringComparison.OrdinalIgnoreCase);
             }
 
-            return View(Repository.Query()
-                            .Where(filter)
-                            .Select(anchor => Mapper.Map<Anchor, AnchorModel>(anchor))
-                            .AsPagination(page ?? 1, DefaultPageSize));
+            int pageNumber = page.GetValueOrDefault(1);
+            if (pageNumber < 1) pageNumber = 1;
+
+            var filtered = Repository.Query().Where(filter);
+
+            int totalCount = filtered.Count();
+
+            var pageItems = filtered
+                .OrderBy(a => a.ID) // deterministic ordering
+                .Skip((pageNumber - 1) * DefaultPageSize)
+                .Take(DefaultPageSize)
+                .Select(anchor => Mapper.Map<Anchor, AnchorModel>(anchor))
+                .ToList();
+
+            var paged = new PaginatedList<AnchorModel>(pageItems, pageNumber, DefaultPageSize, totalCount);
+
+            return View(paged);
         }
 
         [Authorize]
@@ -100,10 +111,10 @@ namespace Health.Direct.Admin.Console.Controllers
                 }
 
                 var anchor = new Anchor(model.Owner, bytes, model.Password)
-                                 {
-                                     ForIncoming = (model.Purpose & PurposeType.Incoming) == PurposeType.Incoming,
-                                     ForOutgoing = (model.Purpose & PurposeType.Outgoing) == PurposeType.Outgoing
-                                 };
+                {
+                    ForIncoming = (model.Purpose & PurposeType.Incoming) == PurposeType.Incoming,
+                    ForOutgoing = (model.Purpose & PurposeType.Outgoing) == PurposeType.Outgoing
+                };
                 Repository.Add(anchor);
 
                 return RedirectToAction("Index", new { domainID = domain.ID });

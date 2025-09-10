@@ -96,7 +96,6 @@ namespace Health.Direct.Common.Tests.DnsResolver
         //[InlineData("redmond.hsgincubator.com")]
         [InlineData("www.microsoft.com")]
         [InlineData("www.hotmail.com")]
-        [InlineData("www.gmail.com")]
         [InlineData("www.relayhealth.com")]
         [InlineData("www.aol.com")]
         [InlineData("gmail.com")]

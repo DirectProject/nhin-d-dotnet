@@ -18,20 +18,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web.Mvc;
-
 using Health.Direct.Admin.Console.Models;
 using Health.Direct.Admin.Console.Models.Repositories;
-
 using AutoMapper;
-
-using Health.Direct.Config.Store;
-
-using MvcContrib.Pagination;
 using System.Net.Mail;
+using Health.Direct.Admin.Console.Models.Pagination;
+using Health.Direct.Config.Client.CertificateService;
+using Health.Direct.Config.Client.DomainManager;
+using EntityStatus = Health.Direct.Config.Client.CertificateService.EntityStatus;
 
 namespace Health.Direct.Admin.Console.Controllers
 {
-    public class CertificatesController : ControllerBase<Certificate, CertificateModel, ICertificateRepository>
+    public class CertificatesController : ControllerBase<Certificate, CertificateModel, ICertificateRepository, EntityStatus>
     {
         private readonly IDomainRepository m_domainRepository;
 
@@ -61,10 +59,23 @@ namespace Health.Direct.Admin.Console.Controllers
                 }
             }
 
-            return View(Repository.Query()
-                            .Where(filter)
-                            .Select(certificate => Mapper.Map<Certificate, CertificateModel>(certificate))
-                            .AsPagination(page ?? 1, DefaultPageSize));
+            int pageNumber = page.GetValueOrDefault(1);
+            if (pageNumber < 1) pageNumber = 1;
+
+            var filtered = Repository.Query().Where(filter);
+
+            int totalCount = filtered.Count();
+            
+            var pageItems = filtered
+                .OrderBy(c => c.ID)
+                .Skip((pageNumber - 1) * DefaultPageSize)
+                .Take(DefaultPageSize)
+                .Select(c => Mapper.Map<Certificate, CertificateModel>(c))
+                .ToList();
+
+            var paged = new PaginatedList<CertificateModel>(pageItems, pageNumber, DefaultPageSize, totalCount);
+
+            return View(paged);
         }
 
         [Authorize]

@@ -17,19 +17,15 @@ using System;
 using System.Linq;
 using System.Net.Mail;
 using System.Web.Mvc;
-
 using Health.Direct.Admin.Console.Models;
 using Health.Direct.Admin.Console.Models.Repositories;
-
 using AutoMapper;
-
-using Health.Direct.Config.Store;
-
-using MvcContrib.Pagination;
+using Health.Direct.Admin.Console.Models.Pagination;
+using Health.Direct.Config.Client.DomainManager; // added
 
 namespace Health.Direct.Admin.Console.Controllers
 {
-    public class AddressesController : ControllerBase<Address, AddressModel, IAddressRepository>
+    public class AddressesController : ControllerBase<Address, AddressModel, IAddressRepository, EntityStatus>
     {
         private readonly IDomainRepository m_domainRepository;
 
@@ -56,16 +52,29 @@ namespace Health.Direct.Admin.Console.Controllers
                 filter = address => address.DomainID == domain.ID;
             }
 
-            return View(Repository.Query()
-                            .Where(filter)
-                            .Select(address => Mapper.Map<Address, AddressModel>(address))
-                            .AsPagination(page ?? 1, DefaultPageSize));
+            int pageNumber = page.GetValueOrDefault(1);
+            if (pageNumber < 1) pageNumber = 1;
+
+            var filtered = Repository.Query().Where(filter);
+
+            int totalCount = filtered.Count();
+
+            var pageItems = filtered
+                .OrderBy(a => a.ID) // deterministic ordering
+                .Skip((pageNumber - 1) * DefaultPageSize)
+                .Take(DefaultPageSize)
+                .Select(a => Mapper.Map<Address, AddressModel>(a))
+                .ToList();
+
+            var paged = new PaginatedList<AddressModel>(pageItems, pageNumber, DefaultPageSize, totalCount);
+
+            return View(paged);
         }
 
         [Authorize]
         public ActionResult Add(long domainID)
         {
-            return View(new AddressModel {DomainID = domainID});
+            return View(new AddressModel { DomainID = domainID });
         }
 
         [Authorize]
@@ -114,7 +123,7 @@ namespace Health.Direct.Admin.Console.Controllers
             var address = Repository.Get(id);
             if (address == null) return View("NotFound");
 
-            return View(Mapper.Map<Address,AddressModel>(address));
+            return View(Mapper.Map<Address, AddressModel>(address));
         }
 
         [Authorize]
