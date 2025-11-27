@@ -23,7 +23,7 @@ namespace Health.Direct.Common.Tests.Container
 {
     public class SimpleContainerSectionFacts
     {
-        [Fact]
+
         public SimpleContainerSection LoadSection()
         {
             SimpleContainerSection containerSection = (SimpleContainerSection)ConfigurationManager.GetSection("container");
@@ -31,7 +31,7 @@ namespace Health.Direct.Common.Tests.Container
             return containerSection;
         }
 
-        [Fact]
+
         public SimpleComponentElement SectionHasComponent()
         {
             var section = LoadSection();
