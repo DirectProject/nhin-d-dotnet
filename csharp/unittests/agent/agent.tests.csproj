@@ -26,6 +26,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <NoWarn>1591</NoWarn>
@@ -66,6 +67,57 @@
     <None Update="Certificates\Dns\SubjectAltDnsName.cer">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Certificates\kryptiq\OutgoingAnchors\DirectMix.Hard_Cert.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\OutgoingAnchors\DirectMix.Soft_Cert.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\OutgoingAnchors\kryptiq.lab.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\OutgoingAnchors\umamalga1.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Private\fha-crossover.DirectInt.lab_digitalsignature.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Private\fha-crossover.DirectInt.lab_dualUse.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Private\hsm.DirectInt.lab_digitalsignature.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Private\hsm.DirectInt.lab_dualUse.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Private\kryptiq.DirectCi.lab.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Private\mixed.directmix.lab.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Private\mixed.directmix.lab_digitalsignature.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Public\fha-crossover.DirectInt.lab_encipherment.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Public\hsm.DirectInt.lab_dualUse.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Public\hsm.DirectInt.lab_encipherment.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Public\kryptiq.DirectCi.lab.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Public\mixed.directmix.lab.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\kryptiq\Public\mixed.directmix.lab_encipherment.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Certificates\nhind\IncomingAnchors\cernerCA.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -93,6 +145,12 @@
     <None Update="Certificates\nhind\OutgoingAnchors\umamalga1.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Certificates\nhind\Private\biff.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\nhind\Private\bob.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Certificates\nhind\Private\fha-crossover.DirectInt.lab_digitalsignature.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -108,22 +166,16 @@
     <None Update="Certificates\nhind\Private\hsm.DirectInt.lab_encipherment.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Certificates\nhind\Private\nhind_umamalga1.pfx">
+    <None Update="Certificates\nhind\Private\nancy.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Certificates\nhind\Private\nhind_umamalga1_vm1.pfx">
+    <None Update="Certificates\nhind\Private\nhind_umamalga1.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Certificates\nhind\Public\cerner.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Certificates\nhind\Public\hotmail.cer">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\nhind\Public\nhind_umamalga1.pfx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\nhind\Public\nhind_um_amalga1_vm1.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Certificates\nhind\Public\redmond.cer">
@@ -159,7 +211,7 @@
     <None Update="Certificates\redmond\OutgoingAnchors\um-amalga1-vm1.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Certificates\redmond\OutgoingAnchors2\umamalga1.cer">
+    <None Update="Certificates\redmond\OutgoingAnchors\umamalga1.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Certificates\redmond\Private\dev.singleuse.lab.encipherment.pfx">
@@ -180,6 +232,12 @@
     <None Update="Certificates\redmond\Private\redmond.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Certificates\redmond\Public\biff.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\redmond\Public\bob.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Certificates\redmond\Public\dev.singleuse.lab.encipherment.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -195,10 +253,10 @@
     <None Update="Certificates\redmond\Public\hsm.DirectInt.lab_encipherment.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Certificates\redmond\Public\nhind_umamalga1.pfx">
+    <None Update="Certificates\redmond\Public\nancy.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Certificates\redmond\Public\nhind_um_amalga1_vm1.pfx">
+    <None Update="Certificates\redmond\Public\nhind_umamalga1.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Certificates\redmond\Public\redmond.cer">
@@ -217,6 +275,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestMessages\envelopeSignatureContentType1.eml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestMessages\BuildOutgoing.eml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestMessages\simple_ToOrg.eml">

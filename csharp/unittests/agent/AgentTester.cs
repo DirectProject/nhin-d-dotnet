@@ -131,9 +131,19 @@ namespace Health.Direct.Agent.Tests
             return this.ProcessOutgoing(this.ReadMessageText(messageFilePath));
         }
 
+        public OutgoingMessage ProcessOutgoingFileAgentB(string messageFilePath)
+        {
+            return this.ProcessOutgoingAgentB(this.ReadMessageText(messageFilePath));
+        }
+
         public OutgoingMessage ProcessOutgoing(string messageText)
         {
             return m_agentA.ProcessOutgoing(messageText);
+        }
+
+        public OutgoingMessage ProcessOutgoingAgentB(string messageText)
+        {
+            return m_agentB.ProcessOutgoing(messageText);
         }
 
         public void ProcessIncomingFile(string messageFilePath)
