@@ -5,6 +5,7 @@
     <RootNamespace>Health.Direct.Common.Metadata</RootNamespace>
     <AssemblyName>Health.Direct.Common.Metadata</AssemblyName>
     <OutputType>Library</OutputType>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\build\DirectProject.snk</AssemblyOriginatorKeyFile>

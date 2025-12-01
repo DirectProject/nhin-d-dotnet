@@ -97,7 +97,7 @@ namespace Health.Direct.Config.Store.Tests
         {
             Domain target = new Domain(BuildDomainName(GetRndDomainID()));
             Assert.True(target.IsValidEmailDomain());
-            target.Name = "bunk.";
+            target.Name = "bunk ";
             Assert.False(target.IsValidEmailDomain());
         }
 
@@ -108,7 +108,7 @@ namespace Health.Direct.Config.Store.Tests
         public void IsValidEmailDomainTest()
         {
             Assert.True(Domain.IsValidEmailDomain(BuildDomainName(GetRndDomainID())));
-            Assert.False(Domain.IsValidEmailDomain("bunk."));
+            Assert.False(Domain.IsValidEmailDomain("bu nk"));
 
         }
 

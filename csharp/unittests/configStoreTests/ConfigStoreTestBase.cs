@@ -1110,7 +1110,7 @@ namespace Health.Direct.Config.Store.Tests
             {
                 cert = new Anchor(string.Format("CN=domain{0}.test.com", domainID)
                                   , new BinaryReader(fs).ReadBytes((int)new FileInfo(path).Length)
-                                  , String.Empty);
+                                  , "Passw0rd!");
                 //cert.Owner = string.Format("domain{0}.test.com", domainID);
                 //cert.Data = new BinaryReader(fs).ReadBytes((int)new FileInfo(path).Length);
             }
@@ -1142,7 +1142,7 @@ namespace Health.Direct.Config.Store.Tests
             {
                 cert = new Certificate(string.Format("domain{0}.test.com", domainID)
                                        , new BinaryReader(fs).ReadBytes((int)new FileInfo(path).Length)
-                                       , String.Empty);
+                                       , "Passw0rd!");
                 //cert.Owner = string.Format("domain{0}.test.com", domainID);
                 //cert.Data = new BinaryReader(fs).ReadBytes((int)new FileInfo(path).Length);
             }
