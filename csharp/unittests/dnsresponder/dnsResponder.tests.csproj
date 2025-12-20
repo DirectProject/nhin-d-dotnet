@@ -5,7 +5,6 @@
     <RootNamespace>Health.Direct.DnsResponder.Tests</RootNamespace>
     <AssemblyName>Health.Direct.DnsResponder.Tests</AssemblyName>
     <OutputType>Library</OutputType>
-    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\build\DirectProject.snk</AssemblyOriginatorKeyFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>

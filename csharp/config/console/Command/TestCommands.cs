@@ -285,7 +285,16 @@ namespace Health.Direct.Config.Console.Command
 
                 foreach (string file in files)
                 {
-                    certcmd.LoadCerts(certStore, file, "passw0rd!", X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                    try
+                    {
+                        certcmd.LoadCerts(certStore, file, "passw0rd!",
+                            X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable |
+                            X509KeyStorageFlags.PersistKeySet);
+                    }
+                    catch
+                    {
+                        certcmd.LoadCerts(certStore, file, "Passw0rd!", X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                    }
                 }
 
                 return certStore;

@@ -40,7 +40,7 @@ namespace Health.Direct.SmtpAgent.Tests
         //const string Dns_Server = "184.73.237.102";
         //const string Dns_Server = "10.110.22.16";
         //const string Dns_Sertver = "207.170.210.162";
-        const string Dns_Server = "8.8.8.8";
+        private const string Dns_Server = "1.1.1.1";
 
         #region data
 

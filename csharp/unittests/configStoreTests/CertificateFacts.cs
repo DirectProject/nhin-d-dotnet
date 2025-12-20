@@ -289,7 +289,7 @@ namespace Health.Direct.Config.Store.Tests
         [MemberData("TestCertsBytes")]
         public void ImportTest(byte[] sourceFileBytes)
         {
-            string password = string.Empty;
+            string password = "Passw0rd!";
             X509Certificate2 expected = new X509Certificate2(sourceFileBytes, password);
             X509Certificate2 actual = Certificate.Import(sourceFileBytes, password);
             Assert.Equal(expected, actual);

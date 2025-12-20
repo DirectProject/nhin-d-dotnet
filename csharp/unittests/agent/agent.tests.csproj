@@ -5,7 +5,6 @@
     <RootNamespace>Health.Direct.Agent.Tests</RootNamespace>
     <AssemblyName>Health.Direct.Agent.Tests</AssemblyName>
     <OutputType>Library</OutputType>
-    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\build\DirectProject.snk</AssemblyOriginatorKeyFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>

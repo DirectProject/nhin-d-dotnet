@@ -18,6 +18,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Security.Cryptography;
+using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto;
@@ -64,29 +66,27 @@ namespace Health.Direct.Trust
                 Key,
                 X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
 
-            // Convert to BouncyCastle certificate
-            X509Certificate bcCert = DotNetUtilities.FromX509Certificate(signCert);
+            // Build PKCS#7 SignedCms using Windows crypto (CSP/CNG) to avoid exporting private key
+            var content = new ContentInfo(cmsData);
+            var signedCms = new SignedCms(content, false);
 
-            // Extract key pair
-#pragma warning disable 618
-            AsymmetricCipherKeyPair pair = DotNetUtilities.GetKeyPair(signCert.PrivateKey);
-#pragma warning restore 618
+            // SHA-1 signer (legacy)
+            var sha1Signer = new CmsSigner(SubjectIdentifierType.IssuerAndSerialNumber, signCert)
+            {
+                IncludeOption = X509IncludeOption.EndCertOnly
+            };
+            sha1Signer.DigestAlgorithm = new Oid("1.3.14.3.2.26"); // SHA-1
+            signedCms.ComputeSignature(sha1Signer, false);
 
-            var gen = new CmsSignedDataGenerator();
+            // SHA-256 signer
+            var sha256Signer = new CmsSigner(SubjectIdentifierType.IssuerAndSerialNumber, signCert)
+            {
+                IncludeOption = X509IncludeOption.EndCertOnly
+            };
+            sha256Signer.DigestAlgorithm = new Oid("2.16.840.1.101.3.4.2.1"); // SHA-256
+            signedCms.ComputeSignature(sha256Signer, false);
 
-            // Add desired signer infos (both SHA-1 and SHA-256 kept to mirror legacy behavior)
-            gen.AddSigner(pair.Private, bcCert, CmsSignedGenerator.DigestSha1);
-            gen.AddSigner(pair.Private, bcCert, CmsSignedGenerator.DigestSha256);
-
-            // Include certificate in the bundle (replaces IX509Store/X509StoreFactory usage)
-            gen.AddCertificate(bcCert);
-
-            // Wrap existing CMS content
-            CmsSignedData unsignedData = new CmsSignedData(cmsData);
-            CmsProcessable msg = new CmsProcessableByteArray(unsignedData.GetEncoded());
-
-            CmsSignedData cmsSignedData = gen.Generate(CmsSignedGenerator.Data, msg, true);
-            return cmsSignedData.GetEncoded();
+            return signedCms.Encode();
         }
 
         private string GetFile()

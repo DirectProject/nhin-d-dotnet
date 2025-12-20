@@ -21,7 +21,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests.HSM.FromDualUseToSingleUse
             m_agent = SmtpAgentFactory.Create(GetSettingsPath("TestSmtpAgentConfigService_HsmCryptographer.xml"));
         }
 
-        [Fact]
+        [Fact(Skip = "Not supporting HSM")]
         public void TestEndToEnd_GatewayIsDestination_Is_True_And_TimelyAndReliable_Not_Requestd()
         {
             CleanMessages(m_agent.Settings);
@@ -75,7 +75,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests.HSM.FromDualUseToSingleUse
             m_agent.Settings.InternalMessage.EnableRelay = false;
         }
 
-        [Fact]
+        [Fact(Skip = "Not supporting HSM")]
         public void TestEndToEnd_GatewayIsDestination_Is_True_And_TimelyAndReliable_Not_Requestd_Multiple_SingleUseDomains()
         {
             CleanMessages(m_agent.Settings);
@@ -129,7 +129,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests.HSM.FromDualUseToSingleUse
             m_agent.Settings.InternalMessage.EnableRelay = false;
         }
 
-        [Fact]
+        [Fact(Skip = "Not supporting HSM")]
         public void TestMultiPublicCerts_Soft_to_Hard_TrustOnlySoftCert()
         {
             CleanMessages(m_agent.Settings);

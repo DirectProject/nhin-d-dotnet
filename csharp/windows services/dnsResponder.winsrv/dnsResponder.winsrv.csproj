@@ -5,7 +5,6 @@
     <RootNamespace>Health.Direct.DnsResponder.WinSrv</RootNamespace>
     <AssemblyName>DirectDnsResponderSvc</AssemblyName>
     <OutputType>Exe</OutputType>
-    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\build\DirectProject.snk</AssemblyOriginatorKeyFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>

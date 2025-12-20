@@ -1,0 +1,389 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+ <html xmlns:msxsl="urn:schemas-microsoft-com:xslt"><head><meta content="en-us" http-equiv="Content-Language" /><meta content="text/html; charset=utf-16" http-equiv="Content-Type" /><title _locID="ConversionReport0">
+          Migration Report
+        </title><style> 
+                    /* Body style, for the entire document */
+                    body
+                    {
+                        background: #F3F3F4;
+                        color: #1E1E1F;
+                        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                        padding: 0;
+                        margin: 0;
+                    }
+
+                    /* Header1 style, used for the main title */
+                    h1
+                    {
+                        padding: 10px 0px 10px 10px;
+                        font-size: 21pt;
+                        background-color: #E2E2E2;
+                        border-bottom: 1px #C1C1C2 solid; 
+                        color: #201F20;
+                        margin: 0;
+                        font-weight: normal;
+                    }
+
+                    /* Header2 style, used for "Overview" and other sections */
+                    h2
+                    {
+                        font-size: 18pt;
+                        font-weight: normal;
+                        padding: 15px 0 5px 0;
+                        margin: 0;
+                    }
+
+                    /* Header3 style, used for sub-sections, such as project name */
+                    h3
+                    {
+                        font-weight: normal;
+                        font-size: 15pt;
+                        margin: 0;
+                        padding: 15px 0 5px 0;
+                        background-color: transparent;
+                    }
+
+                    /* Color all hyperlinks one color */
+                    a
+                    {
+                        color: #1382CE;
+                    }
+
+                    /* Table styles */ 
+                    table
+                    {
+                        border-spacing: 0 0;
+                        border-collapse: collapse;
+                        font-size: 10pt;
+                    }
+
+                    table th
+                    {
+                        background: #E7E7E8;
+                        text-align: left;
+                        text-decoration: none;
+                        font-weight: normal;
+                        padding: 3px 6px 3px 6px;
+                    }
+
+                    table td
+                    {
+                        vertical-align: top;
+                        padding: 3px 6px 5px 5px;
+                        margin: 0px;
+                        border: 1px solid #E7E7E8;
+                        background: #F7F7F8;
+                    }
+
+                    /* Local link is a style for hyperlinks that link to file:/// content, there are lots so color them as 'normal' text until the user mouse overs */
+                    .localLink
+                    {
+                        color: #1E1E1F;
+                        background: #EEEEED;
+                        text-decoration: none;
+                    }
+
+                    .localLink:hover
+                    {
+                        color: #1382CE;
+                        background: #FFFF99;
+                        text-decoration: none;
+                    }
+
+                    /* Center text, used in the over views cells that contain message level counts */ 
+                    .textCentered
+                    {
+                        text-align: center;
+                    }
+
+                    /* The message cells in message tables should take up all avaliable space */
+                    .messageCell
+                    {
+                        width: 100%;
+                    }
+
+                    /* Padding around the content after the h1 */ 
+                    #content 
+                    {
+	                    padding: 0px 12px 12px 12px; 
+                    }
+
+                    /* The overview table expands to width, with a max width of 97% */ 
+                    #overview table
+                    {
+                        width: auto;
+                        max-width: 75%; 
+                    }
+
+                    /* The messages tables are always 97% width */
+                    #messages table
+                    {
+                        width: 97%;
+                    }
+
+                    /* All Icons */
+                    .IconSuccessEncoded, .IconInfoEncoded, .IconWarningEncoded, .IconErrorEncoded
+                    {
+                        min-width:18px;
+                        min-height:18px; 
+                        background-repeat:no-repeat;
+                        background-position:center;
+                    }
+
+                    /* Success icon encoded */
+                    .IconSuccessEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconSuccess#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABcElEQVR4Xq2TsUsCURzHv15g8ZJcBWlyiYYgCIWcb9DFRRwMW5TA2c0/QEFwFkxxUQdxVlBwCYWOi6IhWgQhBLHJUCkhLr/BW8S7gvrAg+N+v8/v+x68Z8MGy+XSCyABQAXgBgHGALoASkIIDWSLeLBetdHryMjd5IxQPWT4rn1c/P7+xxp72Cs9m5SZ0Bq2vPnbPFafK2zDvmNHypdC0BPkLlQhxJsCAhQoZwdZU5mwxh720qGo8MzTxTTKZDPCx2HoVzp6lz0Q9tKhyx0kGs8Ny+TkWRKk8lCROwEduhyg9l/6lunOPSfmH3NUH6uQ0KHLAe7JYvJjevm+DAMGJHToKtigE+vwvIidxLamb8IBY9e+C5LiXREkfho3TSd06HJA13/oh6T51MTsfQbHrsMynQ5dDihFjiK8JJAU9AKIWTp76dCVN7HWHrajmUEGvyF9nkbAE6gLIS7kTUyuf2gscLoJrElZo/Mvj+nPz/kLTmfnEwP3tB0AAAAASUVORK5CYII=);
+                    }
+
+                    /* Information icon encoded */
+                    .IconInfoEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconInformation#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHElEQVR4Xs2TsUoDQRRF7wwoziokjZUKadInhdhukR9YP8DMX1hYW+QvdsXa/QHBbcXC7W0CamWTQnclFutceIQJwwaWNLlwm5k5d94M76mmaeCrrmsLYOocY12FcxZFUeozCqKqqgYA8uevv1H6VuPxcwlfk5N92KHBxfFeCSAxxswlYAW/Xr989x/mv9gkhtyMDhcAxgzRsp7flj8B/HF1RsMXq+NZMkopaHe7lbKxQUEIGbKsYNoGn969060hZBkQex/W8oRQwsQaW2o3Ago2SVcJUzAgY3N0lTCZZm+zPS8HB51gMmS1DEYyOz9acKO1D8JWTlafKIMxdhvlfdyT94Vv5h7P8Ky7nQzACmhvKq3zk3PjW9asz9D/1oigecsioooAAAAASUVORK5CYII=);
+                    }
+
+                    /* Warning icon encoded */
+                    .IconWarningEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconWarning#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAx0lEQVR4XpWSMQ7CMAxFf4xAyBMLCxMrO8dhaBcuwdCJS3RJBw7SA/QGTCxdWJgiQYWKXJWKIXHIlyw5lqr34tQgEOdcBsCOx5yZK3hCCKdYXneQkh4pEfqzLfu+wVDSyyzFoJjfz9NB+pAF+eizx2Vruts0k15mPgvS6GYvpVtQhB61IB/dk6AF6fS4Ben0uIX5odtFe8Q/eW1KvFeH4e8khT6+gm5B+t3juyDt7n0jpe+CANTd+oTUjN/U3yVaABnSUjFz/gFq44JaVSCXeQAAAABJRU5ErkJggg==);
+                    }
+
+                    /* Error icon encoded */
+                    .IconErrorEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconError#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABQElEQVR4XqWTvUoEQRCE6wYPZUA80AfwAQz23uCMjA7MDRQEIzPBVEyNTQUFIw00vcQTTMzuAh/AxEQQT8HF/3G/oGGnEUGuoNnd6qoZuqltyKEsyzVJq5I6rnUp6SjGeGhESikzzlc1eL7opfuVbrqbU1Zw9NCgtQMaZpY0eNnaaL2fHusvTK5vKu7sjSS1Y4y3QUA6K3e3Mau5UFDyMP7tYF9o8cAHZv68vipoIJg971PZIZ5HiwdvYGGvFVFHmGmZ2MxwmQYPXubPl9Up0tfoMQGetXd6mRbvhBw+boZ6WF7Mbv1+GsHRk0fQmPAH1GfmZirbCfDJ61tw3Px8/8pZsPAG4jlVhcPgZ7adwNWBB68lkRQWFiTgFlbnLY3DGGM7izIJIyT/jjIvEJw6fdJTc6krDzh6aMwMP9bvDH4ADSsa9uSWVJkAAAAASUVORK5CYII=);
+                    }
+                 </style><script type="text/javascript" language="javascript"> 
+          
+            // Startup 
+            // Hook up the the loaded event for the document/window, to linkify the document content
+            var startupFunction = function() { linkifyElement("messages"); };
+            
+            if(window.attachEvent)
+            {
+              window.attachEvent('onload', startupFunction);
+            }
+            else if (window.addEventListener) 
+            {
+              window.addEventListener('load', startupFunction, false);
+            }
+            else 
+            {
+              document.addEventListener('load', startupFunction, false);
+            } 
+            
+            // Toggles the visibility of table rows with the specified name 
+            function toggleTableRowsByName(name)
+            {
+               var allRows = document.getElementsByTagName('tr');
+               for (i=0; i < allRows.length; i++)
+               {
+                  var currentName = allRows[i].getAttribute('name');
+                  if(!!currentName && currentName.indexOf(name) == 0)
+                  {
+                      var isVisible = allRows[i].style.display == ''; 
+                      isVisible ? allRows[i].style.display = 'none' : allRows[i].style.display = '';
+                  }
+               }
+            }
+            
+            function scrollToFirstVisibleRow(name) 
+            {
+               var allRows = document.getElementsByTagName('tr');
+               for (i=0; i < allRows.length; i++)
+               {
+                  var currentName = allRows[i].getAttribute('name');
+                  var isVisible = allRows[i].style.display == ''; 
+                  if(!!currentName && currentName.indexOf(name) == 0 && isVisible)
+                  {
+                     allRows[i].scrollIntoView(true); 
+                     return true; 
+                  }
+               }
+               
+               return false;
+            }
+            
+            // Linkifies the specified text content, replaces candidate links with html links 
+            function linkify(text)
+            {
+                 if(!text || 0 === text.length)
+                 {
+                     return text; 
+                 }
+
+                 // Find http, https and ftp links and replace them with hyper links 
+                 var urlLink = /(http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+(:[a-zA-Z0-9]*)?\/?([a-zA-Z0-9\-\._\?\,\/\\\+&%\$#\=~;\{\}])*/gi;
+                 
+                 return text.replace(urlLink, '<a href="$&">$&</a>') ;
+            }
+            
+            // Linkifies the specified element by ID
+            function linkifyElement(id)
+            {
+                var element = document.getElementById(id);
+                if(!!element)
+                {
+                  element.innerHTML = linkify(element.innerHTML); 
+                }
+            }
+            
+            function ToggleMessageVisibility(projectName)
+            {
+              if(!projectName || 0 === projectName.length)
+              {
+                return; 
+              }
+              
+              toggleTableRowsByName("MessageRowClass" + projectName);
+              toggleTableRowsByName('MessageRowHeaderShow' + projectName);
+              toggleTableRowsByName('MessageRowHeaderHide' + projectName); 
+            }
+            
+            function ScrollToFirstVisibleMessage(projectName)
+            {
+              if(!projectName || 0 === projectName.length)
+              {
+                return; 
+              }
+              
+              // First try the 'Show messages' row
+              if(!scrollToFirstVisibleRow('MessageRowHeaderShow' + projectName))
+              {
+                // Failed to find a visible row for 'Show messages', try an actual message row 
+                scrollToFirstVisibleRow('MessageRowClass' + projectName); 
+              }
+            }
+           </script></head><body><h1 _locID="ConversionReport">
+          Migration Report - DirectProject</h1><div id="content"><h2 _locID="OverviewTitle">Overview</h2><div id="overview"><table><tr><th></th><th _locID="ProjectTableHeader">Project</th><th _locID="PathTableHeader">Path</th><th _locID="ErrorsTableHeader">Errors</th><th _locID="WarningsTableHeader">Warnings</th><th _locID="MessagesTableHeader">Messages</th></tr><tr><td class="IconWarningEncoded" /><td><strong><a href="#config.service">config.service</a></strong></td><td>..\config\service\config.service.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#config.serviceWarning">4</a></td><td class="textCentered"><a href="#" onclick="ScrollToFirstVisibleMessage('config.service'); return false;">36</a></td></tr><tr><td class="IconWarningEncoded" /><td><strong><a href="#dnsResponder.service">dnsResponder.service</a></strong></td><td>..\dnsresponder.service\dnsResponder.service.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#dnsResponder.serviceWarning">3</a></td><td class="textCentered"><a href="#" onclick="ScrollToFirstVisibleMessage('dnsResponder.service'); return false;">15</a></td></tr><tr><td class="IconWarningEncoded" /><td><strong><a href="#Solution"><span _locID="OverviewSolutionSpan">Solution</span></a></strong></td><td>DirectProject.sln</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#SolutionWarning">1</a></td><td class="textCentered"><a href="#" onclick="ScrollToFirstVisibleMessage('Solution'); return false;">2</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#admin.console">admin.console</a></strong></td><td>..\tools\admin.console\admin.console.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#AdminMvc">AdminMvc</a></strong></td><td>..\admin\AdminMvc\AdminMvc.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#AdminMvc.Tests">AdminMvc.Tests</a></strong></td><td>..\admin\AdminMvc.Tests\AdminMvc.Tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#agent">agent</a></strong></td><td>..\agent\agent.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#agent.console">agent.console</a></strong></td><td>..\tools\agent.console\agent.console.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#agent.tests">agent.tests</a></strong></td><td>..\unittests\agent\agent.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#agentPkiGenerator.tests">agentPkiGenerator.tests</a></strong></td><td>..\unittests\agentPkiGenerator.tests\agentPkiGenerator.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#common">common</a></strong></td><td>..\common\common.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#common.metadata">common.metadata</a></strong></td><td>..\common.metadata\common.metadata.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#common.tests">common.tests</a></strong></td><td>..\unittests\common\common.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#config.client">config.client</a></strong></td><td>..\config\client\config.client.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#config.console">config.console</a></strong></td><td>..\config\console\config.console.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#config.store">config.store</a></strong></td><td>..\config\store\config.store.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#config.store.tests">config.store.tests</a></strong></td><td>..\unittests\configStoreTests\config.store.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#config.tools">config.tools</a></strong></td><td>..\tools\toolutil\config.tools.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#context.loopback.receiver">context.loopback.receiver</a></strong></td><td>..\context.receiver\context.loopback.receiver.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#context.loopback.receiver.tests">context.loopback.receiver.tests</a></strong></td><td>..\context.receiver.tests\context.loopback.receiver.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#DatabaseAuditor">DatabaseAuditor</a></strong></td><td>..\auditors\DatabaseAuditor\DatabaseAuditor.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#diagnostics.nlog">diagnostics.nlog</a></strong></td><td>..\diagnostics\diagnostics.nlog.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#DirectConfig">DirectConfig</a></strong></td><td>..\database\DirectConfig.sqlproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#dnsResponder">dnsResponder</a></strong></td><td>..\dnsResponder\dnsResponder.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#dnsResponder.tests">dnsResponder.tests</a></strong></td><td>..\unittests\dnsresponder\dnsResponder.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#dnsResponder.winsrv">dnsResponder.winsrv</a></strong></td><td>..\windows services\dnsResponder.winsrv\dnsResponder.winsrv.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#eventHandlerTest">eventHandlerTest</a></strong></td><td>..\gateway\eventHandlerTest\eventHandlerTest.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#hsmCryptographer">hsmCryptographer</a></strong></td><td>..\hsmCryptographer\hsmCryptographer.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#hsmCryptographer.tests">hsmCryptographer.tests</a></strong></td><td>..\unittests\hsmCryptographer.tests\hsmCryptographer.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#install.tools">install.tools</a></strong></td><td>..\installer\toolutil\install.tools\install.tools.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#install.tools.tests">install.tools.tests</a></strong></td><td>..\installer\toolutil\install.tools.tests\install.tools.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#mdnMonitor">mdnMonitor</a></strong></td><td>..\mdnMonitor\mdnMonitor.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#mdnMonitor.tests">mdnMonitor.tests</a></strong></td><td>..\unittests\mdnMonitor.tests\mdnMonitor.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#monitor.winsrv">monitor.winsrv</a></strong></td><td>..\windows services\monitor.winsrv\monitor.winsrv.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#policy">policy</a></strong></td><td>..\policy\policy.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#policy.tests">policy.tests</a></strong></td><td>..\unittests\policy.tests\policy.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#policy.ui">policy.ui</a></strong></td><td>..\policy.ui\policy.ui.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#resolverPlugins">resolverPlugins</a></strong></td><td>..\ResolverPlugin\resolverPlugins.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#smtpAgent">smtpAgent</a></strong></td><td>..\gateway\smtpAgent\smtpAgent.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#smtpAgent.integration.tests">smtpAgent.integration.tests</a></strong></td><td>..\unittests\smtpAgent.integration\smtpAgent.integration.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#smtpAgent.tests">smtpAgent.tests</a></strong></td><td>..\unittests\smtpAgent\smtpAgent.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#smtpEventHandler">smtpEventHandler</a></strong></td><td>..\gateway\smtpEventHandler\smtpEventHandler.vcxproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Solution Items">Solution Items</a></strong></td><td>Solution Items</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#trust.bundle">trust.bundle</a></strong></td><td>..\tools\trust.bundler\bundle\trust.bundle.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#trust.bundle.commandlet">trust.bundle.commandlet</a></strong></td><td>..\tools\trust.bundler\cmdlet\trust.bundle.commandlet.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#trust.bundle.tests">trust.bundle.tests</a></strong></td><td>..\tools\trust.bundler\unittests\bundle.tests\trust.bundle.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#xd">xd</a></strong></td><td>..\xd\xd.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#xd.common">xd.common</a></strong></td><td>..\xd.common\xd.common.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#xd.tests">xd.tests</a></strong></td><td>..\unittests\xdtests\xd.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#xdm">xdm</a></strong></td><td>..\xdm\xdm.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#xdm.tests">xdm.tests</a></strong></td><td>..\unittests\xdm.tests\xdm.tests.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#xdr">xdr</a></strong></td><td>..\xdr\xdr.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr></table></div><h2 _locID="SolutionAndProjectsTitle">Solution and projects</h2><div id="messages"><a name="config.service" /><h3>config.service</h3><table><tr id="config.serviceHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr name="WarningRowClassconfig.service"><td class="IconWarningEncoded"><a name="config.serviceWarning" /></td><td class="messageCell"><strong>..\config\service\config.service.csproj:
+        </strong><span>Visual Studio needs to make non-functional changes to this project in order to enable the project to open in released versions of Visual Studio newer than Visual Studio 2010 SP1 without impacting project behavior.</span></td></tr><tr name="WarningRowClassconfig.service"><td class="IconWarningEncoded"><a name="config.serviceWarning" /></td><td class="messageCell"><strong>..\config\service\config.service.csproj:
+        </strong><span>Warning: The project file is being backed up to a relative path that differs from the original solution relative path.  The difference in folder hierarchy may create problems in opening or building the backed up solution and project.</span></td></tr><tr name="WarningRowClassconfig.service"><td class="IconWarningEncoded"><a name="config.serviceWarning" /></td><td class="messageCell"><strong>..\GlobalAssemblyInfo.cs:
+        </strong><span>Backed up project may not build.  Project contains linked file: C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\Properties\GlobalAssemblyInfo.cs</span></td></tr><tr name="WarningRowClassconfig.service"><td class="IconWarningEncoded"><a name="config.serviceWarning" /></td><td class="messageCell"><strong>..\config\service\config.service.csproj:
+        </strong><span>Visual Studio has made non-functional changes to this project in order to enable the project to open in released versions of Visual Studio newer than Visual Studio 2010 SP1 without impacting project behavior.</span></td></tr><tr name="MessageRowHeaderShowconfig.service"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="ShowAdditionalMessages" href="#" name="config.serviceMessage" onclick="ToggleMessageVisibility('config.service'); return false;">
+          Show 36 additional messages
+        </a></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\config.service.csproj:
+        </strong><span>Project file successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\config.service.csproj</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\config.service.csproj.user:
+        </strong><span>Project user file successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\config.service.csproj.user</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\GlobalAssemblyInfo.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\Properties\GlobalAssemblyInfo.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\AuthManagerService.svc.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\AuthManagerService.svc.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\CertificateGetOptions.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\CertificateGetOptions.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\ConfigServiceBase.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\ConfigServiceBase.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\IAuthManager.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\IAuthManager.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\IBlobManager.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\IBlobManager.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\IBundleStore.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\IBundleStore.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\ICertPolicyStore.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\ICertPolicyStore.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\IDnsRecordManager.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\IDnsRecordManager.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\DomainManagerService.svc.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\DomainManagerService.svc.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\CertificateService.svc.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\CertificateService.svc.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\IAddressManager.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\IAddressManager.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\IDomainManager.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\IDomainManager.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\IMdnMonitor.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\IMdnMonitor.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\IPropertyManager.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\IPropertyManager.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\MonitorService.svc.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\MonitorService.svc.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\Service.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\Service.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\IAnchorStore.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\IAnchorStore.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\ICertificateStore.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\ICertificateStore.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\Properties\AssemblyInfo.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\Properties\AssemblyInfo.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\ServiceSettings.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\ServiceSettings.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\SettingsManager.svc.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\SettingsManager.svc.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\TestService.aspx.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\TestService.aspx.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\TestService.aspx.designer.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\TestService.aspx.designer.cs</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\Properties\PublishProfiles\Local-IIS.pubxml:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\Properties\PublishProfiles\Local-IIS.pubxml</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\AuthManagerService.svc:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\AuthManagerService.svc</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\DomainManagerService.svc:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\DomainManagerService.svc</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\CertificateService.svc:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\CertificateService.svc</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\MonitorService.svc:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\MonitorService.svc</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\SettingsManager.svc:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\SettingsManager.svc</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\TestService.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\TestService.aspx</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\Web.config:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\config.service\Web.config</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\config.service.csproj:
+        </strong><span>Project migrated successfully</span></td></tr><tr name="MessageRowClassconfig.service" style="display: none"><td class="IconInfoEncoded"><a name="config.serviceMessage" /></td><td class="messageCell"><strong>..\config\service\config.service.csproj:
+        </strong><span>Scan complete: Migration not required for project files.</span></td></tr><tr style="display: none" name="MessageRowHeaderHideconfig.service"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="HideAdditionalMessages" href="#" name="config.serviceMessage" onclick="ToggleMessageVisibility('config.service'); return false;">
+          Hide 36 additional messages
+        </a></td></tr></table><a name="dnsResponder.service" /><h3>dnsResponder.service</h3><table><tr id="dnsResponder.serviceHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr name="WarningRowClassdnsResponder.service"><td class="IconWarningEncoded"><a name="dnsResponder.serviceWarning" /></td><td class="messageCell"><strong>..\dnsresponder.service\dnsResponder.service.csproj:
+        </strong><span>Visual Studio needs to make non-functional changes to this project in order to enable the project to open in released versions of Visual Studio newer than Visual Studio 2010 SP1 without impacting project behavior.</span></td></tr><tr name="WarningRowClassdnsResponder.service"><td class="IconWarningEncoded"><a name="dnsResponder.serviceWarning" /></td><td class="messageCell"><strong>..\dnsresponder.service\dnsResponder.service.csproj:
+        </strong><span>Warning: The project file is being backed up to a relative path that differs from the original solution relative path.  The difference in folder hierarchy may create problems in opening or building the backed up solution and project.</span></td></tr><tr name="WarningRowClassdnsResponder.service"><td class="IconWarningEncoded"><a name="dnsResponder.serviceWarning" /></td><td class="messageCell"><strong>..\dnsresponder.service\dnsResponder.service.csproj:
+        </strong><span>Visual Studio has made non-functional changes to this project in order to enable the project to open in released versions of Visual Studio newer than Visual Studio 2010 SP1 without impacting project behavior.</span></td></tr><tr name="MessageRowHeaderShowdnsResponder.service"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="ShowAdditionalMessages" href="#" name="dnsResponder.serviceMessage" onclick="ToggleMessageVisibility('dnsResponder.service'); return false;">
+          Show 15 additional messages
+        </a></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\dnsResponder.service.csproj:
+        </strong><span>Project file successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\dnsResponder.service.csproj</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\dnsResponder.service.csproj.user:
+        </strong><span>Project user file successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\dnsResponder.service.csproj.user</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\IRecordRetrievalService.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\IRecordRetrievalService.cs</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\Properties\AssemblyInfo.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\Properties\AssemblyInfo.cs</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\RecordRetrievalService.svc.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\RecordRetrievalService.svc.cs</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\Service.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\Service.cs</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\ServiceSettings.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\ServiceSettings.cs</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\TestService.aspx.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\TestService.aspx.cs</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\TestService.aspx.designer.cs:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\TestService.aspx.designer.cs</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\Properties\PublishProfiles\Local-IIS.pubxml:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\Properties\PublishProfiles\Local-IIS.pubxml</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\RecordRetrievalService.svc:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\RecordRetrievalService.svc</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\TestService.aspx:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\TestService.aspx</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\Web.config:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\dnsResponder.service\Web.config</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\dnsResponder.service.csproj:
+        </strong><span>Project migrated successfully</span></td></tr><tr name="MessageRowClassdnsResponder.service" style="display: none"><td class="IconInfoEncoded"><a name="dnsResponder.serviceMessage" /></td><td class="messageCell"><strong>..\dnsresponder.service\dnsResponder.service.csproj:
+        </strong><span>Scan complete: Migration not required for project files.</span></td></tr><tr style="display: none" name="MessageRowHeaderHidednsResponder.service"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="HideAdditionalMessages" href="#" name="dnsResponder.serviceMessage" onclick="ToggleMessageVisibility('dnsResponder.service'); return false;">
+          Hide 15 additional messages
+        </a></td></tr></table><a name="Solution" /><h3 _locID="ProjectDisplayNameHeader">Solution</h3><table><tr id="SolutionHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr name="WarningRowClassSolution"><td class="IconWarningEncoded"><a name="SolutionWarning" /></td><td class="messageCell"><strong>DirectProject.sln:
+        </strong><span>Visual Studio needs to make non-functional changes to this project in order to enable the project to open in released versions of Visual Studio newer than Visual Studio 2010 SP1 without impacting project behavior.</span></td></tr><tr name="MessageRowHeaderShowSolution"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="ShowAdditionalMessages" href="#" name="SolutionMessage" onclick="ToggleMessageVisibility('Solution'); return false;">
+          Show 2 additional messages
+        </a></td></tr><tr name="MessageRowClassSolution" style="display: none"><td class="IconInfoEncoded"><a name="SolutionMessage" /></td><td class="messageCell"><strong>DirectProject.sln:
+        </strong><span>File successfully backed up as C:\Source\GitHub\DirectProject\nhin-d-dotnet-framework\csharp\build\Backup\DirectProject.sln</span></td></tr><tr name="MessageRowClassSolution" style="display: none"><td class="IconInfoEncoded"><a name="SolutionMessage" /></td><td class="messageCell"><strong>DirectProject.sln:
+        </strong><span>Solution migrated successfully</span></td></tr><tr style="display: none" name="MessageRowHeaderHideSolution"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="HideAdditionalMessages" href="#" name="SolutionMessage" onclick="ToggleMessageVisibility('Solution'); return false;">
+          Hide 2 additional messages
+        </a></td></tr></table><a name="admin.console" /><h3>admin.console</h3><table><tr id="admin.consoleHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">admin.console logged no messages.
+                  </td></tr></table><a name="AdminMvc" /><h3>AdminMvc</h3><table><tr id="AdminMvcHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">AdminMvc logged no messages.
+                  </td></tr></table><a name="AdminMvc.Tests" /><h3>AdminMvc.Tests</h3><table><tr id="AdminMvc.TestsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">AdminMvc.Tests logged no messages.
+                  </td></tr></table><a name="agent" /><h3>agent</h3><table><tr id="agentHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">agent logged no messages.
+                  </td></tr></table><a name="agent.console" /><h3>agent.console</h3><table><tr id="agent.consoleHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">agent.console logged no messages.
+                  </td></tr></table><a name="agent.tests" /><h3>agent.tests</h3><table><tr id="agent.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">agent.tests logged no messages.
+                  </td></tr></table><a name="agentPkiGenerator.tests" /><h3>agentPkiGenerator.tests</h3><table><tr id="agentPkiGenerator.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">agentPkiGenerator.tests logged no messages.
+                  </td></tr></table><a name="common" /><h3>common</h3><table><tr id="commonHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">common logged no messages.
+                  </td></tr></table><a name="common.metadata" /><h3>common.metadata</h3><table><tr id="common.metadataHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">common.metadata logged no messages.
+                  </td></tr></table><a name="common.tests" /><h3>common.tests</h3><table><tr id="common.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">common.tests logged no messages.
+                  </td></tr></table><a name="config.client" /><h3>config.client</h3><table><tr id="config.clientHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">config.client logged no messages.
+                  </td></tr></table><a name="config.console" /><h3>config.console</h3><table><tr id="config.consoleHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">config.console logged no messages.
+                  </td></tr></table><a name="config.store" /><h3>config.store</h3><table><tr id="config.storeHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">config.store logged no messages.
+                  </td></tr></table><a name="config.store.tests" /><h3>config.store.tests</h3><table><tr id="config.store.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">config.store.tests logged no messages.
+                  </td></tr></table><a name="config.tools" /><h3>config.tools</h3><table><tr id="config.toolsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">config.tools logged no messages.
+                  </td></tr></table><a name="context.loopback.receiver" /><h3>context.loopback.receiver</h3><table><tr id="context.loopback.receiverHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">context.loopback.receiver logged no messages.
+                  </td></tr></table><a name="context.loopback.receiver.tests" /><h3>context.loopback.receiver.tests</h3><table><tr id="context.loopback.receiver.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">context.loopback.receiver.tests logged no messages.
+                  </td></tr></table><a name="DatabaseAuditor" /><h3>DatabaseAuditor</h3><table><tr id="DatabaseAuditorHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">DatabaseAuditor logged no messages.
+                  </td></tr></table><a name="diagnostics.nlog" /><h3>diagnostics.nlog</h3><table><tr id="diagnostics.nlogHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">diagnostics.nlog logged no messages.
+                  </td></tr></table><a name="DirectConfig" /><h3>DirectConfig</h3><table><tr id="DirectConfigHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">DirectConfig logged no messages.
+                  </td></tr></table><a name="dnsResponder" /><h3>dnsResponder</h3><table><tr id="dnsResponderHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">dnsResponder logged no messages.
+                  </td></tr></table><a name="dnsResponder.tests" /><h3>dnsResponder.tests</h3><table><tr id="dnsResponder.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">dnsResponder.tests logged no messages.
+                  </td></tr></table><a name="dnsResponder.winsrv" /><h3>dnsResponder.winsrv</h3><table><tr id="dnsResponder.winsrvHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">dnsResponder.winsrv logged no messages.
+                  </td></tr></table><a name="eventHandlerTest" /><h3>eventHandlerTest</h3><table><tr id="eventHandlerTestHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">eventHandlerTest logged no messages.
+                  </td></tr></table><a name="hsmCryptographer" /><h3>hsmCryptographer</h3><table><tr id="hsmCryptographerHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">hsmCryptographer logged no messages.
+                  </td></tr></table><a name="hsmCryptographer.tests" /><h3>hsmCryptographer.tests</h3><table><tr id="hsmCryptographer.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">hsmCryptographer.tests logged no messages.
+                  </td></tr></table><a name="install.tools" /><h3>install.tools</h3><table><tr id="install.toolsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">install.tools logged no messages.
+                  </td></tr></table><a name="install.tools.tests" /><h3>install.tools.tests</h3><table><tr id="install.tools.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">install.tools.tests logged no messages.
+                  </td></tr></table><a name="mdnMonitor" /><h3>mdnMonitor</h3><table><tr id="mdnMonitorHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">mdnMonitor logged no messages.
+                  </td></tr></table><a name="mdnMonitor.tests" /><h3>mdnMonitor.tests</h3><table><tr id="mdnMonitor.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">mdnMonitor.tests logged no messages.
+                  </td></tr></table><a name="monitor.winsrv" /><h3>monitor.winsrv</h3><table><tr id="monitor.winsrvHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">monitor.winsrv logged no messages.
+                  </td></tr></table><a name="policy" /><h3>policy</h3><table><tr id="policyHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">policy logged no messages.
+                  </td></tr></table><a name="policy.tests" /><h3>policy.tests</h3><table><tr id="policy.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">policy.tests logged no messages.
+                  </td></tr></table><a name="policy.ui" /><h3>policy.ui</h3><table><tr id="policy.uiHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">policy.ui logged no messages.
+                  </td></tr></table><a name="resolverPlugins" /><h3>resolverPlugins</h3><table><tr id="resolverPluginsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">resolverPlugins logged no messages.
+                  </td></tr></table><a name="smtpAgent" /><h3>smtpAgent</h3><table><tr id="smtpAgentHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">smtpAgent logged no messages.
+                  </td></tr></table><a name="smtpAgent.integration.tests" /><h3>smtpAgent.integration.tests</h3><table><tr id="smtpAgent.integration.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">smtpAgent.integration.tests logged no messages.
+                  </td></tr></table><a name="smtpAgent.tests" /><h3>smtpAgent.tests</h3><table><tr id="smtpAgent.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">smtpAgent.tests logged no messages.
+                  </td></tr></table><a name="smtpEventHandler" /><h3>smtpEventHandler</h3><table><tr id="smtpEventHandlerHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">smtpEventHandler logged no messages.
+                  </td></tr></table><a name="Solution Items" /><h3>Solution Items</h3><table><tr id="Solution ItemsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Solution Items logged no messages.
+                  </td></tr></table><a name="trust.bundle" /><h3>trust.bundle</h3><table><tr id="trust.bundleHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">trust.bundle logged no messages.
+                  </td></tr></table><a name="trust.bundle.commandlet" /><h3>trust.bundle.commandlet</h3><table><tr id="trust.bundle.commandletHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">trust.bundle.commandlet logged no messages.
+                  </td></tr></table><a name="trust.bundle.tests" /><h3>trust.bundle.tests</h3><table><tr id="trust.bundle.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">trust.bundle.tests logged no messages.
+                  </td></tr></table><a name="xd" /><h3>xd</h3><table><tr id="xdHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">xd logged no messages.
+                  </td></tr></table><a name="xd.common" /><h3>xd.common</h3><table><tr id="xd.commonHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">xd.common logged no messages.
+                  </td></tr></table><a name="xd.tests" /><h3>xd.tests</h3><table><tr id="xd.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">xd.tests logged no messages.
+                  </td></tr></table><a name="xdm" /><h3>xdm</h3><table><tr id="xdmHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">xdm logged no messages.
+                  </td></tr></table><a name="xdm.tests" /><h3>xdm.tests</h3><table><tr id="xdm.testsHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">xdm.tests logged no messages.
+                  </td></tr></table><a name="xdr" /><h3>xdr</h3><table><tr id="xdrHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Message</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">xdr logged no messages.
+                  </td></tr></table></div></div></body></html>

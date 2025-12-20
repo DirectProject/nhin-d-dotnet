@@ -70,7 +70,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             //m_agent.Settings.AddressManager = new ClientSettings();
             //m_agent.Settings.AddressManager.Url = "http://localhost:6692/DomainManagerService.svc/Addresses";
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             //
             // Process loopback messages.  Leaves un-encrypted mdns in pickup folder
@@ -153,7 +153,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             //m_agent.Settings.AddressManager = new ClientSettings();
             //m_agent.Settings.AddressManager.Url = "http://localhost:6692/DomainManagerService.svc/Addresses";
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             //
             // Process loopback messages.  Leaves un-encrypted mdns in pickup folder
@@ -248,7 +248,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             //m_agent.Settings.AddressManager = new ClientSettings();
             //m_agent.Settings.AddressManager.Url = "http://localhost:6692/DomainManagerService.svc/Addresses";
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             //
             // Process loopback messages.  Leaves un-encrypted mdns in pickup folder
@@ -309,7 +309,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             //m_agent.Settings.AddressManager = new ClientSettings();
             //m_agent.Settings.AddressManager.Url = "http://localhost:6692/DomainManagerService.svc/Addresses";
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             //
             // Process loopback messages.  Leaves un-encrypted mdns in pickup folder
@@ -387,9 +387,9 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             //m_agent.Settings.Notifications.AutoDsnFailureCreation =
             //    NotificationSettings.AutoDsnOption.TimelyAndReliable.ToString();
             m_agent.Settings.AddressManager = new ClientSettings();
-            m_agent.Settings.AddressManager.Url = "http://localhost/ConfigService/DomainManagerService.svc/Addresses";
+            m_agent.Settings.AddressManager.Url = "http://localhost:6692/DomainManagerService.svc/Addresses";
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             foreach (FolderRoute route in m_agent.Settings.IncomingRoutes.Where(route => route.AddressType == "Throw"))
             {

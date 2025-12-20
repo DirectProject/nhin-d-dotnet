@@ -94,13 +94,13 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             return new ConfigCertificateResolver(
                 new ClientSettings()
                 {
-                    Url = scheme + "localhost/ConfigService/CertificateService.svc/Certificates",
+                    Url = scheme + "localhost:6692/CertificateService.svc/Certificates",
                     Secure = secure
                 },
                 !verifyAddress ? null :
                 new ClientSettings()
                 {
-                    Url = scheme + "localhost/ConfigService/DomainManagerService.svc/Addresses",
+                    Url = scheme + "localhost:6692/DomainManagerService.svc/Addresses",
                     Secure = secure
                 }
               );

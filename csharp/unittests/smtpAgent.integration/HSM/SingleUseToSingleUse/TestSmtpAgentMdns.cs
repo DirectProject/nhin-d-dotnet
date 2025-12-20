@@ -21,7 +21,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests.HSM.SingleUseToSingleUse
             m_agent = SmtpAgentFactory.Create(GetSettingsPath("TestSmtpAgentConfigService_HsmCryptographer.xml"));
         }
 
-        [Fact]
+        [Fact(Skip = "Not supporting HSM")]
         public void TestEndToEnd_GatewayIsDestination_Is_True_And_TimelyAndReliable_Not_Requestd()
         {
             CleanMessages(m_agent.Settings);

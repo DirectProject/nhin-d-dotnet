@@ -4,8 +4,7 @@
     <RootNamespace>Health.Direct.Admin.Console.Tests</RootNamespace>
     <AssemblyName>Health.Direct.Admin.Console.Tests</AssemblyName>
     <OutputType>Library</OutputType>
-    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
-    <AssemblyOriginatorKeyFile>..\..\build\DirectProject.snk</AssemblyOriginatorKeyFile>
+		<AssemblyOriginatorKeyFile>..\..\build\DirectProject.snk</AssemblyOriginatorKeyFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <PublishUrl>publish\</PublishUrl>

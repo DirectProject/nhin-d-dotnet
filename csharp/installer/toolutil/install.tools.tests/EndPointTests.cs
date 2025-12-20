@@ -38,34 +38,34 @@ namespace Health.Direct.Install.Tools.Tests
         {
             EndPoint endPoint = new EndPoint();
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/CertificateService.svc/Certificates"));
+                "http://localhost:6692/CertificateService.svc/Certificates"));
 
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/CertificateService.svc/Anchors"));
+                "http://localhost:6692/CertificateService.svc/Anchors"));
 
             Assert.False(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/CertificateService.svc/Addresses"));
+                "http://localhost:6692/CertificateService.svc/Addresses"));
 
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/DomainManagerService.svc/Addresses"));
+                "http://localhost:6692/DomainManagerService.svc/Addresses"));
 
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/DomainManagerService.svc/Domains"));
+                "http://localhost:6692/DomainManagerService.svc/Domains"));
 
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/DomainManagerService.svc/DnsRecords"));
+                "http://localhost:6692/DomainManagerService.svc/DnsRecords"));
 
             Assert.False(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/DomainManagerService.svc/Authentication"));
+                "http://localhost:6692/DomainManagerService.svc/Authentication"));
 
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/AuthManagerService.svc/Authentication"));
+                "http://localhost:6692/AuthManagerService.svc/Authentication"));
 
             Assert.False(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/AuthManagerService.svc/Certificates"));
+                "http://localhost:6692/AuthManagerService.svc/Certificates"));
 
             Assert.False(endPoint.TestWcfSoapConnection(
-               "http://badhostname/ConfigService/AuthManagerService.svc/Certificates"));
+               "http://badhostname/AuthManagerService.svc/Certificates"));
 
         }
 
@@ -85,7 +85,7 @@ namespace Health.Direct.Install.Tools.Tests
         {
             EndPoint endPoint = new EndPoint();
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/dnsservice/recordretrievalservice.svc/Records"));
+                "http://localhost:6693/recordretrievalservice.svc/Records"));
         }
 
 
@@ -95,34 +95,34 @@ namespace Health.Direct.Install.Tools.Tests
         {
             EndPoint endPoint = new EndPoint();
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/CertificateService.svc/Certificates"));
+                "http://localhost:6692/CertificateService.svc/Certificates"));
 
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/CertificateService.svc/Anchors"));
+                "http://localhost:6692/CertificateService.svc/Anchors"));
 
             Assert.False(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/CertificateService.svc/Addresses"));
+                "http://localhost:6692/CertificateService.svc/Addresses"));
 
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/DomainManagerService.svc/Addresses"));
+                "http://localhost:6692/DomainManagerService.svc/Addresses"));
 
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/DomainManagerService.svc/Domains"));
+                "http://localhost:6692/DomainManagerService.svc/Domains"));
 
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/DomainManagerService.svc/DnsRecords"));
+                "http://localhost:6692/DomainManagerService.svc/DnsRecords"));
 
             Assert.False(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/DomainManagerService.svc/Authentication"));
+                "http://localhost:6692/DomainManagerService.svc/Authentication"));
 
             Assert.True(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/AuthManagerService.svc/Authentication"));
+                "http://localhost:6692/AuthManagerService.svc/Authentication"));
 
             Assert.False(endPoint.TestWcfSoapConnection(
-                "http://localhost/ConfigService/AuthManagerService.svc/Certificates"));
+                "http://localhost:6692/AuthManagerService.svc/Certificates"));
 
             Assert.False(endPoint.TestWcfSoapConnection(
-               "http://badhostname/ConfigService/AuthManagerService.svc/Certificates"));
+               "http://badhostname/AuthManagerService.svc/Certificates"));
 
         }
 

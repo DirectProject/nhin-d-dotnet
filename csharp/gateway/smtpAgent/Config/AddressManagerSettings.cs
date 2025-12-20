@@ -19,7 +19,7 @@ namespace Health.Direct.SmtpAgent.Config
 
         /// <summary>
         /// Enable searching the email address and the domain.
-        /// Usefull for Org level certs only HISPs.
+        /// Useful for Org level certs only HISPs.
         /// </summary>
         [XmlElement]
         public bool EnableDomainSearch { get; set; }

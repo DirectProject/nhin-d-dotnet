@@ -14,6 +14,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
@@ -113,9 +114,12 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
         {
             // System.Diagnostics.Debugger.Break();
 
+            Assert.NotNull(m_bundleResolver); // clearer failure if resolver not configured
+            Assert.NotNull(m_bundleResolver.IncomingAnchors);
+
             X509Certificate2Collection certs =
                 m_bundleResolver.IncomingAnchors.GetCertificatesForDomain(BundleGoodSubject);
-
+            
             Assert.True(certs.Count > 0);
         }
 
@@ -175,20 +179,21 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
 
         public const string BundleClientSettingsXml = @"
             <ClientSettings>
-              <Url>http://localhost/ConfigService/CertificateService.svc/Bundles</Url>
             <!--
-            <Url>http://localhost:6692/CertificateService.svc/Bundles</Url>
+              <Url>http://localhost/ConfigService/CertificateService.svc/Bundles</Url>
             -->
+            <Url>http://localhost:6692/CertificateService.svc/Bundles</Url>
+            
             </ClientSettings>
             ";
 
         public const string BundleResolverSettingsXml = @"
             <BundleResolver>
               <ClientSettings>
-              <Url>http://localhost/ConfigService/CertificateService.svc/Bundles</Url>
-                <!--
+              <!--
+                <Url>http://localhost/ConfigService/CertificateService.svc/Bundles</Url>
+              -->
                 <Url>http://localhost:6692/CertificateService.svc/Bundles</Url>
-                -->
               </ClientSettings>
               <CacheSettings>
                 <Cache>true</Cache>

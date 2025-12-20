@@ -1175,7 +1175,7 @@ namespace Health.Direct.Config.Store.Tests
                 , CERTSRECORDSPATH
                 , domainID
                 , subId);
-            return new System.Security.Cryptography.X509Certificates.X509Certificate2(path, String.Empty);
+            return new System.Security.Cryptography.X509Certificates.X509Certificate2(path, "Passw0rd!");
         }
 
         /// <summary>

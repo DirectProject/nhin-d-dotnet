@@ -17,6 +17,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 using Health.Direct.Common;
 using Health.Direct.Common.Mdn;
+using Health.Direct.Common.Metadata;
+using System.Net.NetworkInformation;
+using System.Runtime.Serialization;
+using static Health.Direct.Common.Mail.DSN.DSNStandard;
 
 namespace Health.Direct.Config.Client.MonitorService
 {

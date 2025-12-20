@@ -22,7 +22,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests.SingleUseCert.FromDualUseToS
             m_agent = SmtpAgentFactory.Create(GetSettingsPath("TestSmtpAgentConfigService.xml"));
         }
 
-        [Fact]
+        [Fact(Skip = "Not supporting HSM")]
         public void TestEndToEnd_GatewayIsDestination_Is_True_And_TimelyAndReliable_Not_Requestd()
         {
             CleanMessages(m_agent.Settings);

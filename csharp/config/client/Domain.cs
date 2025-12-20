@@ -27,7 +27,7 @@ namespace Health.Direct.Config.Client.DomainManager
             this.Status = EntityStatus.New;
         }
 
-        public Domain(string name)
+        public Domain(string name) : this()
         {
             this.Name = name;
         }

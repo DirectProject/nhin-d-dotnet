@@ -5,6 +5,7 @@
     <RootNamespace>Health.Direct.Config.Tools</RootNamespace>
     <AssemblyName>Health.Direct.Config.Tools</AssemblyName>
     <OutputType>Library</OutputType>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\build\DirectProject.snk</AssemblyOriginatorKeyFile>
