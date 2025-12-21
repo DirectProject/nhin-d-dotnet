@@ -107,6 +107,9 @@
     <ProjectReference Include="..\agent\agent.tests.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Anchors\dcdt31.healthit.gov_ca_root.der">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Anchors\dcdt31prod.sitenv.org_ca_root.der">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

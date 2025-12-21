@@ -116,6 +116,12 @@
     <None Update="Certificates\nhind\Public\umesh.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Certificates\noAnchor\Private\Direct.NoAnchor.Hobo.lab.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\noAnchor\Public\Direct.NoAnchor.Hobo.lab.cer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Certificates\redmond\IncomingAnchors\kryptiq.lab.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
