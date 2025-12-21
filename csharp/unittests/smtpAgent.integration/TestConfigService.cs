@@ -42,7 +42,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
 
         
         
-        //[Theory]
+        [Theory]
         [InlineData(false)]
         [InlineData(true)]
         public void TestResolverSecure(bool validateAddress)
@@ -63,8 +63,16 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             // This address does not exist, but should find org cert
             //
             matches = resolver.GetCertificates(new MailAddress("toto@nhind.hsgincubator.com"));
-            Assert.True(!matches.IsNullOrEmpty());
-            this.VerifyIsOrgCert(matches, "nhind.hsgincubator.com");
+            if (validateAddress)
+            {
+                Assert.Null(matches);
+            }
+            else
+            {
+                Assert.True(!matches.IsNullOrEmpty());
+                this.VerifyIsOrgCert(matches, "nhind.hsgincubator.com");
+            }
+            
             //
             // This should match NOTHING, since no org or address
             //
@@ -90,17 +98,17 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
         ConfigCertificateResolver CreateResolver(bool verifyAddress, bool secure)
         {
             string scheme = secure ? "https://" : "http://";
-            
+            string port = secure ? "44382" : "6692"; 
             return new ConfigCertificateResolver(
                 new ClientSettings()
                 {
-                    Url = scheme + "localhost:6692/CertificateService.svc/Certificates",
+                    Url = scheme + $"localhost:{port}/CertificateService.svc/Certificates",
                     Secure = secure
                 },
                 !verifyAddress ? null :
                 new ClientSettings()
                 {
-                    Url = scheme + "localhost:6692/DomainManagerService.svc/Addresses",
+                    Url = scheme + $"localhost:{port}/DomainManagerService.svc/Addresses",
                     Secure = secure
                 }
               );

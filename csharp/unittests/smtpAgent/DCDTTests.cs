@@ -40,7 +40,7 @@ namespace Health.Direct.SmtpAgent.Tests
         //const string Dns_Server = "184.73.237.102";
         //const string Dns_Server = "10.110.22.16";
         //const string Dns_Sertver = "207.170.210.162";
-        private const string Dns_Server = "8.8.8.8";
+        private const string Dns_Server = "1.1.1.1";
 
         #region data
 
@@ -123,7 +123,7 @@ namespace Health.Direct.SmtpAgent.Tests
                             <TypeName>Health.Direct.ResolverPlugins.LdapCertResolverProxy, Health.Direct.ResolverPlugins</TypeName>
                             <Settings> 
                                 <ServerIP>0.0.0.0</ServerIP> <!-- Windows Dns Server -->
-                                <BackupServerIP>8.8.8.8</BackupServerIP>
+                                <BackupServerIP>1.1.1.1</BackupServerIP>
                             </Settings>
                         </Definition>
                     </PluginResolver>
@@ -266,7 +266,7 @@ namespace Health.Direct.SmtpAgent.Tests
             Assert.NotNull(resolver);
 
             var email = new MailAddress(subject);
-            X509Certificate2Collection certs = resolver.GetCertificates(email);
+            var certs = resolver.GetCertificates(email);
             Assert.Equal(2, certs.Count);
 
             //
@@ -773,7 +773,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         [Theory]
         [InlineData(
             "d17@domain9.dcdt31.healthit.gov",
-            "8.8.8.8",
+            "1.1.1.1",
             "CN=demo31.direct-test.com_ca_root",
             @"..\..\..\..\..\unittests\smtpAgent\Anchors\dcdt31.healthit.gov_ca_root.der")]
         public void TestD17(string subject, string ip, string commonName, string anchorFile)
@@ -867,7 +867,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         [Theory]
         [InlineData(
             "d18@domain10.dcdt31.healthit.gov",
-            "8.8.8.8",
+            "1.1.1.1",
             @"..\..\..\..\..\unittests\smtpAgent\Anchors\dcdt31.healthit.gov_ca_root.der")]
         public void TestD18(string subject, string ip, string anchorFile)
         {
