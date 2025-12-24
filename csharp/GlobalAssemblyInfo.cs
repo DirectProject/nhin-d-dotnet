@@ -1,10 +1,10 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
-[assembly: AssemblyCompany("Direct Project")]
-[assembly: AssemblyCopyright("Copyright 2010-2013 © Direct Project")]
-[assembly: AssemblyProduct("Direct Project")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
-[assembly: AssemblyVersion("1.3.0.7")]
-[assembly: AssemblyFileVersion("1.3.0.7")]
+// Version information for all assemblies in the solution
+[assembly: AssemblyVersion("1.4.0.0")]
+[assembly: AssemblyFileVersion("1.4.0.0")]
+[assembly: AssemblyCompany("The Direct Project (nhindirect.org)")]
+[assembly: AssemblyCopyright("Copyright Â© The Direct Project 2010-2025")]
+[assembly: AssemblyProduct("Direct Project .NET Gateway")]

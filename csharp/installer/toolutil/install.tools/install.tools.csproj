@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+    <RegisterForComInterop>false</RegisterForComInterop>
     <ErrorReport>send</ErrorReport>
     <RootNamespace>Health.Direct.Install.Tools</RootNamespace>
     <AssemblyName>Health.Direct.Install.Tools</AssemblyName>
     <OutputType>Library</OutputType>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	  <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
+		<DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\build\DirectProject.snk</AssemblyOriginatorKeyFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>

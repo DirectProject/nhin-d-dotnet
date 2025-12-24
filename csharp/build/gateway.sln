@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11304.174 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smtpAgent", "..\gateway\smtpAgent\smtpAgent.csproj", "{A9B11AAD-3461-4DDB-A447-91779BD41A78}"
 EndProject
@@ -69,15 +69,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "policy.tests", "..\unittest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "policy.ui", "..\policy.ui\policy.ui.csproj", "{4CF6DA9F-4954-493C-A5AA-2477B36760E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "config.service.rest", "..\config\service.rest\config.service.rest.csproj", "{2054207F-26B6-4B17-AD3F-A76549D72EB7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseAuditor", "..\auditors\DatabaseAuditor\DatabaseAuditor.csproj", "{7F3D3DAF-D5B3-44FC-BEE8-716B49CBB4AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsmCryptographer", "..\hsmCryptographer\hsmCryptographer.csproj", "{3C66E370-68B4-45C7-8C69-622C983C8E43}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsmCryptographer.tests", "..\unittests\hsmCryptographer.tests\hsmCryptographer.tests.csproj", "{C14A16EF-CEAF-412C-BD7C-6E510C5897C9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pkcs11Signed", "..\pkcs11Signed\pkcs11Signed.csproj", "{FACB2D74-D738-4D41-A595-8396B75277D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -197,10 +193,6 @@ Global
 		{4CF6DA9F-4954-493C-A5AA-2477B36760E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CF6DA9F-4954-493C-A5AA-2477B36760E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CF6DA9F-4954-493C-A5AA-2477B36760E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2054207F-26B6-4B17-AD3F-A76549D72EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2054207F-26B6-4B17-AD3F-A76549D72EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2054207F-26B6-4B17-AD3F-A76549D72EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2054207F-26B6-4B17-AD3F-A76549D72EB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F3D3DAF-D5B3-44FC-BEE8-716B49CBB4AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F3D3DAF-D5B3-44FC-BEE8-716B49CBB4AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F3D3DAF-D5B3-44FC-BEE8-716B49CBB4AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -213,12 +205,11 @@ Global
 		{C14A16EF-CEAF-412C-BD7C-6E510C5897C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C14A16EF-CEAF-412C-BD7C-6E510C5897C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C14A16EF-CEAF-412C-BD7C-6E510C5897C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FACB2D74-D738-4D41-A595-8396B75277D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FACB2D74-D738-4D41-A595-8396B75277D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FACB2D74-D738-4D41-A595-8396B75277D1}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{FACB2D74-D738-4D41-A595-8396B75277D1}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {458467FF-2048-4367-92D5-B9F8F598DBDB}
 	EndGlobalSection
 EndGlobal

@@ -49,9 +49,17 @@ goto :done
 :check_environment
 msbuild /? > nul 2> nul
 if %ERRORLEVEL% equ 0 goto :eof
-call setenv.bat
+call ..\setenv.bat
 msbuild /? > nul 2> nul
 if %ERRORLEVEL% equ 0 goto :eof
+echo.
+echo ERROR: MSBuild not found in PATH.
+echo.
+echo Please run this script from a Visual Studio Developer Command Prompt or Developer PowerShell.
+echo Alternatively, you can run one of these first:
+echo   - Visual Studio 2022: "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat"
+echo   - Visual Studio 2019: "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat"
+echo.
 exit /b %ERRORLEVEL%
 goto :eof
 
