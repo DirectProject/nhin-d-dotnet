@@ -1,18 +1,14 @@
 using System.Linq;
 using System.Web.Mvc;
-
 using AutoMapper;
-
 using Health.Direct.Admin.Console.Models;
 using Health.Direct.Admin.Console.Models.Repositories;
-using Health.Direct.Common.DnsResolver;
-using Health.Direct.Config.Store;
-
-using MvcContrib.Pagination;
+using Health.Direct.Admin.Console.Models.Pagination;
+using Health.Direct.Config.Client.DomainManager; // added
 
 namespace Health.Direct.Admin.Console.Controllers
 {
-    public class DnsRecordsController : ControllerBase<DnsRecord, DnsRecordModel, IDnsRecordRepository>
+    public class DnsRecordsController : ControllerBase<DnsRecord, DnsRecordModel, IDnsRecordRepository, EntityStatus>
     {
         public DnsRecordsController(IDnsRecordRepository repository) : base(repository)
         {
@@ -21,11 +17,24 @@ namespace Health.Direct.Admin.Console.Controllers
         [Authorize]
         public ActionResult Index(int? page)
         {
-            //ViewData["DateTimeFormat"] = "M/d/yyyy h:mm:ss tt";
+            int pageNumber = page.GetValueOrDefault(1);
+            if (pageNumber < 1) pageNumber = 1;
 
-            return View(Repository.Query()
-                            .Select(record => Mapper.Map<DnsRecord, DnsRecordModel>(record))
-                            .AsPagination(page ?? 1, DefaultPageSize));
+            var query = Repository.Query();
+
+            int totalCount = query.Count();
+
+            // Ensure deterministic ordering for paging (adjust if another field preferred)
+            var pageItems = query
+                .OrderBy(r => r.ID)
+                .Skip((pageNumber - 1) * DefaultPageSize)
+                .Take(DefaultPageSize)
+                .Select(record => Mapper.Map<DnsRecord, DnsRecordModel>(record))
+                .ToList();
+
+            var paged = new PaginatedList<DnsRecordModel>(pageItems, pageNumber, DefaultPageSize, totalCount);
+
+            return View(paged);
         }
 
         [Authorize]
@@ -79,110 +88,81 @@ namespace Health.Direct.Admin.Console.Controllers
             }
 
             return View(model);
-
         }
 
-		[Authorize]
-		public ActionResult AnameDetails(long id)
-		{
-			return Details<AddressRecordModel>(id);
-		}
+        [Authorize]
+        public ActionResult AnameDetails(long id) => Details<AddressRecordModel>(id);
 
-		[Authorize]
-		public ActionResult MxDetails(long id)
-		{
-			return Details<MxRecordModel>(id);
-		}
+        [Authorize]
+        public ActionResult MxDetails(long id) => Details<MxRecordModel>(id);
 
-		[Authorize]
-		public ActionResult SoaDetails(long id)
-		{
-			return Details<SoaRecordModel>(id);
-		}
+        [Authorize]
+        public ActionResult SoaDetails(long id) => Details<SoaRecordModel>(id);
 
-		private ActionResult Details<T>(long id)
-			where T : DnsRecordModel, new()
-		{
-			var dnsRecord = Repository.Get(id);
-			if (dnsRecord == null) return View("NotFound");
-			
-			var recordModel = new T();
-			Mapper.Map(dnsRecord, recordModel, typeof(DnsRecord), typeof(DnsRecordModel));
-			return PartialView(recordModel);
-		}
+        private ActionResult Details<T>(long id)
+            where T : DnsRecordModel, new()
+        {
+            var dnsRecord = Repository.Get(id);
+            if (dnsRecord == null) return View("NotFound");
 
-		[Authorize]
-		public ActionResult EditAname(long id)
-		{
-			return Edit<AddressRecordModel>(id);
-		}
+            var recordModel = new T();
+            Mapper.Map(dnsRecord, recordModel, typeof(DnsRecord), typeof(DnsRecordModel));
+            return PartialView(recordModel);
+        }
 
-		[Authorize]
-		public ActionResult EditMx(long id)
-		{
-			return Edit<MxRecordModel>(id);
-		}
+        [Authorize]
+        public ActionResult EditAname(long id) => Edit<AddressRecordModel>(id);
 
-		[Authorize]
-		public ActionResult EditSoa(long id)
-		{
-			return Edit<SoaRecordModel>(id);
-		}
+        [Authorize]
+        public ActionResult EditMx(long id) => Edit<MxRecordModel>(id);
 
-		private ActionResult Edit<T>(long id)
-			where T : DnsRecordModel, new()
-		{
-			var dnsRecord = Repository.Get(id);
-			if (dnsRecord == null) return View("NotFound");
+        [Authorize]
+        public ActionResult EditSoa(long id) => Edit<SoaRecordModel>(id);
 
-			var recordModel = new T();
-			Mapper.Map(dnsRecord, recordModel, typeof(DnsRecord), typeof(DnsRecordModel));
-			return PartialView(recordModel);
-		}
+        private ActionResult Edit<T>(long id)
+            where T : DnsRecordModel, new()
+        {
+            var dnsRecord = Repository.Get(id);
+            if (dnsRecord == null) return View("NotFound");
 
-		[Authorize]
-		[HttpPost]
-		public ActionResult EditAname(FormCollection formValues)
-		{
-			return Edit<AddressRecordModel>(formValues);
-		}
+            var recordModel = new T();
+            Mapper.Map(dnsRecord, recordModel, typeof(DnsRecord), typeof(DnsRecordModel));
+            return PartialView(recordModel);
+        }
 
-		[Authorize]
-		[HttpPost]
-		public ActionResult EditMx(FormCollection formValues)
-		{
-			return Edit<MxRecordModel>(formValues);
-		}
+        [Authorize]
+        [HttpPost]
+        public ActionResult EditAname(FormCollection formValues) => Edit<AddressRecordModel>(formValues);
 
-		[Authorize]
-		[HttpPost]
-		public ActionResult EditSoa(FormCollection formValues)
-		{
-			return Edit<SoaRecordModel>(formValues);
-		}
+        [Authorize]
+        [HttpPost]
+        public ActionResult EditMx(FormCollection formValues) => Edit<MxRecordModel>(formValues);
 
-		private ActionResult Edit<T>(FormCollection formValues)
-			where T : DnsRecordModel, new()
-		{
-			long id;
-			long.TryParse(formValues["id"], out id);
+        [Authorize]
+        [HttpPost]
+        public ActionResult EditSoa(FormCollection formValues) => Edit<SoaRecordModel>(formValues);
 
-			var dnsRecord = Repository.Get(id);
-			if (dnsRecord == null) return View("NotFound");
+        private ActionResult Edit<T>(FormCollection formValues)
+            where T : DnsRecordModel, new()
+        {
+            long id;
+            long.TryParse(formValues["id"], out id);
 
-			var recordModel = new T();
-            
+            var dnsRecord = Repository.Get(id);
+            if (dnsRecord == null) return View("NotFound");
+
+            var recordModel = new T();
             Mapper.Map(dnsRecord, recordModel, typeof(DnsRecord), typeof(DnsRecordModel));
 
-			if (TryUpdateModel(recordModel))
-			{
-				Mapper.Map(recordModel, dnsRecord, typeof(DnsRecordModel), typeof(DnsRecord));
-				Repository.Update(dnsRecord);
-				return RedirectToAction("Index");
-			}
+            if (TryUpdateModel(recordModel))
+            {
+                Mapper.Map(recordModel, dnsRecord, typeof(DnsRecordModel), typeof(DnsRecord));
+                Repository.Update(dnsRecord);
+                return RedirectToAction("Index");
+            }
 
-			return View("Edit" + recordModel.TypeString, recordModel);
-		}
+            return View("Edit" + recordModel.TypeString, recordModel);
+        }
 
         protected override void SetStatus(DnsRecord item, EntityStatus status)
         {

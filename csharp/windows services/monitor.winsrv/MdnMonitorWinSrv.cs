@@ -6,6 +6,7 @@ using Quartz.Impl;
 
 namespace Health.Direct.Monitor.WinSrv
 {
+    //TODO: update to Async
     public partial class MdnMonitorWinSrv : ServiceBase
     {
 
@@ -27,8 +28,6 @@ namespace Health.Direct.Monitor.WinSrv
                 throw;
             }
         }
-               
-        
 
         /// <summary>
         /// method to initialize fields utilized by the service
@@ -36,13 +35,13 @@ namespace Health.Direct.Monitor.WinSrv
         private void InitializeService()
         {
             m_diagnostics.ServiceInitializing();
-           
+
             m_schedulerfactory = new StdSchedulerFactory();
-            m_scheduler = m_schedulerfactory.GetScheduler();
-            
+            // Quartz 3.x: GetScheduler() is async (Task<IScheduler>)
+            m_scheduler = m_schedulerfactory.GetScheduler().GetAwaiter().GetResult();
+
             m_diagnostics.ServiceInitializingComplete();
         }
-
 
         public void StartService(string[] args)
         {
@@ -52,7 +51,8 @@ namespace Health.Direct.Monitor.WinSrv
 
                 m_diagnostics.ServerStarting();
 
-                m_scheduler.Start();
+                // Quartz 3.x: Start() is async
+                m_scheduler.Start().GetAwaiter().GetResult();
                 try
                 {
                     Thread.Sleep(3000);
@@ -75,7 +75,8 @@ namespace Health.Direct.Monitor.WinSrv
             {
                 m_diagnostics.ServerStopping();
 
-                m_scheduler.Shutdown(true);
+                // Quartz 3.x: Shutdown(waitForJobsToComplete) is async
+                m_scheduler.Shutdown(true).GetAwaiter().GetResult();
 
                 m_diagnostics.ServerStopped();
             }

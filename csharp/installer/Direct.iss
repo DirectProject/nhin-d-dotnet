@@ -27,16 +27,23 @@
 # define Configuration "Debug"
 #endif
 
+#ifndef NetVersion
+# define NetVersion "net48"
+#endif
+
+#define DotNet4032 "C:\Windows\Microsoft.NET\Framework\v4.0.30319"
+#define DotNet4064 "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
+
 #define Instructions = "http://wiki.directproject.org/Enterprise+Installation+Instructions"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-ArchitecturesInstallIn64BitMode=x64 ia64
+ArchitecturesInstallIn64BitMode=x64
 AppId={{995D337A-5620-4537-9704-4B19EC628A39}
 AppName=Direct Project .NET Gateway
-AppVerName=Direct Project .NET Gateway 1.3.0.9
+AppVerName=Direct Project .NET Gateway 1.4.0.0
 AppPublisher=The Direct Project (nhindirect.org)
 AppPublisherURL=http://nhindirect.org
 AppSupportURL=http://nhindirect.org
@@ -45,10 +52,10 @@ DefaultDirName={pf}\Direct Project .NET Gateway
 DefaultGroupName=Direct Project .NET Gateway
 AllowNoIcons=yes
 OutputDir=.
-OutputBaseFilename=Direct-1.3.0.9-NET45_Beta
+OutputBaseFilename=Direct-1.4.0.0-NET45_Beta
 Compression=lzma
 SolidCompression=yes
-VersionInfoVersion=1.3.0.9
+VersionInfoVersion=1.4.0.0
 SetupLogging=yes
 PrivilegesRequired=admin
 
@@ -87,38 +94,39 @@ Name: "{app}\Log"
 ;run from command line
 ;example:
 ;"C:\Program Files (x86)\inno setup 5\iscc.exe"  .\Direct.iss /DConfiguration=Release
-Source: "..\windows services\dnsResponder.winsrv\bin\{#Configuration}\*.dll"; DestDir: "{app}"; Flags: ignoreversion;  Components: dnsresponder 
-Source: "..\windows services\dnsResponder.winsrv\bin\{#Configuration}\*.exe"; DestDir: "{app}"; Flags: ignoreversion;  Components: dnsresponder 
-Source: "..\windows services\dnsResponder.winsrv\bin\{#Configuration}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: IsDebug; Components: dnsresponder 
-Source: "..\windows services\dnsResponder.winsrv\bin\{#Configuration}\*.config"; DestDir: "{app}"; Flags: onlyifdoesntexist; Excludes: "*.vshost.*,*.dll.config"; Components: dnsresponder
+Source: "..\windows services\dnsResponder.winsrv\bin\{#Configuration}\{#NetVersion}\*.dll"; DestDir: "{app}"; Flags: ignoreversion;  Components: dnsresponder 
+Source: "..\windows services\dnsResponder.winsrv\bin\{#Configuration}\{#NetVersion}\*.exe"; DestDir: "{app}"; Flags: ignoreversion;  Components: dnsresponder 
+Source: "..\windows services\dnsResponder.winsrv\bin\{#Configuration}\{#NetVersion}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: IsDebug; Components: dnsresponder 
+Source: "..\windows services\dnsResponder.winsrv\bin\{#Configuration}\{#NetVersion}\*.config"; DestDir: "{app}"; Flags: onlyifdoesntexist; Excludes: "*.vshost.*,*.dll.config"; Components: dnsresponder
 
-Source: "..\windows services\monitor.winsrv\bin\{#Configuration}\*.dll"; DestDir: "{app}"; Flags: ignoreversion;  Components: monitorserver 
-Source: "..\windows services\monitor.winsrv\bin\{#Configuration}\*.exe"; DestDir: "{app}"; Flags: ignoreversion;  Components: monitorserver 
-Source: "..\windows services\monitor.winsrv\bin\{#Configuration}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: IsDebug; Components: monitorserver 
-Source: "..\windows services\monitor.winsrv\bin\{#Configuration}\*.config"; DestDir: "{app}"; Excludes: "*.vshost.*,*.dll.config"; Flags: onlyifdoesntexist; Components: monitorserver
+Source: "..\windows services\monitor.winsrv\bin\{#Configuration}\{#NetVersion}\*.dll"; DestDir: "{app}"; Flags: ignoreversion;  Components: monitorserver 
+Source: "..\windows services\monitor.winsrv\bin\{#Configuration}\{#NetVersion}\*.exe"; DestDir: "{app}"; Flags: ignoreversion;  Components: monitorserver 
+Source: "..\windows services\monitor.winsrv\bin\{#Configuration}\{#NetVersion}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: IsDebug; Components: monitorserver 
+Source: "..\windows services\monitor.winsrv\bin\{#Configuration}\{#NetVersion}\*.config"; DestDir: "{app}"; Excludes: "*.vshost.*,*.dll.config"; Flags: onlyifdoesntexist; Components: monitorserver
 Source: "jobs.xml"; DestDir: "{app}"; Flags: onlyifdoesntexist; Components: monitorserver;
          
+; context.receiver is no longer used
+;Source: "..\context.receiver\bin\{#Configuration}\{#NetVersion}\*.dll"; DestDir: "{app}"; Flags: ignoreversion;  Components: directgateway
+;Source: "..\context.receiver\bin\{#Configuration}\{#NetVersion}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: IsDebug; Components: directgateway 
 
-Source: "..\context.receiver\bin\{#Configuration}\*.dll"; DestDir: "{app}"; Flags: ignoreversion;  Components: directgateway
-Source: "..\context.receiver\bin\{#Configuration}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: IsDebug; Components: directgateway 
-
+; smtpAgent uses AppendTargetFrameworkToOutputPath=false, so outputs to bin\Debug directly (not bin\Debug\net48)
 Source: "..\gateway\smtpAgent\bin\{#Configuration}\*.dll"; DestDir: "{app}"; Flags: ignoreversion;  Components: directgateway
-Source: "..\resolverPlugin\bin\{#Configuration}\*.dll"; DestDir: "{app}"; Flags: ignoreversion;  Components: directgateway  
+Source: "..\resolverPlugin\bin\{#Configuration}\{#NetVersion}\*.dll"; DestDir: "{app}"; Flags: ignoreversion;  Components: directgateway  
 Source: "..\gateway\smtpAgent\bin\{#Configuration}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: IsDebug; Components: directgateway 
 Source: "SmtpAgentConfig.xml"; DestDir: {app}; Flags: onlyifdoesntexist; Components: directgateway;   
-Source: "..\gateway\smtpEventHandler\bin\x64\{#Configuration}\Health.Direct.SmtpEventHandler.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: IsX64 or IsIA64; Components: dnsresponder dnswebservice configwebservice configui directgateway;                            
+Source: "..\gateway\smtpEventHandler\bin\x64\{#Configuration}\Health.Direct.SmtpEventHandler.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: IsX64; Components: dnsresponder dnswebservice configwebservice configui directgateway;                            
 
-Source: "..\config\console\bin\{#Configuration}\*.exe"; DestDir: "{app}"; Excludes: "*.vshost.*"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;  
-Source: "..\config\console\bin\{#Configuration}\*.dll"; DestDir: "{app}"; Excludes: "*.vshost.*"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
+Source: "..\config\console\bin\{#Configuration}\{#NetVersion}\*.exe"; DestDir: "{app}"; Excludes: "*.vshost.*"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;  
+Source: "..\config\console\bin\{#Configuration}\{#NetVersion}\*.dll"; DestDir: "{app}"; Excludes: "*.vshost.*"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
 Source: "ConfigConsoleSettings.xml"; DestDir: "{app}"; Flags: onlyifdoesntexist;
   
-Source: "..\tools\agent.console\bin\{#Configuration}\*.exe"; DestDir: "{app}"; Excludes: "*.vshost.*"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
-Source: "..\tools\agent.console\bin\{#Configuration}\*.xml"; DestDir: "{app}"; Flags: onlyifdoesntexist; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
+Source: "..\tools\agent.console\bin\{#Configuration}\{#NetVersion}\*.exe"; DestDir: "{app}"; Excludes: "*.vshost.*"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
+Source: "..\tools\agent.console\bin\{#Configuration}\{#NetVersion}\*.xml"; DestDir: "{app}"; Flags: onlyifdoesntexist; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
 
-Source: "..\tools\admin.console\bin\{#Configuration}\*.exe"; DestDir: "{app}"; Excludes: "*.vshost.*"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
-Source: "..\tools\admin.console\bin\{#Configuration}\*.dll"; DestDir: "{app}"; Excludes: "*.vshost.*"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;   
-Source: "..\tools\admin.console\bin\{#Configuration}\*.xml"; DestDir: "{app}"; Flags: onlyifdoesntexist; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
-Source: "..\tools\admin.console\bin\{#Configuration}\*.config"; DestDir: "{app}"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
+Source: "..\tools\admin.console\bin\{#Configuration}\{#NetVersion}\*.exe"; DestDir: "{app}"; Excludes: "*.vshost.*"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
+Source: "..\tools\admin.console\bin\{#Configuration}\{#NetVersion}\*.dll"; DestDir: "{app}"; Excludes: "*.vshost.*"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;   
+Source: "..\tools\admin.console\bin\{#Configuration}\{#NetVersion}\*.xml"; DestDir: "{app}"; Flags: onlyifdoesntexist; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
+Source: "..\tools\admin.console\bin\{#Configuration}\{#NetVersion}\*.config"; DestDir: "{app}"; Flags: ignoreversion; Components: dnsresponder monitorserver dnswebservice configwebservice configui directgateway;
                                   
 Source: "..\config\service\*.svc"; DestDir: "{app}\ConfigService"; Flags: ignoreversion; Components: configwebservice; 
 Source: "..\config\service\*.aspx"; DestDir: "{app}\ConfigService"; Flags: ignoreversion; Components: configwebservice; 
@@ -143,11 +151,13 @@ Source: "..\gateway\devInstall\setupdomains.txt"; DestDir: "{app}"; Flags: ignor
 Source: "..\gateway\devInstall\simple.eml"; DestDir: "{app}\Samples"; Flags: ignoreversion; Components:;
 
 Source: "..\external\microsoft\vcredist\vcredist_x86.exe"; DestDir: "{app}\Libraries"; DestName: "vcredist.exe"; Flags: ignoreversion recursesubdirs; Check: IsX86; Components: directgateway;
-Source: "..\external\microsoft\vcredist\vcredist_x64.exe"; DestDir: "{app}\Libraries"; DestName: "vcredist.exe"; Flags: ignoreversion recursesubdirs; Check: IsX64 or IsIA64; Components: directgateway;
+Source: "..\external\microsoft\vcredist\vcredist_x64.exe"; DestDir: "{app}\Libraries"; DestName: "vcredist.exe"; Flags: ignoreversion recursesubdirs; Check: IsX64; Components: directgateway;
 
 Source: "createadmin.bat"; DestDir: "{app}";  Flags: ignoreversion;
 Source: "createdatabase.bat"; DestDir: "{app}";  Flags: ignoreversion;
 Source: "createeventlogsource.bat"; DestDir: "{app}";  Flags: ignoreversion;
+Source: "createeventlogsource.ps1"; DestDir: "{app}";  Flags: ignoreversion;
+Source: "event-sources.txt"; DestDir: "{app}";  Flags: ignoreversion;
 Source: "InstallDnsResponder.bat"; DestDir: "{app}";  Flags: ignoreversion; Components: dnsresponder;
 Source: "InstallMonitorServer.bat"; DestDir: "{app}";  Flags: ignoreversion; Components: monitorserver;
 Source: "installgateway.bat"; DestDir: "{app}";  Flags: ignoreversion; Components: directgateway;
@@ -157,13 +167,15 @@ Source: "UninstallMonitorServer.bat"; DestDir: "{app}";  Flags: ignoreversion;  
 Source: "uninstallGateway.bat"; DestDir: "{app}";  Flags: ignoreversion;  Components: directgateway;
 
 
-Source: "*.ps1"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "event-sources.txt"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\config\store\Schema.sql"; DestDir: "{app}\SQL"; Flags: ignoreversion; Components: database; 
 Source: "createuser.sql"; DestDir: "{app}\SQL"; Flags: ignoreversion; Components: database; 
 Source: "createReadOnlyUser.sql"; DestDir: "{app}\SQL"; Flags: ignoreversion; Components: database; 
 
-Source: "toolutil\install.tools\bin\{#Configuration}\Health.Direct.Install.Tools.*"; DestDir: "{app}\InstallTools"; Flags: ignoreversion;  
+
+
+Source: "toolutil\install.tools\bin\{#Configuration}\{#NetVersion}\Health.Direct.Install.Tools.dll"; Flags: dontcopy;
+Source: "toolutil\install.tools\bin\{#Configuration}\{#NetVersion}\Health.Direct.Install.Tools.*"; DestDir: "{app}\InstallTools"; Flags: ignoreversion;  
 
                                  
 [UninstallDelete]
@@ -192,8 +204,8 @@ Filename: {app}\createeventlogsource.bat; Parameters: " >> ""{app}\Log\createeve
 Filename: {app}\uninstallDnsResponder.bat; Parameters: """{app}"" >> ""{app}\Log\installdnsresponder.log"" 2>&1"; Description: UnInstall previous DNS Responder; Flags: runascurrentuser; Components: dnsresponder;
 Filename: {app}\installdnsresponder.bat; Parameters: """{app}"" >> ""{app}\Log\installdnsresponder.log"" 2>&1"; Description: Install DNS Responder; Flags: runascurrentuser postinstall; Components: dnsresponder;
 Filename: {app}\InstallMonitorServer.bat; Parameters: """{app}"" >> ""{app}\Log\InstallMonitorServer.log"" 2>&1"; Description: Install Monitor Server; Flags: runascurrentuser ; Components: monitorserver;
-Filename: {dotnet4032}\RegAsm.exe; Parameters: Health.Direct.Install.Tools.dll /codebase; WorkingDir:{app}\InstallTools; StatusMsg: Installing installer tools; Description: Register tool com visible; Flags: runascurrentuser;
-Filename: {dotnet4064}\RegAsm.exe; Parameters: Health.Direct.Install.Tools.dll /codebase; WorkingDir:{app}\InstallTools; StatusMsg: Installing installer tools; Description: Register tool com visible; Flags: runascurrentuser; 
+; RegAsm moved to ssDone in CurStepChanged to avoid mid-wizard CodeBase changes
+; PowerShell COM test disabled by default to avoid file locks during install
 Filename: {app}\installgateway.bat; Parameters:  """{app}"" >> ""{app}\Log\installgateway.log"" 2>&1";  Description: Install Gateway; Flags: runascurrentuser ; Components: directgateway;
 Filename: {app}\createadmin.bat; Description:Create Admin.  (Database must exist); Flags: runascurrentuser postinstall unchecked;  
 
@@ -202,9 +214,7 @@ Filename: {app}\createadmin.bat; Description:Create Admin.  (Database must exist
 Filename: {app}\uninstallDnsResponder.bat; RunOnceId: 'RemoveDnsResponder';  Components: dnsresponder;
 Filename: {app}\UninstallMonitorServer.bat; RunOnceId: 'RemoveMonitorServer';  Components: monitorserver;
 Filename: {app}\uninstallGateway.bat; RunOnceId: 'RemoveGateway'; Components: directgateway;
-Filename: {dotnet4064}\RegAsm; RunOnceId: 'RemoveTools64'; Parameters: Health.Direct.Install.Tools.dll /unregister; WorkingDir:{app}\InstallTools; Flags: runascurrentuser; 
-Filename: {dotnet4032}\RegAsm.exe; RunOnceId: 'RemoveTools32'; Parameters: Health.Direct.Install.Tools.dll /unregister; WorkingDir:{app}\InstallTools; Flags: runascurrentuser; 
-
+Filename: {#DotNet4032}\RegAsm.exe; RunOnceId: 'RemoveTools32'; Parameters: Health.Direct.Install.Tools.dll /unregister; WorkingDir:{app}\InstallTools;
 
 [INI]
 Filename: {app}\direct.ini; section: InstallSettings; key: "DnsWebService_Vdir"; string: DnsService; Components: dnswebservice
@@ -221,6 +231,11 @@ var
   //Log file maintenance
   OkToCopyLog : Boolean;
   toolsRegistered : Boolean; //Flag to indicate tools have been registered in the temp folder.
+  // Ensure .NET CLR is loaded prior to COM interop with .NET assemblies
+  ErrorCode : Integer;
+  MscoreeLoaded: Boolean;
+  ClrLoaded : Boolean;
+  ClrLibHandle : Integer;
   
   //Global dns variable
   StartDnsServicePostProcessing : Boolean;
@@ -228,17 +243,76 @@ var
   strDnsServiceNameToCheck : String;
   strDirectMonitorWinSrv : String;
   ConfigServiceConStr, DnsServiceConStr  : String;
+  // Helper to create XPathTools with contextual logging
+// Unload unused COM libraries so temp files can be cleaned up
+procedure CoFreeUnusedLibraries(); external 'CoFreeUnusedLibraries@ole32.dll stdcall';
+
+// Load a DLL explicitly (Win32 API), used to preload CLR
+function LoadLibrary(lpLibFileName: string): Integer; external 'LoadLibraryA@kernel32.dll stdcall';
+
+function SomeFunction: Integer; external '_CorExeMain@{sys}\mscoree.dll stdcall';
+
+  function CreateXPathToolsWithLog(context: String): Variant;
+  var
+    obj: Variant;
+  begin
+    try
+      obj := CreateOleObject('Direct.Installer.XPathTools');
+      Log('Successfully created Direct.Installer.XPathTools in ' + context);
+    except
+      Log('Failed to create Direct.Installer.XPathTools in ' + context + ' - ' + GetExceptionMessage);
+      RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
+    end;
+    Result := obj;
+  end;
+
+  function CreateSqlDbToolsWithLog(context: String): Variant;
+  var
+    obj: Variant;
+  begin
+    try
+      obj := CreateOleObject('Direct.Installer.SqlDbTools');
+      Log('Successfully created Direct.Installer.SqlDbTools in ' + context);
+    except
+      Log('Failed to create Direct.Installer.SqlDbTools in ' + context + ' - ' + GetExceptionMessage);
+      RaiseException('Cannot find Direct.Installer.SqlDbTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
+    end;
+    Result := obj;
+  end;
+
+  function CreateEndPointToolsWithLog(context: String): Variant;
+  var
+    obj: Variant;
+  begin
+    try
+      obj := CreateOleObject('Direct.Installer.EndPointTools');
+      Log('Successfully created Direct.Installer.EndPointTools in ' + context);
+    except
+      Log('Failed to create Direct.Installer.EndPointTools in ' + context + ' - ' + GetExceptionMessage);
+      RaiseException('Cannot find Direct.Installer.EndPointTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
+    end;
+    Result := obj;
+  end;
+
+  function CreateUrlToolsWithLog(context: String): Variant;
+  var
+    obj: Variant;
+  begin
+    try
+      obj := CreateOleObject('Direct.Installer.UrlTools');
+      Log('Successfully created Direct.Installer.UrlTools in ' + context);
+    except
+      Log('Failed to create Direct.Installer.UrlTools in ' + context + ' - ' + GetExceptionMessage);
+      RaiseException('Cannot find Direct.Installer.UrlTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
+    end;
+    Result := obj;
+  end;
    
 
 
 function IsX64: Boolean;
 begin
   Result := Is64BitInstallMode and (ProcessorArchitecture = paX64);
-end;
-
-function IsIA64: Boolean;
-begin
-  Result := Is64BitInstallMode and (ProcessorArchitecture = paIA64);
 end;
 
 function IsX86: Boolean;
@@ -295,23 +369,9 @@ end;
 procedure GetConnectionStrings();
 var
    xpathTools: Variant; 
-   ResultCode : Integer; 
    configServiceFile, dnsServiceFile : String;
 begin
-
-  if(not toolsRegistered) then
-  begin
-    ExtractTemporaryFile('Health.Direct.Install.Tools.dll');     
-    Exec(ExpandConstant('{dotnet4032}\RegAsm.exe'),'Health.Direct.Install.Tools.dll /codebase', ExpandConstant('{tmp}'), SW_SHOW, ewWaitUntilTerminated, ResultCode );
-    Exec(ExpandConstant('{dotnet4064}\RegAsm.exe'),'Health.Direct.Install.Tools.dll /codebase', ExpandConstant('{tmp}'), SW_SHOW, ewWaitUntilTerminated, ResultCode );
-    toolsRegistered := true;
-  end;
-
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('GetConnectionStrings');
   
   configServiceFile := ExpandConstant('{app}') + '\ConfigService\Web.Config';
 
@@ -332,9 +392,36 @@ end;
 
 
 function InitializeSetup(): Boolean; 
+var
+  ResultCode : Integer;
 begin
-  DnsServiceStop();
-  MonitorServiceStop();
+  // Stop services if they're running, but don't fail if there's an error
+  try
+    DnsServiceStop();
+  except
+    Log('Warning: DnsServiceStop failed - ' + GetExceptionMessage);
+  end;
+  
+  try
+    MonitorServiceStop();
+  except
+    Log('Warning: MonitorServiceStop failed - ' + GetExceptionMessage);
+  end;
+  
+  // Always register COM tools in temp folder to override any previous installations
+  // Each installer run creates a new temp folder, so we must re-register
+  Log('Extracting Health.Direct.Install.Tools.dll to temp folder');
+  ExtractTemporaryFile('Health.Direct.Install.Tools.dll');
+  
+  // Note: install.tools is compiled as x86 (PlatformTarget=x86), so we only use 32-bit RegAsm
+  // The 64-bit installer process will find the COM object via WOW6432Node registry redirection
+  // Use /codebase so the .NET COM activation can locate the assembly from the temp folder during the wizard
+  Log('Registering Health.Direct.Install.Tools.dll (32-bit) with /codebase in InitializeSetup');
+  if not ShellExec('', ExpandConstant('{#DotNet4032}\RegAsm.exe'),'Health.Direct.Install.Tools.dll /tlb /codebase', ExpandConstant('{tmp}'), SW_SHOW, ewWaitUntilTerminated, ResultCode ) or (ResultCode <> 0) then
+    RaiseException('Failed to register Health.Direct.Install.Tools.dll (32-bit). Exit code: ' + IntToStr(ResultCode));
+  Log('Successfully registered 32-bit COM. Exit code: ' + IntToStr(ResultCode));
+  toolsRegistered := true;
+  
   Result := true;      
 end;
 
@@ -358,6 +445,14 @@ begin
     FileCopy (ExpandConstant ('{log}'), ExpandConstant ('{app}\Log\InstallationLogFile.log'), FALSE);
     RestartReplace (ExpandConstant ('{log}'), '');   // remove the temp log file during the next system restart.
 
+    // Attempt to unload unused COM libraries to allow temp cleanup
+    try
+      Log('Invoking CoFreeUnusedLibraries to unload COM libraries');
+      CoFreeUnusedLibraries();
+    except
+      Log('Warning: CoFreeUnusedLibraries invocation failed - ' + GetExceptionMessage);
+    end;
+
 
 end;
 
@@ -371,6 +466,13 @@ begin
 end;
 
 
+// Log page transitions for additional context
+procedure CurPageChanged(CurPageID: Integer);
+begin
+  Log('CurPageChanged: ' + IntToStr(CurPageID));
+end;
+
+
 
 function TestConnection(endpoint : String): Boolean;
 var
@@ -378,11 +480,7 @@ var
   success: Boolean;
 begin
   success := false;
-  try                              
-    tools := CreateOleObject('Direct.Installer.EndPointTools');
-  except
-    RaiseException('Cannot find Direct.Installer.EndPointTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  tools := CreateEndPointToolsWithLog('TestConnection');
     try
       success := tools.TestWcfSoapConnection(endpoint);
     except
@@ -425,11 +523,7 @@ begin
 
 
   success := false;
-  try                              
-    tools := CreateOleObject('Direct.Installer.EndPointTools');
-  except
-    RaiseException('Cannot find Direct.Installer.EndPointTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  tools := CreateEndPointToolsWithLog('RunTestServiceAspx');
 
   try
     success := tools.TestConnection(myTextBox.Text, 'Database is accessible!');
@@ -492,12 +586,8 @@ begin
   StatusLabel.Font.Color := clBlack;
   StatusLabel.Caption := 'Checking Db Connection...';
   StatusLabel.Update;
-  try
-    tools := CreateOleObject('Direct.Installer.SqlDbTools');
-  except
-    RaiseException('Cannot find Direct.Installer.SqlDbTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
-    success := tools.TestConnection(DbConnStrTextBox.Text, message);     
+  tools := CreateSqlDbToolsWithLog('CheckDatabaseConnOnClick');
+  success := tools.TestConnection(DbConnStrTextBox.Text, message);     
     if(success) then
     begin
       StatusLabel.Font.Color := clGreen;
@@ -522,11 +612,7 @@ procedure SetDatabaseConnSting(page: TWizardPage; connStr: String);
 var
   tools : Variant;
 begin
-  try
-    tools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  tools := CreateXPathToolsWithLog('SetDatabaseConnSting');
     if (page.Name = 'ConfigService') then
     begin
       tools.XmlFilePath := ExpandConstant('{app}') + '\ConfigService\Web.Config'; //Set Admin UI
@@ -559,11 +645,7 @@ var
   value : String;
   existingValue : String;
 begin
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('WriteConfigItem');
     textBox := TCustomEdit(wizardPage.FindComponent(objectName));   
     //labelText := TNewStaticText(wizardPage.FindComponent(objectName));   
     if not (textBox = nil) then
@@ -601,11 +683,7 @@ var
   value : String;
   existingValue : String;
 begin
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('WriteConfigItemCombo');
     comboBox := TComboBox(wizardPage.FindComponent(objectName));   
 
     if not (comboBox = nil) then
@@ -664,11 +742,7 @@ function GetConfigSetting(configFile, xpath : String): String;
 var
   xpathTools: Variant;    
 begin
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('GetConfigSetting');
     xpathTools.XmlFilePath := configFile ;
     Result := xpathTools.SelectSingleAttribute(xpath);
 end;
@@ -677,11 +751,7 @@ function GetFragment(configFile, xpath : String): String;
 var
   xpathTools: Variant;    
 begin
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('GetFragment');
     xpathTools.XmlFilePath := configFile ;
     Result := xpathTools.GetFragment(xpath);
 end;
@@ -699,11 +769,7 @@ var
   value : String;
   existingValue : String;
 begin
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('WriteOrDeleteConfigItem');
     textBox := TCustomEdit(wizardPage.FindComponent(objectName));   
      
     if not (textBox = nil) then
@@ -738,11 +804,7 @@ procedure WriteXmlFragment(configFile, xpath, fragement : String);
 var
   xpathTools: Variant;
 begin
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('WriteXmlFragment');
     xpathTools.XmlFilePath := configFile;     
     if ( Length(xpathTools.SelectSingleAttribute(xpath)) > 0 ) then
       begin
@@ -755,11 +817,7 @@ procedure InsertXmlFragment(configFile, fragement, xPathParent : String);
 var
   xpathTools: Variant;
 begin
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('InsertXmlFragment');
     xpathTools.XmlFilePath := configFile;     
     xpathTools.CreateFullFragment(fragement, xPathParent);     
 end;
@@ -768,11 +826,7 @@ procedure InsertXmlFragmentBefore(configFile, fragement, xPathBefore : String);
 var
   xpathTools: Variant;
 begin
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('InsertXmlFragmentBefore');
     xpathTools.XmlFilePath := configFile;     
     xpathTools.CreateFragmentBefore(fragement, xPathBefore);     
 end;
@@ -1082,11 +1136,7 @@ var
   tools : Variant;
   EndPointsButton : TNewButton;
 begin
-  try                              
-    tools := CreateOleObject('Direct.Installer.UrlTools');
-  except
-    RaiseException('Cannot find Direct.Installer.UrlTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;  
+  tools := CreateUrlToolsWithLog('ConfigAdminHostNameOnClick');  
   
   EndPointsButton := TNewButton(Sender);
   ConfigAdminPage := TWizardPage(EndPointsButton.Owner);
@@ -1148,11 +1198,7 @@ begin
   DnsPolicyUrlText.Text :=   GetConfigSetting(configFile, '/configuration/ServiceSettingsGroup/CertPolicyServiceResolverSettings/ClientSettings/@Url');
 
   //Set TestService.aspx by rebuilding Url 
-  try                              
-    tools := CreateOleObject('Direct.Installer.UrlTools');
-  except
-    RaiseException('Cannot find Direct.Installer.UrlTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;  
+  tools := CreateUrlToolsWithLog('DnsResponderPageOnActivate');
   DnsServiceTestTextBox := TNewEdit(Sender.FindComponent('DnsServiceTestTextBox')); 
   DnsServiceTestTextBox.Text := tools.UpdateUrlPathAndQuery(DnsServiceUrlText.Text, '/DnsService/TestService.aspx').FullUrl;
   
@@ -1165,11 +1211,7 @@ var
   xpathTools: Variant; 
   dbConnStr: String;
 begin
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('GetDbConnStr');
     if (page.Name = 'ConfigService') then
     begin
       if(length(ConfigServiceConStr) > 0) then
@@ -1223,11 +1265,7 @@ procedure UpdateConfigFileName();
 var
   xpathTools: Variant;
 begin
-  try                              
-    xpathTools := CreateOleObject('Direct.Installer.XPathTools');
-  except
-    RaiseException('Cannot find Direct.Installer.XPathTools.'#13#13'(Error ''' + GetExceptionMessage + ''' occurred)');
-  end;
+  xpathTools := CreateXPathToolsWithLog('UpdateConfigFileName');
     xpathTools.XmlFilePath := ExpandConstant('{app}') + '\ConfigUI\Web.Config' ;
     xpathTools.SetSingleAttribute('configuration/system.serviceModel/client/@configSource', 'Config\Client.config');
 end;
@@ -1402,7 +1440,7 @@ begin
   end; 
 
   // Add LDAP resolver if it does not exist.
-  LdapResolverFragment := '<PluginResolver><Definition><TypeName>Health.Direct.ResolverPlugins.LdapCertResolverProxy, Health.Direct.ResolverPlugins</TypeName><Settings><ServerIP>8.8.8.8</ServerIP><BackupServerIP>8.8.4.4</BackupServerIP><Timeout>5000</Timeout><Cache>true</Cache></Settings></Definition></PluginResolver>';
+  LdapResolverFragment := '<PluginResolver><Definition><TypeName>Health.Direct.ResolverPlugins.LdapCertResolverProxy, Health.Direct.ResolverPlugins</TypeName><Settings><ServerIP>1.4.0.0</ServerIP><BackupServerIP>1.4.0.0</BackupServerIP><Timeout>5000</Timeout><Cache>true</Cache></Settings></Definition></PluginResolver>';
   LdapResolver := GetFragment(configFile, '/SmtpAgentConfig/PublicCerts/PluginResolver');
 
   if ( Length(LdapResolver) = 0 ) then
@@ -1676,7 +1714,6 @@ end;
 //later it is registered when the files have been placed in their deployment location.
 function MsSmtpServiceExists(Host: String; Port: Integer): Boolean;
 var
-    ResultCode: Integer;
     SmtpExists: Boolean;
     SmtpTools: Variant;       
 begin
@@ -1685,13 +1722,6 @@ begin
   begin
     Result := true;
     exit;
-  end;
-  if(not toolsRegistered) then
-  begin
-    ExtractTemporaryFile('Health.Direct.Install.Tools.dll');     
-    Exec(ExpandConstant('{dotnet4032}\RegAsm.exe'),'Health.Direct.Install.Tools.dll /codebase', ExpandConstant('{tmp}'), SW_SHOW, ewWaitUntilTerminated, ResultCode );
-    Exec(ExpandConstant('{dotnet4064}\RegAsm.exe'),'Health.Direct.Install.Tools.dll /codebase', ExpandConstant('{tmp}'), SW_SHOW, ewWaitUntilTerminated, ResultCode );
-    toolsRegistered := true;
   end;
 
   try                           
@@ -2864,11 +2894,40 @@ end;
 
 //Create Virtual directories
 procedure CurStepChanged(CurStep: TSetupStep);
-          
+var
+  R: Longint;
 begin
-  
+  // Log step transitions to pinpoint when failures occur
+  case CurStep of
+    ssInstall:
+      Log('CurStepChanged: ssInstall');
+    ssPostInstall:
+      Log('CurStepChanged: ssPostInstall');
+    ssDone:
+      Log('CurStepChanged: ssDone');
+  else
+    Log('CurStepChanged: ' + IntToStr(Ord(CurStep)));
+  end;
+
   //Post install step
   if (CurStep = ssPostInstall) then begin
+    // Re-register COM from installed location BEFORE wizard pages need it
+    try
+      // Note: install.tools is compiled as x86, so only 32-bit RegAsm can register it properly
+      // Use /codebase to bind COM to the installed path going forward
+      Log('Re-registering installer tools (32-bit) with /codebase at ssPostInstall from permanent location');
+      if not ShellExec('', ExpandConstant('{#DotNet4032}\RegAsm.exe'), 'Health.Direct.Install.Tools.dll /tlb /codebase', ExpandConstant('{app}\InstallTools'), SW_SHOW, ewWaitUntilTerminated, R) or (R <> 0) then
+        Log('Warning: RegAsm 32-bit failed at ssPostInstall. Exit code: ' + IntToStr(R))
+      else
+        Log('Successfully re-registered 32-bit COM at ssPostInstall. Exit code: ' + IntToStr(R));
+      // Give Windows time to propagate registry changes
+      Log('Waiting for registry propagation...');
+      Sleep(2000);
+      Log('Registry propagation wait complete');
+    except
+      Log('Warning: RegAsm re-registration at ssPostInstall failed - ' + GetExceptionMessage);
+    end;
+
     //Dns web service somponent selected and Not installing development type
     if (pos( 'dnswebservice', WizardSelectedComponents( false)) > 0) and (pos( 'development', WizardSetupType( false)) = 0) then  
       begin
@@ -2888,7 +2947,9 @@ begin
   end;
   //Log file maintenance
   if CurStep = ssDone then
+  begin
     OkToCopyLog := True;
+  end;
 
 
 end;

@@ -26,7 +26,8 @@ using Health.Direct.Common.Cryptography;
 using Health.Direct.Common.Mail.DSN;
 using Health.Direct.Common.Mail.Notifications;
 using Health.Direct.Config.Client;
-using Health.Direct.Config.Store;
+using Health.Direct.Config.Client.DomainManager;
+using Health.Direct.Config.Client.MonitorService;
 using Health.Direct.SmtpAgent.Config;
 using Moq;
 using Xunit;
@@ -55,7 +56,7 @@ namespace Health.Direct.SmtpAgent.Tests
         public void TestFailedDSN_SecurityAndTrustOutGoingOnly_AlwaysGenerate()
         {
             CleanMessages(m_agent.Settings);
-            CleanMonitor();
+            
 
             m_agent.Settings.InternalMessage.EnableRelay = true;
             m_agent.Settings.Notifications.AutoResponse = false; //don't care.  This is MDN specific
@@ -93,7 +94,7 @@ namespace Health.Direct.SmtpAgent.Tests
                     // DSN messages are not monitored.
                     //
                     var queryMdn = BuildQueryFromDSN(LoadMessage(messageText));
-                    var mdn = MdnMemoryStore.FirstOrDefault(m => m.MdnIdentifier == queryMdn.MdnIdentifier);
+                    var mdn = MdnMemoryStore.FirstOrDefault(m => m.MdnIdentifier == queryMdn.GetMdnIdentifier());
                     Assert.Null(mdn);
                 }
             }
@@ -136,7 +137,7 @@ namespace Health.Direct.SmtpAgent.Tests
             List<DSNPerRecipient> perRecipientExpected)
         {
             CleanMessages(m_agent.Settings);
-            CleanMonitor();
+            
 
             m_agent.Settings.InternalMessage.EnableRelay = true;
             m_agent.Settings.Notifications.AutoResponse = false; //don't care.  This is MDN specific
@@ -229,7 +230,7 @@ namespace Health.Direct.SmtpAgent.Tests
         public void TestFailedDSN_SecurityAndTrustOutGoingOnly_TimelyAndReliable_missingRequest()
         {
             CleanMessages(m_agent.Settings);
-            CleanMonitor();
+            
 
             m_agent.Settings.InternalMessage.EnableRelay = true;
             m_agent.Settings.Notifications.AutoResponse = true;
@@ -284,7 +285,7 @@ namespace Health.Direct.SmtpAgent.Tests
         public void TestFailedDSN_SecurityAndTrustOutGoingOnly_GenerateOnlyIfRequested()
         {
             CleanMessages(m_agent.Settings);
-            CleanMonitor();
+            
 
             m_agent.Settings.InternalMessage.EnableRelay = true;
             m_agent.Settings.Notifications.AutoResponse = true;
@@ -323,7 +324,7 @@ namespace Health.Direct.SmtpAgent.Tests
                     // DSN messages are not monitored.
                     //
                     var queryMdn = BuildQueryFromDSN(LoadMessage(messageText));
-                    var mdn = MdnMemoryStore.FirstOrDefault(m => m.MdnIdentifier == queryMdn.MdnIdentifier);
+                    var mdn = MdnMemoryStore.FirstOrDefault(m => m.MdnIdentifier == queryMdn.GetMdnIdentifier());
                     Assert.Null(mdn);
 
                 }
@@ -360,7 +361,7 @@ namespace Health.Direct.SmtpAgent.Tests
         public void TestFinalDestinationDelivery(string unDeliverableRecipientMessage, List<DSNPerRecipient> perRecipientExpected)
         {
             CleanMessages(m_agent.Settings);
-            CleanMonitor();
+            
 
             m_agent.Settings.InternalMessage.EnableRelay = true;
             m_agent.Settings.Notifications.AutoResponse = true;

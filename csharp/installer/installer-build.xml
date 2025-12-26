@@ -7,9 +7,14 @@
 		<Copyright>Copyright 2010 &#169;</Copyright>
 		<Version>0.0.0.0</Version>
 		<!-- need to place this here to get around some sticky quote issues -->
-		<PsGlobalAssemblyInfo>powershell -Command "(Get-Content ..\GlobalAssemblyInfo.cs) | Foreach-Object {$_ -replace '\d+\.\d+\.\d+\.\d+', '$(Version)'} | Set-Content ..\GlobalAssemblyInfo.cs"</PsGlobalAssemblyInfo>
-		<PsInstallerFile>powershell -Command "(Get-Content .\Direct.iss) | Foreach-Object {$_ -replace '\d+\.\d+\.\d+\.\d+', '$(Version)'} | Set-Content .\Direct.iss"</PsInstallerFile>
+		<PsGlobalAssemblyInfo>powershell -ExecutionPolicy Bypass -Command "(Get-Content ..\GlobalAssemblyInfo.cs) | Foreach-Object {$_ -replace '\d+\.\d+\.\d+\.\d+', '$(Version)'} | Set-Content ..\GlobalAssemblyInfo.cs"</PsGlobalAssemblyInfo>
+		<PsInstallerFile>powershell -ExecutionPolicy Bypass -Command "(Get-Content .\Direct.iss) | Foreach-Object {$_ -replace '\d+\.\d+\.\d+\.\d+', '$(Version)'} | Set-Content .\Direct.iss"</PsInstallerFile>
 		<gateway_solution>$(MSBuildProjectDirectory)\..\build\DirectProject.sln</gateway_solution>
+		
+		<!-- Inno Setup compiler path - tries multiple locations -->
+		<InnoSetupPath Condition="Exists('C:\Program Files (x86)\Inno Setup 6\iscc.exe')">C:\Program Files (x86)\Inno Setup 6\iscc.exe</InnoSetupPath>
+		<InnoSetupPath Condition="'$(InnoSetupPath)' == '' AND Exists('C:\Program Files\Inno Setup 6\iscc.exe')">C:\Program Files\Inno Setup 6\iscc.exe</InnoSetupPath>
+		<InnoSetupPath Condition="'$(InnoSetupPath)' == '' AND Exists('$(MSBuildProjectDirectory)\..\build\packages\Tools.InnoSetup.5.5.4\tools\iscc.exe')">$(MSBuildProjectDirectory)\..\build\packages\Tools.InnoSetup.5.5.4\tools\iscc.exe</InnoSetupPath>
 	</PropertyGroup>
 	<Target Name="update-version-info">
 		<Exec Command='$(PsGlobalAssemblyInfo)' />
@@ -18,14 +23,16 @@
 
 	
 	<Target Name="build-installer" DependsOnTargets="update-nuget; update-version-info">
-		<Exec Command='"$(MSBuildProjectDirectory)\..\build\packages\Tools.InnoSetup.5.5.4\tools\iscc.exe" /Q .\Direct.iss /DConfiguration=$(Configuration)' />		
+		<Error Text="Inno Setup compiler (iscc.exe) not found. Please install Inno Setup 6 from https://jrsoftware.org/isdl.php" Condition="'$(InnoSetupPath)' == ''" />
+		<Message Text="Using Inno Setup compiler at: $(InnoSetupPath)" Importance="high" />
+		<Exec Command='"$(InnoSetupPath)" /Q .\Direct.iss /DConfiguration=$(Configuration)' />		
 		<MSBuild Targets="clean-configui" Projects="..\build.xml" Properties="state=post" />
 	</Target>
 	
 	<!--This will load nuget dependancie assoicated to only the solution and not in any project 
 	    such as the Tools.InnoSetup.x.x.x project-->
 	<Target Name="update-nuget">
-		<Exec Command="$(MSBuildProjectDirectory)\..\build\.nuget\nuget restore $(gateway_solution)" /> 
+		<Exec Command="dotnet restore $(gateway_solution)" /> 
 	</Target>
 	
 	<Target Name="publish-configui">

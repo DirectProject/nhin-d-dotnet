@@ -1,7 +1,6 @@
 using System.Linq;
-
+using Health.Direct.Common;
 using Health.Direct.Config.Client.DomainManager;
-using Health.Direct.Config.Store;
 
 namespace Health.Direct.Admin.Console.Models.Repositories
 {

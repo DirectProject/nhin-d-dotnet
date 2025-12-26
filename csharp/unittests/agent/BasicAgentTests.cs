@@ -38,7 +38,11 @@ namespace Health.Direct.Agent.Tests
         {
             m_tester = AgentTester.CreateTest();
         }
-        
+
+        /// <summary>
+        /// If you regenerate the certificates, run BuildOutgoingFile() to build the encrypted body for these three test emails
+        /// </summary>
+        /// <param name="fileName"></param>
         [Theory]
         [MemberData("IncomingFiles")]
         public void TestIncoming(string fileName)
@@ -46,6 +50,39 @@ namespace Health.Direct.Agent.Tests
             m_tester.AgentA.Cryptographer.EncryptionAlgorithm = EncryptionAlgorithm.AES128;
             m_tester.AgentA.Cryptographer.DigestAlgorithm = DigestAlgorithm.SHA1;
             m_tester.ProcessIncomingFile(fileName);
+        }
+
+        [Fact(Skip = "Run only if you need to test files for TestIncoming() test")]
+        public void BuildOutgoingFile()
+        {
+            m_tester.AgentA.Cryptographer.EncryptionAlgorithm = EncryptionAlgorithm.AES128;
+            m_tester.AgentA.Cryptographer.DigestAlgorithm = DigestAlgorithm.SHA1;
+
+            OutgoingMessage message = null;
+            Assert.Null(Record.Exception(() => message = m_tester.ProcessOutgoingFile("BuildOutgoing.eml")));
+            Assert.NotNull(message);
+            Assert.NotNull(message.Message);
+
+            byte[] encryptedBytes = null;
+            Assert.Null(Record.Exception(() => encryptedBytes = m_tester.AgentA.Cryptographer.GetEncryptedBytes(message.Message)));
+            Assert.NotNull(encryptedBytes);
+            Assert.True(encryptedBytes.Length > 0);
+
+            encryptedBytes = null;
+            message.Message.ContentType = SMIMEStandard.SignatureContentMediaType;
+            Assert.Throws<EncryptionException>(() => m_tester.AgentA.Cryptographer.GetEncryptedBytes(message.Message));
+
+            var outputDir = Path.Combine(Directory.GetCurrentDirectory(), "TestOutputs");
+            if (!Directory.Exists(outputDir))
+            {
+                Directory.CreateDirectory(outputDir);
+            }
+
+            var textPath = Path.Combine(outputDir, "BuildOutgoing.out.txt");
+            var emlPath = Path.Combine(outputDir, "BuildOutgoing.out.eml");
+
+            // Option 1: write serialized RFC 5322 text
+            File.WriteAllText(textPath, message.SerializeMessage());
         }
 
         [Theory]

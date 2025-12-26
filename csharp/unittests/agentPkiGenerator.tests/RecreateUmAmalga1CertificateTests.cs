@@ -1,0 +1,372 @@
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+
+namespace Health.Direct.Agent.Tests
+{
+    public class RecreateUmAmalga1CertificateTests
+    {
+        [Fact]
+        public void CreateCAsTest()
+        {
+            CreateCAs("umamalga1",
+                "CN=UM-AMALGA1",
+                new List<string>()
+                {
+                    "NewCertificates/kryptiq/OutgoingAnchors",
+                    "NewCertificates/nhind/IncomingAnchors",
+                    "NewCertificates/nhind/OutgoingAnchors",
+                    "NewCertificates/redmond/IncomingAnchors",
+                    "NewCertificates/redmond/OutgoingAnchors"
+                });
+
+            CreateCAs(
+                "um-amalga1-vm1",
+                "CN=UM-AMALGA1-VM1, DC=recomond, DC=corp, DC=microsoft, DC=com",
+                new List<string>()
+                {
+                    "NewCertificates/nhind/IncomingAnchors",
+                    "NewCertificates/nhind/OutgoingAnchors",
+                    "NewCertificates/redmond/IncomingAnchors",
+                    "NewCertificates/redmond/OutgoingAnchors"
+                });
+
+            CreateCAs("kryptiq.lab", 
+                "CN=kryptiq.lab",
+                new List<string>()
+                {
+                    "NewCertificates/kryptiq/OutgoingAnchors",
+                    "NewCertificates/nhind/OutgoingAnchors",
+                    "NewCertificates/redmond/IncomingAnchors",
+                    "NewCertificates/redmond/OutgoingAnchors"
+                });
+        }
+
+        [Fact]
+        public void CreateEndCertTest()
+        {
+            CreateEndCert("NewCertificates/nhind/IncomingAnchors/umamalga1", 
+                new List<string>() { "NewCertificates/redmond/Public", "NewCertificates/nhind/Public" },
+                new List<string>(){""},
+                "umesh", 
+                "E=umeshma@microsoft.com, CN=umeshma@microsoft.com");
+
+            CreateEndCert("NewCertificates/nhind/IncomingAnchors/umamalga1",
+                new List<string>() { "NewCertificates/redmond/Public" },
+                new List<string>() { "NewCertificates/nhind/Private" },
+                "nhind_umamalga1", 
+                "E=nhind.hsgincubator.com, CN=nhind.hsgincubator.com");
+
+            CreateEndCert("NewCertificates/nhind/IncomingAnchors/umamalga1",
+                new List<string>() { "NewCertificates/redmond/Public", "NewCertificates/nhind/Public" },
+                new List<string>() { "NewCertificates/redmond/Private" },
+                "redmond", 
+                "E=redmond.hsgincubator.com, CN=redmond.hsgincubator.com");
+
+            CreateEndCert("NewCertificates/nhind/IncomingAnchors/umamalga1",
+                new List<string>() { "NewCertificates/redmond/Public" },
+                new List<string>() { "NewCertificates/nhind/Private" },
+                "bob", 
+                "E=bob@nhind.hsgincubator.com, CN=Bob Patel, OU=HSG, O=Microsoft, L=Redmond, S=WA, C=US", 5, "bob@nhind.hsgincubator.com");
+
+            CreateEndCert("NewCertificates/nhind/IncomingAnchors/um-amalga1-vm1",
+                new List<string>() { "NewCertificates/redmond/Public" },
+                new List<string>() { "NewCertificates/nhind/Private" },
+                "biff", 
+                "E=biff@nhind.hsgincubator.com, CN=Dr Biff Hooper, OU=HSG, O=Microsoft, L=Redmond, S=WA, C=US", 5, "biff@nhind.hsgincubator.com");
+
+            CreateEndCert("NewCertificates/nhind/IncomingAnchors/um-amalga1-vm1",
+                new List<string>() { "NewCertificates/redmond/Public" },
+                new List<string>() { "NewCertificates/nhind/Private" },
+                "nancy", 
+                "E=nancy@nhind.hsgincubator.com, CN=Nancy Drew, OU=HSG, O=Microsoft, L=Redmond, S=WA, C=US", 5, "nancy@nhind.hsgincubator.com");
+        }
+
+        [Fact]
+        public void DeployTest()
+        {
+            var sourceRoot = "NewCertificates";
+            var destRoot = "../../../../agent/Certificates";
+            
+            Assert.True(Directory.Exists(sourceRoot), $"Source folder not found: {Path.GetFullPath(sourceRoot)}");
+
+            foreach (var srcFile in Directory.EnumerateFiles(sourceRoot, "*.*", SearchOption.AllDirectories))
+            {
+                var relative = GetRelativePath(sourceRoot, srcFile);
+                var destPath = Path.Combine(destRoot, relative);
+                var destDir = Path.GetDirectoryName(destPath);
+                if (string.IsNullOrWhiteSpace(destDir)) continue;
+
+                var isPfx = string.Equals(Path.GetExtension(srcFile), ".pfx", StringComparison.OrdinalIgnoreCase);
+                var dirHasAnchors = destDir.IndexOf("Anchors", StringComparison.OrdinalIgnoreCase) >= 0;
+
+                // Skip deploying .pfx files into any *Anchors* folder.
+                if (isPfx && dirHasAnchors)
+                {
+                    continue;
+                }
+
+                if (!Directory.Exists(destDir))
+                {
+                    Directory.CreateDirectory(destDir);
+                }
+
+                File.Copy(srcFile, destPath, overwrite: true);
+            }
+        }
+
+        private static string GetProjectDirectory([CallerFilePath] string? callerFilePath = null)
+        {
+            if (string.IsNullOrEmpty(callerFilePath))
+                throw new InvalidOperationException("CallerFilePath not provided.");
+
+            var dir = new DirectoryInfo(Path.GetDirectoryName(callerFilePath)!);
+            while (dir != null)
+            {
+                if (dir.GetFiles("*.csproj").Any())
+                    return dir.FullName;
+
+                dir = dir.Parent;
+            }
+
+            throw new InvalidOperationException("Could not locate project directory (.csproj not found).");
+        }
+
+        private void CreateEndCert(
+            string caFileBaseName,
+            IEnumerable<string>? cerOutputDirs,
+            IEnumerable<string>? pfxOutputDirs,
+            string endFileBaseName, 
+            string subject, 
+            int yearsValid = 5, 
+            string? rfc822Email = null)
+        {
+            if (string.IsNullOrWhiteSpace(caFileBaseName)) throw new ArgumentException("CA file base name required", nameof(caFileBaseName));
+            if (string.IsNullOrWhiteSpace(endFileBaseName)) throw new ArgumentException("End certificate file base name required", nameof(endFileBaseName));
+            if (string.IsNullOrWhiteSpace(subject)) throw new ArgumentException("Subject required", nameof(subject));
+            
+            var caPfxPath = $"{caFileBaseName}.pfx";
+            Assert.True(File.Exists(caPfxPath), $"CA PFX not found: {caPfxPath}. Run CreateCAsTest first.");
+
+            var caCert = new X509Certificate2(File.ReadAllBytes(caPfxPath), (string)null,
+                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+            Assert.True(caCert.HasPrivateKey, "CA certificate must have a private key.");
+
+            using (var rsa = RSA.Create(2048))
+            {
+                var request = new CertificateRequest(
+                    subject,
+                    rsa,
+                    HashAlgorithmName.SHA256,
+                    RSASignaturePadding.Pkcs1);
+
+                // End-entity constraints
+                request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
+
+                var keyUsageFlags = X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment;
+                request.CertificateExtensions.Add(new X509KeyUsageExtension(keyUsageFlags, true));
+
+                // Secure Email EKU (same OID used earlier)
+                var eku = new OidCollection { new Oid("1.3.6.1.5.5.7.3.4") };
+                request.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(eku, false));
+
+                // Optional Subject Alternative Name: RFC822 email
+                if (!string.IsNullOrWhiteSpace(rfc822Email))
+                {
+                    var sanBuilder = new SubjectAlternativeNameBuilder();
+                    sanBuilder.AddEmailAddress(rfc822Email);
+                    request.CertificateExtensions.Add(sanBuilder.Build());
+                }
+
+                request.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(request.PublicKey, false));
+
+                // AKI from CA SKI (ensure CA has one; if not create synthetic)
+                var caSki = caCert.Extensions.OfType<X509SubjectKeyIdentifierExtension>().FirstOrDefault()
+                            ?? new X509SubjectKeyIdentifierExtension(caCert.PublicKey, false);
+                request.CertificateExtensions.Add(BuildAuthorityKeyIdentifierFromSubjectKeyId(caSki));
+
+                var now = DateTimeOffset.UtcNow;
+                using (var issued = request.Create(
+                           caCert,
+                           now,
+                           now.AddYears(yearsValid),
+                           GenerateSerial()))
+                {
+                    var endWithKey = issued.CopyWithPrivateKey(rsa);
+                    const string pfxPassword = "Passw0rd!";
+                    var pfxBytes = endWithKey.Export(X509ContentType.Pfx, pfxPassword);
+
+                    var verify = new X509Certificate2(
+                        pfxBytes,
+                        pfxPassword,
+                        X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+                    if (!verify.HasPrivateKey)
+                    {
+                        throw new InvalidOperationException("PFX verification failed: private key missing.");
+                    }
+
+                    var cerBytes = endWithKey.Export(X509ContentType.Cert);
+
+                    if (cerOutputDirs != null)
+                    {
+                        foreach (var dir in cerOutputDirs)
+                        {
+                            if (string.IsNullOrWhiteSpace(dir)) continue;
+                            if (!Directory.Exists(dir))
+                            {
+                                Directory.CreateDirectory(dir);
+                            }
+
+                            File.WriteAllBytes(Path.Combine(dir, $"{endFileBaseName}.cer"), cerBytes);
+                        }
+                    }
+
+                    if (pfxOutputDirs != null)
+                    {
+                        foreach (var dir in pfxOutputDirs)
+                        {
+                            if (string.IsNullOrWhiteSpace(dir)) continue;
+                            if (!Directory.Exists(dir))
+                            {
+                                Directory.CreateDirectory(dir);
+                            }
+
+                            File.WriteAllBytes(Path.Combine(dir, $"{endFileBaseName}.pfx"), pfxBytes);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Parameterized version: pass full subject and output filename base (without extension)
+        private void CreateCAs(
+            string fileBaseName, 
+            string subject, 
+            IEnumerable<string>? cerOutputDirs = null)
+        {
+            if (string.IsNullOrWhiteSpace(subject)) throw new ArgumentException("Subject must be provided.", nameof(subject));
+            if (string.IsNullOrWhiteSpace(fileBaseName)) throw new ArgumentException("Filename base must be provided.", nameof(fileBaseName));
+
+            // Validity: now to 20 years in the future
+            var now = DateTimeOffset.UtcNow;
+            var recreated = CreateSelfSignedAnchor(
+                subject,
+                now,
+                now.AddYears(20));
+
+            Assert.Equal(subject, recreated.Subject);
+            Assert.Equal(recreated.Subject, recreated.Issuer);
+
+            var cerBytes = recreated.Export(X509ContentType.Cert);
+            var pfxBytes = recreated.Export(X509ContentType.Pfx);
+
+            if (cerOutputDirs != null)
+            {    foreach (var dir in cerOutputDirs)
+                {
+                    if (string.IsNullOrWhiteSpace(dir)) continue;
+                    if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+                    File.WriteAllBytes(Path.Combine(dir, $"{fileBaseName}.cer"), cerBytes);
+                    File.WriteAllBytes(Path.Combine(dir, $"{fileBaseName}.pfx"), pfxBytes);
+                }
+            }
+        }
+
+
+        private static X509Certificate2 CreateSelfSignedAnchor(string subject, DateTimeOffset notBefore, DateTimeOffset notAfter)
+        {
+            var rsa = RSA.Create(2048);
+
+            var request = new CertificateRequest(
+                subject,
+                rsa,
+                HashAlgorithmName.SHA256,
+                RSASignaturePadding.Pkcs1);
+
+            request.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
+
+            var keyUsageFlags = X509KeyUsageFlags.KeyCertSign | X509KeyUsageFlags.CrlSign | X509KeyUsageFlags.DigitalSignature;
+            request.CertificateExtensions.Add(new X509KeyUsageExtension(keyUsageFlags, true));
+
+            var ekuOids = new OidCollection();
+            ekuOids.Add(new Oid("1.3.6.1.5.5.7.3.4"));
+            request.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(ekuOids, false));
+
+            request.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(request.PublicKey, false));
+
+            var skiExt = request.CertificateExtensions.OfType<X509SubjectKeyIdentifierExtension>().First();
+            var aki = BuildAuthorityKeyIdentifierFromSubjectKeyId(skiExt);
+            request.CertificateExtensions.Add(aki);
+
+            var cert = request.CreateSelfSigned(notBefore, notAfter);
+
+            return new X509Certificate2(cert.Export(X509ContentType.Pfx), (string)null,
+                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+        }
+
+        private static X509Extension BuildAuthorityKeyIdentifierFromSubjectKeyId(X509SubjectKeyIdentifierExtension ski)
+        {
+            // AuthorityKeyIdentifier ::= SEQUENCE { keyIdentifier [0] IMPLICIT OCTET STRING OPTIONAL }
+            // Encoded: 30 16 80 14 <20 bytes>
+            byte[] keyId = HexToBytes(ski.SubjectKeyIdentifier);
+            if (keyId.Length != 20)
+            {
+                throw new InvalidOperationException("Unexpected SKI length for AKI construction.");
+            }
+
+            var akiBytes = new byte[2 + 2 + 20];
+            akiBytes[0] = 0x30;
+            akiBytes[1] = 0x16;
+            akiBytes[2] = 0x80;
+            akiBytes[3] = 0x14;
+            Buffer.BlockCopy(keyId, 0, akiBytes, 4, 20);
+
+            return new X509Extension("2.5.29.35", akiBytes, false);
+        }
+
+        private static byte[] HexToBytes(string hex)
+        {
+            if (hex == null) return new byte[0];
+            var bytes = new byte[hex.Length / 2];
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                bytes[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
+            }
+            return bytes;
+        }
+
+        private static byte[] GenerateSerial()
+        {
+            var serial = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(serial);
+            }
+            return serial;
+        }
+
+        private static string GetRelativePath(string basePath, string fullPath)
+        {
+            if (string.IsNullOrEmpty(basePath)) throw new ArgumentNullException(nameof(basePath));
+            if (string.IsNullOrEmpty(fullPath)) throw new ArgumentNullException(nameof(fullPath));
+
+            basePath = Path.GetFullPath(basePath)
+                .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
+            fullPath = Path.GetFullPath(fullPath);
+
+            var baseUri = new Uri(basePath, UriKind.Absolute);
+            var fullUri = new Uri(fullPath, UriKind.Absolute);
+
+            if (baseUri.Scheme != fullUri.Scheme)
+            {
+                // Different URI schemes, cannot make relative.
+                return fullPath;
+            }
+
+            var relativeUri = baseUri.MakeRelativeUri(fullUri);
+            var relative = Uri.UnescapeDataString(relativeUri.ToString())
+                .Replace('/', Path.DirectorySeparatorChar);
+
+            return relative;
+        }
+    }
+}

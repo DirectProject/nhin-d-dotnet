@@ -21,7 +21,7 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using Health.Direct.Common.Certificates;
 using Health.Direct.Common.Extensions;
-using Health.Direct.Config.Store;
+using Health.Direct.Config.Client.CertificateService;
 using Health.Direct.Config.Tools.Command;
 using Org.BouncyCastle.Asn1.X509;
 
@@ -285,7 +285,16 @@ namespace Health.Direct.Config.Console.Command
 
                 foreach (string file in files)
                 {
-                    certcmd.LoadCerts(certStore, file, "passw0rd!", X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                    try
+                    {
+                        certcmd.LoadCerts(certStore, file, "passw0rd!",
+                            X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable |
+                            X509KeyStorageFlags.PersistKeySet);
+                    }
+                    catch
+                    {
+                        certcmd.LoadCerts(certStore, file, "Passw0rd!", X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
+                    }
                 }
 
                 return certStore;

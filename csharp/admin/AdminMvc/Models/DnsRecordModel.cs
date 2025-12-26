@@ -18,8 +18,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 
 using Health.Direct.Admin.Console.Common;
+using Health.Direct.Common;
 using Health.Direct.Common.DnsResolver;
-using Health.Direct.Config.Store;
 
 namespace Health.Direct.Admin.Console.Models
 {

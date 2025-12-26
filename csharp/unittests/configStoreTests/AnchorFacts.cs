@@ -17,6 +17,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using Health.Direct.Common;
 using Xunit;
 
 namespace Health.Direct.Config.Store.Tests
@@ -276,7 +277,7 @@ namespace Health.Direct.Config.Store.Tests
         [MemberData("TestAnchors")]
         public void IsValidTest(Anchor target)
         {
-            Assert.True(target.IsValid(DateTime.UtcNow));
+            Assert.True(target.IsValid(DateTimeHelper.Now));
             Assert.False(target.IsValid(target.ValidEndDate.AddSeconds(1)));
             Assert.False(target.IsValid(target.ValidStartDate.AddSeconds(-1)));
         }

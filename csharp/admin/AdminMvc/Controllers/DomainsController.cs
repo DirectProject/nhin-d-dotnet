@@ -19,14 +19,12 @@ using System.Web.Mvc;
 
 using Health.Direct.Admin.Console.Models;
 using Health.Direct.Admin.Console.Models.Repositories;
-
 using AutoMapper;
-
-using Health.Direct.Config.Store;
+using Health.Direct.Config.Client.DomainManager;
 
 namespace Health.Direct.Admin.Console.Controllers
 {
-    public class DomainsController : ControllerBase<Domain, DomainModel, IDomainRepository>
+    public class DomainsController : ControllerBase<Domain, DomainModel, IDomainRepository, EntityStatus>
     {
         public DomainsController(IDomainRepository repository)
             : base(repository)

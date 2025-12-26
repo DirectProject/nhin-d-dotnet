@@ -24,6 +24,7 @@ using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using Health.Direct.Common;
 
 namespace Health.Direct.Config.Store
 {

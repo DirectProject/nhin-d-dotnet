@@ -40,7 +40,7 @@ namespace Health.Direct.SmtpAgent.Tests
         //const string Dns_Server = "184.73.237.102";
         //const string Dns_Server = "10.110.22.16";
         //const string Dns_Sertver = "207.170.210.162";
-        const string Dns_Server = "8.8.8.8";
+        private const string Dns_Server = "1.1.1.1";
 
         #region data
 
@@ -123,7 +123,7 @@ namespace Health.Direct.SmtpAgent.Tests
                             <TypeName>Health.Direct.ResolverPlugins.LdapCertResolverProxy, Health.Direct.ResolverPlugins</TypeName>
                             <Settings> 
                                 <ServerIP>0.0.0.0</ServerIP> <!-- Windows Dns Server -->
-                                <BackupServerIP>8.8.8.8</BackupServerIP>
+                                <BackupServerIP>1.1.1.1</BackupServerIP>
                             </Settings>
                         </Definition>
                     </PluginResolver>
@@ -215,7 +215,7 @@ namespace Health.Direct.SmtpAgent.Tests
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d1@domain1.dcdt31prod.sitenv.org")]
+        [InlineData("d1@domain1.dcdt31.healthit.gov")]
         public void TestD1(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -251,7 +251,7 @@ namespace Health.Direct.SmtpAgent.Tests
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d2@domain1.dcdt31prod.sitenv.org")]
+        [InlineData("d2@domain1.dcdt31.healthit.gov")]
         public void TestD2(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -266,18 +266,18 @@ namespace Health.Direct.SmtpAgent.Tests
             Assert.NotNull(resolver);
 
             var email = new MailAddress(subject);
-            X509Certificate2Collection certs = resolver.GetCertificates(email);
+            var certs = resolver.GetCertificates(email);
             Assert.Equal(2, certs.Count);
 
             //
             // find invalid cert
             //
             var cert = certs.FindByName("D1_invB");
-            Assert.Equal("domain1.dcdt31prod.sitenv.org", cert.GetNameInfo(X509NameType.DnsName, false));
+            Assert.Equal("domain1.dcdt31.healthit.gov", cert.GetNameInfo(X509NameType.DnsName, false));
             AssertCert(cert, false, DefaultProblemFlags);
 
             cert = certs.FindByName("D2_valB");
-            Assert.Equal("domain1.dcdt31prod.sitenv.org", cert.GetNameInfo(X509NameType.DnsName, false));
+            Assert.Equal("domain1.dcdt31.healthit.gov", cert.GetNameInfo(X509NameType.DnsName, false));
             AssertCert(cert, true, DefaultProblemFlags);
 
             //
@@ -285,11 +285,11 @@ namespace Health.Direct.SmtpAgent.Tests
             //
             certs = resolver.GetCertificatesForDomain(email.Host);
             cert = certs.FindByName("D1_invB");
-            Assert.Equal("domain1.dcdt31prod.sitenv.org", cert.GetNameInfo(X509NameType.DnsName, false));
+            Assert.Equal("domain1.dcdt31.healthit.gov", cert.GetNameInfo(X509NameType.DnsName, false));
             AssertCert(cert, false, DefaultProblemFlags);
 
             cert = certs.FindByName("D2_valB");
-            Assert.Equal("domain1.dcdt31prod.sitenv.org", cert.GetNameInfo(X509NameType.DnsName, false));
+            Assert.Equal("domain1.dcdt31.healthit.gov", cert.GetNameInfo(X509NameType.DnsName, false));
             AssertCert(cert, true, DefaultProblemFlags);
         }
 
@@ -299,7 +299,7 @@ namespace Health.Direct.SmtpAgent.Tests
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d2@domain1.dcdt31prod.sitenv.org")]
+        [InlineData("d2@domain1.dcdt31.healthit.gov")]
         public void TestD2_Via_Agent_TrustModel(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -364,7 +364,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d3@domain2.dcdt31prod.sitenv.org")]
+        [InlineData("d3@domain2.dcdt31.healthit.gov")]
         public void TestD3(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -388,7 +388,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d4@domain2.dcdt31prod.sitenv.org")]
+        [InlineData("d4@domain2.dcdt31.healthit.gov")]
         public void TestD4(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -409,7 +409,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
             X509Certificate2Collection certs = resolver.GetCertificates(email);
 
             var cert = certs.FindByName("D4_valD");
-            Assert.Equal("domain2.dcdt31prod.sitenv.org", cert.GetNameInfo(X509NameType.DnsName, false));
+            Assert.Equal("domain2.dcdt31.healthit.gov", cert.GetNameInfo(X509NameType.DnsName, false));
             AssertCert(cert, true, DefaultProblemFlags);
 
             Assert.Equal(0, diagnosticsForDnsCertResolver.ActualErrorMessages.Count);
@@ -422,7 +422,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d5@domain1.dcdt31prod.sitenv.org")]
+        [InlineData("d5@domain1.dcdt31.healthit.gov")]
         public void TestD5(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -447,7 +447,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d6@domain4.dcdt31prod.sitenv.org")]
+        [InlineData("d6@domain4.dcdt31.healthit.gov")]
         public void TestD6(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -472,7 +472,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d7@domain2.dcdt31prod.sitenv.org")]
+        [InlineData("d7@domain2.dcdt31.healthit.gov")]
         public void TestD7(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -497,7 +497,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d8@domain5.dcdt31prod.sitenv.org")]
+        [InlineData("d8@domain5.dcdt31.healthit.gov")]
         public void TestD8(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -522,7 +522,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d9@domain1.dcdt31prod.sitenv.org")]
+        [InlineData("d9@domain1.dcdt31.healthit.gov")]
         public void TestD9(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -553,7 +553,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d10@domain3.dcdt31prod.sitenv.org")]
+        [InlineData("d10@domain3.dcdt31.healthit.gov")]
         public void TestD10(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -579,7 +579,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
             AssertCert(certs[0], true, DefaultProblemFlags);
 
             Assert.Equal(1, diagnosticsForLdapCertResolver.ActualErrorMessages.Count);
-            Assert.Equal("Error=BindFailure\r\n_ldap._tcp.domain3.dcdt31prod.sitenv.org:10389 Priority:0 Weight:0", diagnosticsForLdapCertResolver.ActualErrorMessages[0]);
+            Assert.Equal("Error=BindFailure\r\n_ldap._tcp.domain3.dcdt31.healthit.gov:10389 Priority:0 Weight:0", diagnosticsForLdapCertResolver.ActualErrorMessages[0]);
         }
 
         /// <summary>
@@ -588,7 +588,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d11@domain6.dcdt31prod.sitenv.org")]
+        [InlineData("d11@domain6.dcdt31.healthit.gov")]
         public void TestD11(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -608,7 +608,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d12@domain7.dcdt31prod.sitenv.org")]
+        [InlineData("d12@domain7.dcdt31.healthit.gov")]
         public void TestD12(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -630,7 +630,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
             Assert.Null(certs);
 
             Assert.Equal(1, diagnosticsForLdapCertResolver.ActualErrorMessages.Count);
-            Assert.Equal("Error=BindFailure\r\n_ldap._tcp.domain7.dcdt31prod.sitenv.org:10389 Priority:0 Weight:0", diagnosticsForLdapCertResolver.ActualErrorMessages[0]);
+            Assert.Equal("Error=BindFailure\r\n_ldap._tcp.domain7.dcdt31.healthit.gov:10389 Priority:0 Weight:0", diagnosticsForLdapCertResolver.ActualErrorMessages[0]);
         }
 
         /// <summary>
@@ -639,7 +639,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d13@domain8.dcdt31prod.sitenv.org")]
+        [InlineData("d13@domain8.dcdt31.healthit.gov")]
         public void TestD13(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -669,7 +669,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d14@domain1.dcdt31prod.sitenv.org")]
+        [InlineData("d14@domain1.dcdt31.healthit.gov")]
         public void TestD14(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -694,7 +694,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d15@domain2.dcdt31prod.sitenv.org")]
+        [InlineData("d15@domain2.dcdt31.healthit.gov")]
         public void TestD15(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -731,7 +731,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// </summary>
         /// <param name="subject"></param>
         [Theory]
-        [InlineData("d16@domain5.dcdt31prod.sitenv.org")]
+        [InlineData("d16@domain5.dcdt31.healthit.gov")]
         public void TestD16(string subject)
         {
             AgentSettings settings = AgentSettings.Load(TestRealResolversXml);
@@ -772,10 +772,10 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         /// <param name="commonName">Filter extra anchors so it is easier to debug</param>
         [Theory]
         [InlineData(
-            "d17@domain9.dcdt31prod.sitenv.org",
-            "8.8.8.8",
+            "d17@domain9.dcdt31.healthit.gov",
+            "1.1.1.1",
             "CN=demo31.direct-test.com_ca_root",
-            @"..\..\..\..\unittests\smtpAgent\Anchors\dcdt31prod.sitenv.org_ca_root.der")]
+            @"..\..\..\..\..\unittests\smtpAgent\Anchors\dcdt31.healthit.gov_ca_root.der")]
         public void TestD17(string subject, string ip, string commonName, string anchorFile)
         {
             var anchorText = File.ReadAllBytes(anchorFile);
@@ -866,9 +866,9 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
 
         [Theory]
         [InlineData(
-            "d18@domain10.dcdt31prod.sitenv.org",
-            "8.8.8.8",
-            @"..\..\..\..\unittests\smtpAgent\Anchors\dcdt31prod.sitenv.org_ca_root.der")]
+            "d18@domain10.dcdt31.healthit.gov",
+            "1.1.1.1",
+            @"..\..\..\..\..\unittests\smtpAgent\Anchors\dcdt31.healthit.gov_ca_root.der")]
         public void TestD18(string subject, string ip, string anchorFile)
         {
             var anchorText = File.ReadAllBytes(anchorFile);
@@ -903,7 +903,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
         {
             if (anchor == null)
             {
-                var anchorText = File.ReadAllBytes(@"..\..\..\..\unittests\smtpAgent\Anchors\dcdt31prod.sitenv.org_ca_root.der");
+                var anchorText = File.ReadAllBytes(@"..\..\..\..\..\unittests\smtpAgent\Anchors\dcdt31.healthit.gov_ca_root.der");
                 anchor = new X509Certificate2(anchorText);
             }
             
@@ -1044,7 +1044,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
             {
                 store.Open(OpenFlags.ReadWrite);
 
-                var file = @".\Anchors\demo31.direct-test.com_ca_root.cer";
+                var file = @".\Anchors\dcdt31.healthit.gov_ca_root.der";
 
                 if (!AnchorExists(store, file))
                 {
@@ -1067,7 +1067,7 @@ Yo. Wassup?", subject, Guid.NewGuid().ToString("N"));
             var anchorStore = new X509Store("NHINDAnchors", StoreLocation.LocalMachine);
             anchorStore.Open(OpenFlags.ReadWrite);
 
-            var file = @".\Anchors\dcdt31prod.sitenv.org_ca_root.der";
+            var file = @".\Anchors\dcdt31.healthit.gov_ca_root.der";
 
             if (!AnchorExists(anchorStore, file))
             {

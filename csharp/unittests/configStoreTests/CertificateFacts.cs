@@ -15,10 +15,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 
+using Health.Direct.Common;
+using Health.Direct.Common.Certificates;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
-using Health.Direct.Common.Certificates;
 using Xunit;
 
 namespace Health.Direct.Config.Store.Tests
@@ -276,7 +277,7 @@ namespace Health.Direct.Config.Store.Tests
         [MemberData("TestCertificates")]
         public void IsValidTest(Certificate target)
         {
-            Assert.True(target.IsValid(DateTime.UtcNow));
+            Assert.True(target.IsValid(DateTimeHelper.Now));
             Assert.False(target.IsValid(target.ValidEndDate.AddSeconds(1)));
             Assert.False(target.IsValid(target.ValidStartDate.AddSeconds(-1)));
         }
@@ -288,7 +289,7 @@ namespace Health.Direct.Config.Store.Tests
         [MemberData("TestCertsBytes")]
         public void ImportTest(byte[] sourceFileBytes)
         {
-            string password = string.Empty;
+            string password = "Passw0rd!";
             X509Certificate2 expected = new X509Certificate2(sourceFileBytes, password);
             X509Certificate2 actual = Certificate.Import(sourceFileBytes, password);
             Assert.Equal(expected, actual);

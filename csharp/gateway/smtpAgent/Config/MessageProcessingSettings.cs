@@ -23,7 +23,7 @@ namespace Health.Direct.SmtpAgent.Config
     {
         /// <summary>
         /// For debugging/diagnostics etc - vital especially as we develop and try to debug
-        // If a CopyFolder is defined, a copy of the message is saved in the folder
+        /// If a CopyFolder is defined, a copy of the message is saved in the folder
         /// </summary>
         [XmlElement("CopyFolder")]
         public string CopyFolder

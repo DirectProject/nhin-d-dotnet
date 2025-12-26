@@ -20,8 +20,10 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.IO;
 using System.Linq;
+using Health.Direct.Common;
 using Health.Direct.Common.Certificates;
 using Health.Direct.Common.DnsResolver;
+using Health.Direct.Common.Mdn;
 using Health.Direct.Policy.Extensions;
 using Xunit;
 
@@ -1108,7 +1110,7 @@ namespace Health.Direct.Config.Store.Tests
             {
                 cert = new Anchor(string.Format("CN=domain{0}.test.com", domainID)
                                   , new BinaryReader(fs).ReadBytes((int)new FileInfo(path).Length)
-                                  , String.Empty);
+                                  , "Passw0rd!");
                 //cert.Owner = string.Format("domain{0}.test.com", domainID);
                 //cert.Data = new BinaryReader(fs).ReadBytes((int)new FileInfo(path).Length);
             }
@@ -1140,7 +1142,7 @@ namespace Health.Direct.Config.Store.Tests
             {
                 cert = new Certificate(string.Format("domain{0}.test.com", domainID)
                                        , new BinaryReader(fs).ReadBytes((int)new FileInfo(path).Length)
-                                       , String.Empty);
+                                       , "Passw0rd!");
                 //cert.Owner = string.Format("domain{0}.test.com", domainID);
                 //cert.Data = new BinaryReader(fs).ReadBytes((int)new FileInfo(path).Length);
             }
@@ -1173,7 +1175,7 @@ namespace Health.Direct.Config.Store.Tests
                 , CERTSRECORDSPATH
                 , domainID
                 , subId);
-            return new System.Security.Cryptography.X509Certificates.X509Certificate2(path, String.Empty);
+            return new System.Security.Cryptography.X509Certificates.X509Certificate2(path, "Passw0rd!");
         }
 
         /// <summary>

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "config.console": {
+      "commandName": "Project",
+      "commandLineArgs": "TEST_CERTS_INSTALL"
+    }
+  }
+}

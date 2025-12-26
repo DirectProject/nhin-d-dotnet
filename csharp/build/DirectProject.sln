@@ -1,8 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{84B9F52B-722C-4CA1-8631-4C908E6BD9E5}"
+	ProjectSection(SolutionItems) = preProject
+		..\build.ps1 = ..\build.ps1
+		DirectProject.snk = DirectProject.snk
+		..\GlobalAssemblyInfo.cs = ..\GlobalAssemblyInfo.cs
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smtpAgent", "..\gateway\smtpAgent\smtpAgent.csproj", "{A9B11AAD-3461-4DDB-A447-91779BD41A78}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smtpAgent.tests", "..\unittests\smtpAgent\smtpAgent.tests.csproj", "{0063CEEB-E7EB-4E87-A0E9-E9962AF74548}"
@@ -69,8 +76,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "policy.tests", "..\unittest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "policy.ui", "..\policy.ui\policy.ui.csproj", "{4CF6DA9F-4954-493C-A5AA-2477B36760E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "config.service.rest", "..\config\service.rest\config.service.rest.csproj", "{2054207F-26B6-4B17-AD3F-A76549D72EB7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseAuditor", "..\auditors\DatabaseAuditor\DatabaseAuditor.csproj", "{7F3D3DAF-D5B3-44FC-BEE8-716B49CBB4AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsmCryptographer", "..\hsmCryptographer\hsmCryptographer.csproj", "{3C66E370-68B4-45C7-8C69-622C983C8E43}"
@@ -78,12 +83,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsmCryptographer.tests", "..\unittests\hsmCryptographer.tests\hsmCryptographer.tests.csproj", "{C14A16EF-CEAF-412C-BD7C-6E510C5897C9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "smtpEventHandler", "..\gateway\smtpEventHandler\smtpEventHandler.vcxproj", "{1C4EFA2C-943E-4ABA-9EDC-F92BD561EAC2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{84B9F52B-722C-4CA1-8631-4C908E6BD9E5}"
-	ProjectSection(SolutionItems) = preProject
-		..\build.ps1 = ..\build.ps1
-		DirectProject.snk = DirectProject.snk
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminMvc", "..\admin\AdminMvc\AdminMvc.csproj", "{8E284E54-B6E7-4F16-B362-719C34E95762}"
 EndProject
@@ -115,9 +114,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xdr", "..\xdr\xdr.csproj", 
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DirectConfig", "..\database\DirectConfig.sqlproj", "{2214B078-34FE-4E2E-875A-254ADDB2F1F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "context.loopback.receiver", "..\context.receiver\context.loopback.receiver.csproj", "{53FF4765-58B8-4747-93E7-6EE9416E2036}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "agentPkiGenerator.tests", "..\unittests\agentPkiGenerator.tests\agentPkiGenerator.tests.csproj", "{533AA11A-7C3C-4F3D-9901-534301D3F036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "context.loopback.receiver.tests", "..\context.receiver.tests\context.loopback.receiver.tests.csproj", "{0014C11B-13F4-4B59-BBF5-D59182DF6372}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{FDE9B65A-EA16-4BE7-A342-0AC5D78A5CEE}"
+	ProjectSection(SolutionItems) = preProject
+		..\external\microsoft\vcredist\vcredist_x64.exe = ..\external\microsoft\vcredist\vcredist_x64.exe
+		..\external\microsoft\vcredist\vcredist_x86.exe = ..\external\microsoft\vcredist\vcredist_x86.exe
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -237,10 +240,6 @@ Global
 		{4CF6DA9F-4954-493C-A5AA-2477B36760E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CF6DA9F-4954-493C-A5AA-2477B36760E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CF6DA9F-4954-493C-A5AA-2477B36760E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2054207F-26B6-4B17-AD3F-A76549D72EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2054207F-26B6-4B17-AD3F-A76549D72EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2054207F-26B6-4B17-AD3F-A76549D72EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2054207F-26B6-4B17-AD3F-A76549D72EB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F3D3DAF-D5B3-44FC-BEE8-716B49CBB4AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F3D3DAF-D5B3-44FC-BEE8-716B49CBB4AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F3D3DAF-D5B3-44FC-BEE8-716B49CBB4AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -317,16 +316,18 @@ Global
 		{2214B078-34FE-4E2E-875A-254ADDB2F1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2214B078-34FE-4E2E-875A-254ADDB2F1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2214B078-34FE-4E2E-875A-254ADDB2F1F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53FF4765-58B8-4747-93E7-6EE9416E2036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53FF4765-58B8-4747-93E7-6EE9416E2036}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53FF4765-58B8-4747-93E7-6EE9416E2036}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53FF4765-58B8-4747-93E7-6EE9416E2036}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0014C11B-13F4-4B59-BBF5-D59182DF6372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0014C11B-13F4-4B59-BBF5-D59182DF6372}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0014C11B-13F4-4B59-BBF5-D59182DF6372}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0014C11B-13F4-4B59-BBF5-D59182DF6372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{533AA11A-7C3C-4F3D-9901-534301D3F036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{533AA11A-7C3C-4F3D-9901-534301D3F036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{533AA11A-7C3C-4F3D-9901-534301D3F036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{533AA11A-7C3C-4F3D-9901-534301D3F036}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FDE9B65A-EA16-4BE7-A342-0AC5D78A5CEE} = {84B9F52B-722C-4CA1-8631-4C908E6BD9E5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9809A063-80BD-4B03-B5ED-BC0125953CB4}
 	EndGlobalSection
 EndGlobal

@@ -20,7 +20,6 @@ using System.Linq;
 using Health.Direct.Common.Caching;
 using Health.Direct.Common.Policies;
 using Health.Direct.Config.Client.DomainManager;
-using Health.Direct.Config.Store;
 using Health.Direct.Policy.Extensions;
 using Health.Direct.Policy.Impl;
 
@@ -100,7 +99,7 @@ namespace Health.Direct.DnsResponder
 
                 using (CertPolicyStoreClient client = CreateClient())
                 {
-                    matches = client.GetIncomingPoliciesByOwner(domain, CertPolicyUse.PUBLIC_RESOLVER)
+                    matches = client.GetIncomingPoliciesByOwner(domain, Config.Client.DomainManager.CertPolicyUse.PUBLIC_RESOLVER)
                         .Select(p => GetPolicyExpression(p.Data))
                         .Select(p => p)
                         .Where(p => p != null)

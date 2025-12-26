@@ -27,7 +27,6 @@ using Health.Direct.Common.Certificates;
 using Health.Direct.Common.Cryptography;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.CertificateService;
-using Health.Direct.Config.Store;
 using Health.Direct.Config.Tools;
 using Health.Direct.Config.Tools.Command;
 using Net.Pkcs11Interop.Common;
@@ -380,31 +379,46 @@ namespace Health.Direct.Config.Console.Command
             Pkcs11Util.GenerateKeyPair(session, ckaLabel, ckaId, out publicKeyHandle, out privateKeyHandle, defaultBits);
 
             // Generate x509 attributes for csr 
-            IList oids = new ArrayList();
-            IList values = new ArrayList();
-
-            oids.Add(X509Extensions.BasicConstraints);
-            values.Add(new X509Extension(
-                true,
-                new DerOctetString(new BasicConstraints(true))));
-
-            oids.Add(X509Extensions.KeyUsage);
-            values.Add(new X509Extension(
-                true,
-                new DerOctetString(new KeyUsage(keyUsage))));
-
+            var extensions = new Dictionary<DerObjectIdentifier, X509Extension>();
+            
+            // Add basic constraints
+            extensions.Add(
+                X509Extensions.BasicConstraints,
+                new X509Extension(true, new DerOctetString(new BasicConstraints(true)))
+            );
+            
+            // Add key usage
+            extensions.Add(
+                X509Extensions.KeyUsage,
+                new X509Extension(true, new DerOctetString(new KeyUsage(keyUsage)))
+            );
+            
+            // Add subject alt name based on the domain type
             if (directDomain.Contains("@"))
             {
-                AddSubjectAltNameForRfc822Name(directDomain, oids, values);
+                // Email address
+                extensions.Add(
+                    X509Extensions.SubjectAlternativeName,
+                    new X509Extension(false, new DerOctetString(
+                        new GeneralNames(new GeneralName(GeneralName.Rfc822Name, directDomain))))
+                );
             }
             else
             {
-                AddSubjectAltNameForDnsName(directDomain, oids, values);
+                // DNS name
+                extensions.Add(
+                    X509Extensions.SubjectAlternativeName,
+                    new X509Extension(false, new DerOctetString(
+                        new GeneralNames(new GeneralName(GeneralName.DnsName, directDomain))))
+                );
             }
 
+            // Create X509Extensions using the dictionary
+            var x509Extensions = new X509Extensions(extensions);
+            
             var attribute = new AttributePkcs(
                 PkcsObjectIdentifiers.Pkcs9AtExtensionRequest,
-                new DerSet(new X509Extensions(oids, values)));
+                new DerSet(x509Extensions));
 
             var asn1Attributes = new DerSet(attribute);
 
@@ -430,27 +444,6 @@ namespace Health.Direct.Config.Console.Command
             return sb.ToString();
         }
 
-        private static void AddSubjectAltNameForDnsName(string directDomain, IList oids, IList values)
-        {
-            oids.Add(X509Extensions.SubjectAlternativeName);
-            values.Add(new X509Extension(
-                false,
-                new DerOctetString(
-                    new GeneralNames(
-                        new GeneralName(GeneralName.DnsName, directDomain)))));
-        }
-
-        private static void AddSubjectAltNameForRfc822Name(string email, IList oids, IList values)
-        {
-            oids.Add(X509Extensions.SubjectAlternativeName);
-            
-            values.Add(new X509Extension(
-                false,
-                new DerOctetString(
-                    new GeneralNames(
-                        new GeneralName(GeneralName.Rfc822Name, email)))));
-        }
-        
         internal void PushPublicCert(X509Certificate2 signedCert, bool checkForDupes, EntityStatus? status)
         {
             var owner = signedCert.ExtractEmailNameOrDnsName();

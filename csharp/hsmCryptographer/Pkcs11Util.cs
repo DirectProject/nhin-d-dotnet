@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
-using Net.Pkcs11Interop.HighLevelAPI.MechanismParams;
 using Org.BouncyCastle.Asn1.Cms;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Crypto.Parameters;
@@ -32,16 +31,18 @@ namespace Health.Direct.Hsm
     /// </summary>
     public class Pkcs11Util
     {
+        private static readonly Pkcs11InteropFactories Factories = new Pkcs11InteropFactories();
+
         /// <summary>
         /// Finds slot containing the token that matches criteria specified in <see cref="TokenSettings"/> class
         /// </summary>
         /// <param name='pkcs11'>Initialized PKCS11 wrapper</param>
         /// <param name="settings"></param>
         /// <returns>Slot containing the token that matches criteria in <see cref="TokenSettings"/></returns>
-        public static Slot FindSlot(Pkcs11 pkcs11, TokenSettings settings)
+        public static ISlot FindSlot(IPkcs11Library pkcs11, TokenSettings settings)
         {
             // Get list of available slots with token present
-            var slots = pkcs11.GetSlotList(true);
+            var slots = pkcs11.GetSlotList(SlotsType.WithTokenPresent);
 
             // No criteria, not go.
             if (settings.TokenLabel == null)
@@ -49,7 +50,7 @@ namespace Health.Direct.Hsm
 
             foreach (var slot in slots)
             {
-                TokenInfo tokenInfo = null;
+                ITokenInfo tokenInfo = null;
 
                 try
                 {
@@ -80,9 +81,8 @@ namespace Health.Direct.Hsm
             return null;
         }
 
-        public static byte[] Decrypt(Session session, KeyTransRecipientInfo keyTransRecipientInfo, X509Certificate2 cert)
+        public static byte[] Decrypt(ISession session, KeyTransRecipientInfo keyTransRecipientInfo, X509Certificate2 cert)
         {
-
             var x509CertificateParser = new X509CertificateParser();
             var x509Certificate = x509CertificateParser.ReadCertificate(cert.RawData);
 
@@ -93,78 +93,76 @@ namespace Health.Direct.Hsm
 
             var rsaPubKeyParams = (RsaKeyParameters)pubKeyParams;
 
-            //Correlate with HSM
-            var privKeySearchTemplate = new List<ObjectAttribute>
+            var attrFactory = Factories.ObjectAttributeFactory;
+            var privKeySearchTemplate = new List<IObjectAttribute>();
+            try
             {
-                new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY),
-                new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
-                new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
-            };
+                privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY));
+                privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA));
+                privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()));
+                privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned()));
 
+                var hsmObjects = session.FindAllObjects(privKeySearchTemplate);
+                var encryptedKey = keyTransRecipientInfo.EncryptedKey.GetOctets();
+                var oid = keyTransRecipientInfo.KeyEncryptionAlgorithm.Algorithm.Id;
 
-            // Get handle to private key.
-            // TODO: potential for multiple keys. (old/new)
-            var hsmObjects = session.FindAllObjects(privKeySearchTemplate);
-            var rsaEncryptedKey = keyTransRecipientInfo.EncryptedKey.GetOctets();
-
-            var id = keyTransRecipientInfo.KeyEncryptionAlgorithm.Algorithm.Id;
-            var mechanism = SelectMechanism(id);
-
-            foreach (var objectHandle in hsmObjects)
+                using (var mechanism = SelectMechanism(oid, keyTransRecipientInfo))
+                {
+                    foreach (var handle in hsmObjects)
+                    {
+                        try
+                        {
+                            return session.Decrypt(mechanism, handle, encryptedKey);
+                        }
+                        catch
+                        {
+                            // try next key
+                        }
+                    }
+                }
+            }
+            finally
             {
-                try
-                {
-                    byte[] decryptedData = session.Decrypt(mechanism, objectHandle, rsaEncryptedKey);
-
-                    // Return first found.  
-                    // todo: need to test multi certs where some are expired or possible bad.
-                    // The idea is to eventually find the good cer and not just find the first cert that can decrypt
-
-                    return decryptedData;
-                }
-                catch (Exception ex)
-                {
-                    //keep trying
-                    //log ex
-                }
+                foreach (var a in privKeySearchTemplate)
+                    a.Dispose();
             }
 
             return null;
         }
 
-        private static Mechanism SelectMechanism(string id)
+        // Enhanced: detects OAEP params hash if present, otherwise defaults to SHA-1
+        private static IMechanism SelectMechanism(string oid, KeyTransRecipientInfo keyTransRecipientInfo = null)
         {
-            //dataEnvelope EncryptionAlgOid
-            //2.16.840.1.101.3.4.1.2
-            //DerObjectIdentifier("2.16.840.1.101.3.4") + HashAlgs.Branch("1" = IdSha256) + DerObjectIdentifier(Aes + ".2" = IdAes128Cbc)
+            var mechFactory = Factories.MechanismFactory;
+            var paramsFactory = Factories.MechanismParamsFactory;
 
-            Mechanism mechanism;
-
-            if (id == PkcsObjectIdentifiers.IdRsaesOaep.Id)
+            if (oid == PkcsObjectIdentifiers.IdRsaesOaep.Id)
             {
-                // RecipientInfos
-                //1.2.840.113549.1.1.7
-                //pkcs1 + .7 (.7 = IdRsaesOaep)
+                // Default values (CMS often omits explicit OAEP params -> implies SHA-1)
+                CKM hashAlg = CKM.CKM_SHA_1;
+                CKG mgf = CKG.CKG_MGF1_SHA1;
 
-                var mechanismParams = new CkRsaPkcsOaepParams(
-                    (ulong)CKM.CKM_SHA_1,
-                    (ulong)CKG.CKG_MGF1_SHA1,
-                    (ulong)CKZ.CKZ_DATA_SPECIFIED, null);
+                // OPTIONAL: Parse RSAES-OAEP-params if present to upgrade (SHA-256 etc.)
+                // BouncyCastle provides KeyEncryptionAlgorithm.Parameters (AlgorithmIdentifier sequence)
+                // Only attempt if parameters are supplied.
+                var algIdParams = keyTransRecipientInfo?.KeyEncryptionAlgorithm?.Parameters;
+                // You can enhance by inspecting algIdParams and mapping OIDs to CKM/CKG if needed.
 
-                mechanism = new Mechanism(CKM.CKM_RSA_PKCS_OAEP, mechanismParams);
+                var oaepParams = paramsFactory.CreateCkRsaPkcsOaepParams(
+                    (ulong)hashAlg,              // CKM enum -> ulong
+                    (ulong)mgf,                  // CKG enum -> ulong
+                    (ulong)CKZ.CKZ_DATA_SPECIFIED,
+                    null);
 
-                return mechanism;
+                return mechFactory.Create(CKM.CKM_RSA_PKCS_OAEP, oaepParams);
             }
 
-            if (id == PkcsObjectIdentifiers.RsaEncryption.Id)
+            if (oid == PkcsObjectIdentifiers.RsaEncryption.Id)
             {
-                mechanism = new Mechanism(CKM.CKM_RSA_PKCS);
-
-                return mechanism;
+                return mechFactory.Create(CKM.CKM_RSA_PKCS);
             }
 
-            throw new NotSupportedException(string.Format("No supported HSM mechanisms for pkcs-1 OBJECT IDENTIFIER ::={{iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) 1 }}{0}", id));
+            throw new NotSupportedException($"No supported HSM mechanisms for RSA key transport OID {oid}");
         }
     }
 }

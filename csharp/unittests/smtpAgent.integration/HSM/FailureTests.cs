@@ -12,7 +12,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests.HSM
         /// Bad Url
         /// Outgoing message.
         /// </summary>
-        [Fact]
+        [Fact(Skip = "Not supporting HSM")]
         public void TestUnavailableTokenSettingsOutgoing()
         {
             var agent = SmtpAgentFactory.Create(GetSettingsPath("TestSmtpAgentConfigService_HsmCryptographerBadUrl.xml"));
@@ -31,7 +31,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests.HSM
         /// Bad Url
         /// Incoming message.
         /// </summary>
-        [Fact]
+        [Fact(Skip = "Not supporting HSM")]
         public void TestUnavailableTokenSettingsIncoming()
         {
             var agent = SmtpAgentFactory.Create(GetSettingsPath("TestSmtpAgentConfigService_HsmCryptographer.xml"));

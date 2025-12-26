@@ -85,10 +85,9 @@ namespace Health.Direct.Trust
                 {
                     if (SkipResource(_ignore, file)) continue;
                     X509CertificateParser certParser = new X509CertificateParser();
-                    using (Stream stream = new FileStream(file, FileMode.Open))
+                    using (Stream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
                         var certs = certParser.ReadCertificates(stream);
-                        stream.Close();
                         foreach (var cert in certs)
                         {
                             certList.Add(cert as X509Certificate);

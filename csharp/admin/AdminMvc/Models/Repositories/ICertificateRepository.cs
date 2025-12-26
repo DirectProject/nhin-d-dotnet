@@ -14,8 +14,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 using System.Collections.Generic;
-
-using Health.Direct.Config.Store;
+using Health.Direct.Config.Client.CertificateService;
 
 namespace Health.Direct.Admin.Console.Models.Repositories
 {

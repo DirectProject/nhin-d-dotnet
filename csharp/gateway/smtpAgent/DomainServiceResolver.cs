@@ -20,11 +20,9 @@ using System.Linq;
 using Health.Direct.Common.Caching;
 using Health.Direct.Common.Domains;
 using Health.Direct.Common.Extensions;
-using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mime;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.DomainManager;
-using Health.Direct.Config.Store;
 
 namespace Health.Direct.SmtpAgent
 {

@@ -1,11 +1,12 @@
 ﻿/* 
- Copyright (c) 2010, Direct Project
+ Copyright (c) 2010-2025, Direct Project
  All rights reserved.
 
  Authors:
     Chris Lomonico (chris.lomonico@surescripts.com)
     Umesh Madan     umeshma@microsoft.com
-    
+    Joseph Shook      Joseph.Shook@Surescripts.com
+
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
 Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
@@ -15,12 +16,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
 using Health.Direct.Common.DnsResolver;
-using Health.Direct.Config.Store;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.RecordRetrieval;
 
@@ -185,8 +181,8 @@ namespace Health.Direct.DnsResponder
         {
             using (RecordRetrievalServiceClient client = m_recordRetrievalServiceSettings.CreateRecordRetrievalClient())
             {
-                Certificate[] certs = client.GetCertificatesForOwner(response.Question.Domain);
-                foreach (Certificate cert in certs)
+                var certs = client.GetCertificatesForOwner(response.Question.Domain);
+                foreach (var cert in certs)
                 {
                     response.AnswerRecords.Add(new CertRecord(new DnsX509Cert(cert.Data)));
                 }

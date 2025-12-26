@@ -21,9 +21,7 @@ using System.Linq;
 using System.Net.Mail;
 using Health.Direct.Agent;
 using Health.Direct.Common.Mail.Notifications;
-using Health.Direct.Common.Mime;
 using Health.Direct.Config.Client.MonitorService;
-using Health.Direct.Config.Store;
 using Health.Direct.SmtpAgent.Config;
 
 namespace Health.Direct.SmtpAgent

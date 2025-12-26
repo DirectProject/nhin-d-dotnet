@@ -56,16 +56,7 @@
           <Timeout>1000</Timeout>
         </Settings>
       </Receiver>
-    </PluginRoute>
-    <PluginRoute>
-      <AddressType>LoopBackContext</AddressType>
-      <Receiver>
-        <TypeName>Health.Direct.Context.Loopback.Receiver.LoopBackContext, Health.Direct.Context.Loopback.Receiver</TypeName>
-        <Settings>
-          <PickupFolder>c:\inetpub\mailroot\pickup</PickupFolder>
-        </Settings>
-      </Receiver>
-    </PluginRoute>
+    </PluginRoute>    
     <PluginRoute>
       <AddressType>SMTP</AddressType>
       <Receiver>

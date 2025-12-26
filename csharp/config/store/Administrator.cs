@@ -1,6 +1,7 @@
 using System;
 using System.Data.Linq.Mapping;
 using System.Runtime.Serialization;
+using Health.Direct.Common;
 
 namespace Health.Direct.Config.Store
 {

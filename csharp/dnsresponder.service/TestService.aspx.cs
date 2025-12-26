@@ -22,6 +22,7 @@ namespace Health.Direct.DnsResponder.Service
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Response.Write($"Identity: {System.Security.Principal.WindowsIdentity.GetCurrent().Name}");
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             try
             {

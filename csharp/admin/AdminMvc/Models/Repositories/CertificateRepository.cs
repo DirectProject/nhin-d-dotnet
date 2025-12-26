@@ -17,10 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
-
 using Health.Direct.Common.Extensions;
 using Health.Direct.Config.Client.CertificateService;
-using Health.Direct.Config.Store;
 
 namespace Health.Direct.Admin.Console.Models.Repositories
 {

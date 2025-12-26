@@ -1,10 +1,11 @@
 /* 
- Copyright (c) 2013, Direct Project
+ Copyright (c) 2013-2025, Direct Project
  All rights reserved.
 
  Authors:
     Joe Shook     jshook@kryptiq.com
- 
+    Joseph Shook      Joseph.Shook@Surescripts.com
+
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
 Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
@@ -14,16 +15,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Security.Cryptography;
+using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Security;
-using Org.BouncyCastle.X509.Store;
 using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
 namespace Health.Direct.Trust
@@ -59,30 +59,36 @@ namespace Health.Direct.Trust
 
         public byte[] Sign(byte[] cmsData)
         {
-            IList certs = new List<X509Certificate>();
-
+            // Load signing cert (PFX)
             byte[] signBytes = File.ReadAllBytes(GetFile());
-            X509Certificate2 signCert = new X509Certificate2(signBytes, Key, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
-            certs.Add(DotNetUtilities.FromX509Certificate(signCert));
-            IX509Store x509Certs = X509StoreFactory.Create("Certificate/Collection", new X509CollectionStoreParameters(certs));
+            var signCert = new X509Certificate2(
+                signBytes,
+                Key,
+                X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
 
-            CmsSignedDataGenerator gen = new CmsSignedDataGenerator();
-            AsymmetricCipherKeyPair pair = DotNetUtilities.GetKeyPair(signCert.PrivateKey);
-            X509Certificate bX509Certificate = DotNetUtilities.FromX509Certificate(signCert);
-            gen.AddSigner(pair.Private, bX509Certificate, CmsSignedGenerator.DigestSha1);
-            gen.AddSigner(pair.Private, bX509Certificate, CmsSignedGenerator.DigestSha256);
-            CmsSignedData unsignedData = new CmsSignedData(cmsData);
+            // Build PKCS#7 SignedCms using Windows crypto (CSP/CNG) to avoid exporting private key
+            var content = new ContentInfo(cmsData);
+            var signedCms = new SignedCms(content, false);
 
-            
-            gen.AddCertificates(x509Certs);
-            CmsProcessable msg = new CmsProcessableByteArray(unsignedData.GetEncoded());
-            CmsSignedData cmsSignedData = gen.Generate(CmsSignedGenerator.Data, msg, true);
-            
-            byte[] p7MData = cmsSignedData.GetEncoded();
-            return p7MData;
+            // SHA-1 signer (legacy)
+            var sha1Signer = new CmsSigner(SubjectIdentifierType.IssuerAndSerialNumber, signCert)
+            {
+                IncludeOption = X509IncludeOption.EndCertOnly
+            };
+            sha1Signer.DigestAlgorithm = new Oid("1.3.14.3.2.26"); // SHA-1
+            signedCms.ComputeSignature(sha1Signer, false);
+
+            // SHA-256 signer
+            var sha256Signer = new CmsSigner(SubjectIdentifierType.IssuerAndSerialNumber, signCert)
+            {
+                IncludeOption = X509IncludeOption.EndCertOnly
+            };
+            sha256Signer.DigestAlgorithm = new Oid("2.16.840.1.101.3.4.2.1"); // SHA-256
+            signedCms.ComputeSignature(sha256Signer, false);
+
+            return signedCms.Encode();
         }
 
-        
         private string GetFile()
         {
             if (File.Exists(Signature))

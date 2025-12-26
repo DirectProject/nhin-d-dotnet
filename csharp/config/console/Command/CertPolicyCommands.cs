@@ -21,7 +21,6 @@ using System.Linq;
 using System.ServiceModel;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.DomainManager;
-using Health.Direct.Config.Store;
 using Health.Direct.Config.Tools;
 using Health.Direct.Config.Tools.Command;
 using Health.Direct.Policy.Extensions;
@@ -602,7 +601,7 @@ namespace Health.Direct.Config.Console.Command
             CommandUI.Print("Description", policy.Description);
             CommandUI.Print("CreateDate", policy.CreateDate);
             CommandUI.Print("Data", policy.Data.ToUtf8String());
-            CommandUI.Print("# of Groups", policy.CertPolicyGroups == null ? 0 : policy.CertPolicyGroups.Count);
+            //CommandUI.Print("# of Groups", policy.CertPolicyGroups == null ? 0 : policy.CertPolicyGroups.Count);
         }
 
         public void Print(IEnumerable<CertPolicyGroup> policies)

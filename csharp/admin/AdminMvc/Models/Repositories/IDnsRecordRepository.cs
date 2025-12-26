@@ -1,4 +1,4 @@
-using Health.Direct.Config.Store;
+using Health.Direct.Config.Client.DomainManager;
 
 namespace Health.Direct.Admin.Console.Models.Repositories
 {

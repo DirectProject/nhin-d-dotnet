@@ -21,7 +21,6 @@ using Health.Direct.Common.Certificates;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Client.CertificateService;
 using Health.Direct.Config.Client.DomainManager;
-using Health.Direct.Config.Store;
 
 namespace Health.Direct.SmtpAgent
 {
@@ -89,7 +88,7 @@ namespace Health.Direct.SmtpAgent
         {
             using(CertificateStoreClient client = this.CreateCertClient())
             {
-                return Certificate.ToX509Collection(client.GetCertificatesForOwner(name, EntityStatus.Enabled));
+                return Certificate.ToX509Collection(client.GetCertificatesForOwner(name, Health.Direct.Config.Client.CertificateService.EntityStatus.Enabled));
             }
         }
         

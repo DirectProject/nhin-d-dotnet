@@ -16,48 +16,71 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 using System;
 using System.Linq;
 using System.Web.Mvc;
-
 using Health.Direct.Admin.Console.Models.Repositories;
-
 using AutoMapper;
-
-using Health.Direct.Config.Store;
-
-using MvcContrib.Pagination;
+using Health.Direct.Admin.Console.Models.Pagination;
 
 namespace Health.Direct.Admin.Console.Controllers
 {
-    public abstract class ControllerBase<T, TModel, TRepository> : ControllerErrorBase
+    public abstract class ControllerBase<T, TModel, TRepository, TEntityStatus> : ControllerErrorBase
         where T : class
         where TRepository : IRepository<T>
+        where TEntityStatus : Enum
     {
         protected const int DefaultPageSize = 10;
 
-        private readonly TRepository m_repository;
+        private static readonly Lazy<TEntityStatus> s_enabled =
+            new Lazy<TEntityStatus>(() => FindRequiredValue("Enabled"));
+
+        private static readonly Lazy<TEntityStatus> s_disabled =
+            new Lazy<TEntityStatus>(() => FindRequiredValue("Disabled"));
+
+        private readonly TRepository _repository;
 
         protected ControllerBase(TRepository repository)
         {
-            m_repository = repository;
+            if (repository == null)
+            {
+                throw new ArgumentNullException(nameof(repository));
+            }
+            _repository = repository;
         }
 
-        protected TRepository Repository
+        protected TRepository Repository => _repository;
+
+        protected abstract void SetStatus(T item, TEntityStatus status);
+
+        private static TEntityStatus FindRequiredValue(string name)
         {
-            get { return m_repository; }
+            foreach (var value in Enum.GetValues(typeof(TEntityStatus)))
+            {
+                if (string.Equals(value.ToString(), name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return (TEntityStatus)value;
+                }
+            }
+            throw new InvalidOperationException(
+                $"Enum {typeof(TEntityStatus).FullName} must define a member named '{name}'.");
         }
-
-        protected abstract void SetStatus(T item, EntityStatus status);
 
         protected ActionResult IndexBase(int? page)
         {
             ViewData["DateTimeFormat"] = "M/d/yyyy h:mm:ss tt";
 
-            new DateTime().ToString("");
+            var pageNumber = page.GetValueOrDefault(1);
+            if (pageNumber < 1) pageNumber = 1;
 
-            var paginatedItems = (from item in Repository.Query()
-                        select Mapper.Map<T, TModel>(item))
-                        .AsPagination(page ?? 1, DefaultPageSize);
+            var query = Repository.Query();
+            var totalCount = query.Count();
 
-            return View(paginatedItems);
+            var items = query
+                .Skip((pageNumber - 1) * DefaultPageSize)
+                .Take(DefaultPageSize)
+                .Select(item => Mapper.Map<T, TModel>(item))
+                .ToList();
+
+            var paged = new PaginatedList<TModel>(items, pageNumber, DefaultPageSize, totalCount);
+            return View(paged);
         }
 
         [Authorize]
@@ -68,10 +91,8 @@ namespace Health.Direct.Admin.Console.Controllers
             {
                 var item = Repository.Get(id);
                 if (item == null) return "NotFound";
-
                 Repository.Delete(item);
-
-                return Boolean.TrueString;
+                return bool.TrueString;
             }
             catch (Exception ex)
             {
@@ -80,18 +101,12 @@ namespace Health.Direct.Admin.Console.Controllers
         }
 
         [Authorize]
-        public ActionResult Disable(long id)
-        {
-            return EnableDisable(id, EntityStatus.Disabled);
-        }
+        public ActionResult Enable(long id) => EnableDisable(id, s_enabled.Value);
 
         [Authorize]
-        public ActionResult Enable(long id)
-        {
-            return EnableDisable(id, EntityStatus.Enabled);
-        }
+        public ActionResult Disable(long id) => EnableDisable(id, s_disabled.Value);
 
-        protected virtual ActionResult EnableDisable(long id, EntityStatus status)
+        protected virtual ActionResult EnableDisable(long id, TEntityStatus status)
         {
             var item = Repository.Get(id);
             if (item == null) return View("NotFound");
@@ -110,4 +125,16 @@ namespace Health.Direct.Admin.Console.Controllers
             return bytes;
         }
     }
+
+    // Optional: retain the 3-generic convenience base if many controllers use a common enum.
+    // Uncomment and adjust the namespace + enum type if you later unify on one enum.
+    /*
+    public abstract class ControllerBase<T, TModel, TRepository>
+        : ControllerBase<T, TModel, TRepository, Some.Shared.Namespace.EntityStatus>
+        where T : class
+        where TRepository : IRepository<T>
+    {
+        protected ControllerBase(TRepository repository) : base(repository) { }
+    }
+    */
 }

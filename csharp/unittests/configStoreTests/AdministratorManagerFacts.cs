@@ -42,8 +42,7 @@ namespace Health.Direct.Config.Store.Tests
             m_database.Dispose();
         }
 
-        [Fact, AutoRollback]
-        public Administrator Add()
+        private Administrator Add()
         {
             var origAdmin = new Administrator(m_username, m_password);
             m_manager.Add(origAdmin);

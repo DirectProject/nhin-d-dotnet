@@ -64,7 +64,7 @@ namespace Health.Direct.Policy.X509
             }
 
             ExtendedKeyUsage usages = ExtendedKeyUsage.GetInstance(exValue);
-            IList purposeList = usages.GetAllUsages();
+            var purposeList = usages.GetAllUsages();
 		
 		    var usageList = new List<string>();
             foreach (DerObjectIdentifier purpose in purposeList)

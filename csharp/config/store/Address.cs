@@ -17,7 +17,7 @@ using System;
 using System.Data.Linq.Mapping;
 using System.Runtime.Serialization;
 using System.Net.Mail;
-
+using Health.Direct.Common;
 using Health.Direct.Common.Mail;
 
 namespace Health.Direct.Config.Store
@@ -181,22 +181,22 @@ namespace Health.Direct.Config.Store
             
             return new MailAddress(this.EmailAddress);
         }
-                
+
         public bool Match(MailAddress address)
         {
             if (address == null)
             {
                 throw new ArgumentNullException("address");
             }
-            
+
             return this.Match(address.Address);
         }
-        
+
         public bool Match(string emailAddress)
         {
             return MailStandard.Equals(this.EmailAddress, emailAddress);
         }
-        
+
         internal void CopyFixed(Address source)
         {
             this.EmailAddress = source.EmailAddress;

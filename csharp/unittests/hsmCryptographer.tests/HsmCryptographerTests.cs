@@ -1,4 +1,20 @@
-﻿using System;
+﻿/* 
+ Copyright (c) 2016, Direct Project
+ All rights reserved.
+
+ Authors:
+    Joe Shook      Joseph.Shook@Surescripts.com
+  
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+Neither the name of The Direct Project (directproject.org) nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,7 +39,6 @@ using Health.Direct.Policy.Extensions;
 using Health.Direct.Policy.Impl;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
-using Net.Pkcs11Interop.HighLevelAPI.MechanismParams;
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.Cms;
 using Org.BouncyCastle.Cms;
@@ -718,13 +733,19 @@ namespace hsmCryptographer.tests
         [Fact]
         public void TestEncryptDecrypt_PureCMS_HsmPublicPrivateKeys_With_OAEP()
         {
-            var pkcs11 = new Pkcs11(TokenSettings.Pkcs11LibraryPath, TokenSettings.UseOsLocking);
+            var factories = new Pkcs11InteropFactories();
+
+            var pkcs11 = factories.Pkcs11LibraryFactory.LoadPkcs11Library(
+                factories,
+                TokenSettings.Pkcs11LibraryPath, 
+                TokenSettings.UseOsLocking ? AppType.MultiThreaded : AppType.SingleThreaded);
+            
             var slot = Pkcs11Util.FindSlot(pkcs11, TokenSettings);
 
             if (slot == null)
                 throw new ArgumentNullException(nameof(slot));
 
-            using (var session = slot.OpenSession(true))
+            using (var session = slot.OpenSession(SessionType.ReadWrite))
             {
                 session.Login(CKU.CKU_USER, TokenSettings.NormalUserPin);
 
@@ -739,57 +760,94 @@ namespace hsmCryptographer.tests
                 var rsaPubKeyParams = (RsaKeyParameters)pubKeyParams;
 
                 //Correlate with HSM
-                var publicKeySearchTemplate = new List<ObjectAttribute>
+                var attrFactory = factories.ObjectAttributeFactory;
+                var publicKeySearchTemplate = new List<IObjectAttribute>();
+                try
                 {
-                    new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PUBLIC_KEY),
-                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                    new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
-                };
+                    publicKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_CLASS, CKO.CKO_PUBLIC_KEY));
+                    publicKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA));
+                    publicKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()));
+                    publicKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned()));
 
-                var publicKey = session.FindAllObjects(publicKeySearchTemplate);
+                    var publicKeys = session.FindAllObjects(publicKeySearchTemplate);
+                    var publicKey = publicKeys.FirstOrDefault();
 
-                CkRsaPkcsOaepParams mechanismParams = new CkRsaPkcsOaepParams((ulong)CKM.CKM_SHA_1, (ulong)CKG.CKG_MGF1_SHA1, (ulong)CKZ.CKZ_DATA_SPECIFIED, null);
+                    if (publicKey == null)
+                        throw new InvalidOperationException("Public key not found in token");
 
-                // Specify encryption mechanism with parameters
-                Mechanism mechanism = new Mechanism(CKM.CKM_RSA_PKCS_OAEP, mechanismParams);
+                    // Create OAEP parameters and mechanism through factories
+                    var paramsFactory = factories.MechanismParamsFactory;
+                    var oaepParams = paramsFactory.CreateCkRsaPkcsOaepParams(
+                        (ulong)CKM.CKM_SHA_1,
+                        (ulong)CKG.CKG_MGF1_SHA1,
+                        (ulong)CKZ.CKZ_DATA_SPECIFIED,
+                        null);
 
-                byte[] sourceData = ConvertUtils.Utf8StringToBytes("Hello world");
+                    // Create mechanism with parameters
+                    using (var mechanism = factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS_OAEP, oaepParams))
+                    {
+                        byte[] sourceData = ConvertUtils.Utf8StringToBytes("Hello world");
 
-                // Encrypt data
-                byte[] encryptedData = session.Encrypt(mechanism, publicKey.First(), sourceData);
+                        // Encrypt data
+                        byte[] encryptedData = session.Encrypt(mechanism, publicKey, sourceData);
 
+                        // Create private key search template
+                        var privKeySearchTemplate = new List<IObjectAttribute>();
+                        try
+                        {
+                            privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY));
+                            privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA));
+                            privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()));
+                            privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned()));
 
-                var privKeySearchTemplate = new List<ObjectAttribute>
+                            var privateKeys = session.FindAllObjects(privKeySearchTemplate);
+                            var privateKey = privateKeys.FirstOrDefault();
+
+                            if (privateKey == null)
+                                throw new InvalidOperationException("Private key not found in token");
+
+                            // Decrypt data - reuse the same mechanism
+                            byte[] decryptedData = session.Decrypt(mechanism, privateKey, encryptedData);
+
+                            Console.WriteLine(Encoding.UTF8.GetString(decryptedData));
+                            Assert.Equal("Hello world", Encoding.UTF8.GetString(decryptedData));
+                        }
+                        finally
+                        {
+                            // Dispose the private key search attributes
+                            foreach (var attr in privKeySearchTemplate)
+                                attr.Dispose();
+                        }
+                    }
+                }
+                finally
                 {
-                    new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY),
-                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                    new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
-                };
+                    // Dispose the public key search attributes
+                    foreach (var attr in publicKeySearchTemplate)
+                        attr.Dispose();
 
-                var privateKey = session.FindAllObjects(privKeySearchTemplate);
-
-
-                // Decrypt data
-                byte[] decryptedData = session.Decrypt(mechanism, privateKey.First(), encryptedData);
-
-                Console.WriteLine(Encoding.UTF8.GetString(decryptedData));
-
-                session.Logout();
+                    session.Logout();
+                }
             }
         }
 
         [Fact]
         public void TestEncryptDecrypt_HsmPublicPrivateKeys_With_RSASimple()
         {
-            var pkcs11 = new Pkcs11(TokenSettings.Pkcs11LibraryPath, TokenSettings.UseOsLocking);
+            var factories = new Pkcs11InteropFactories();
+
+            // Create library using factory
+            var pkcs11 = factories.Pkcs11LibraryFactory.LoadPkcs11Library(
+                factories,
+                TokenSettings.Pkcs11LibraryPath,
+                TokenSettings.UseOsLocking ? AppType.MultiThreaded : AppType.SingleThreaded);
+
             var slot = Pkcs11Util.FindSlot(pkcs11, TokenSettings);
 
             if (slot == null)
                 throw new ArgumentNullException(nameof(slot));
 
-            using (var session = slot.OpenSession(true))
+            using (var session = slot.OpenSession(SessionType.ReadWrite))
             {
                 session.Login(CKU.CKU_USER, TokenSettings.NormalUserPin);
 
@@ -798,61 +856,97 @@ namespace hsmCryptographer.tests
                 var x509Certificate = x509CertificateParser.ReadCertificate(m_singleUseEnciphermentPublicCert.RawData);
 
                 var pubKeyParams = x509Certificate.GetPublicKey(); //AsymmetricKeyParameter
-                if (!(pubKeyParams is RsaKeyParameters))
-                    throw new NotSupportedException("Unsupported keys.  Currently supporting RSA keys only.");
+                if (!(pubKeyParams is RsaKeyParameters rsaPubKeyParams))
+                    throw new NotSupportedException("Unsupported keys. Currently supporting RSA keys only.");
 
-                var rsaPubKeyParams = (RsaKeyParameters)pubKeyParams;
+                // Create search attributes using factory
+                var attrFactory = factories.ObjectAttributeFactory;
+                var publicKeySearchTemplate = new List<IObjectAttribute>();
 
-                //Correlate with HSM
-                var publicKeySearchTemplate = new List<ObjectAttribute>
+                try
                 {
-                    new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PUBLIC_KEY),
-                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                    new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
-                };
+                    publicKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_CLASS, CKO.CKO_PUBLIC_KEY));
+                    publicKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA));
+                    publicKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()));
+                    publicKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned()));
 
-                var publicKey = session.FindAllObjects(publicKeySearchTemplate);
+                    var publicKeys = session.FindAllObjects(publicKeySearchTemplate);
 
-                // Specify encryption mechanism with parameters
-                Mechanism mechanism = new Mechanism(CKM.CKM_RSA_PKCS);
+                    if (!publicKeys.Any())
+                        throw new InvalidOperationException("Public key not found in token");
 
-                byte[] sourceData = ConvertUtils.Utf8StringToBytes("Hello world");
+                    var publicKey = publicKeys.First();
 
-                // Encrypt data
-                byte[] encryptedData = session.Encrypt(mechanism, publicKey.First(), sourceData);
+                    // Create mechanism using factory
+                    using (var mechanism = factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS))
+                    {
+                        byte[] sourceData = ConvertUtils.Utf8StringToBytes("Hello world");
 
+                        // Encrypt data
+                        byte[] encryptedData = session.Encrypt(mechanism, publicKey, sourceData);
 
-                var privKeySearchTemplate = new List<ObjectAttribute>
+                        // Create private key search template with factory
+                        var privKeySearchTemplate = new List<IObjectAttribute>();
+
+                        try
+                        {
+                            privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY));
+                            privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA));
+                            privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()));
+                            privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned()));
+
+                            var privateKeys = session.FindAllObjects(privKeySearchTemplate);
+
+                            if (!privateKeys.Any())
+                                throw new InvalidOperationException("Private key not found in token");
+
+                            var privateKey = privateKeys.First();
+
+                            // Decrypt data using same mechanism
+                            byte[] decryptedData = session.Decrypt(mechanism, privateKey, encryptedData);
+
+                            string decryptedText = Encoding.UTF8.GetString(decryptedData);
+                            Console.WriteLine(decryptedText);
+
+                            // Verify the result
+                            Assert.Equal("Hello world", decryptedText);
+                        }
+                        finally
+                        {
+                            // Dispose all private key search attributes
+                            foreach (var attr in privKeySearchTemplate)
+                                attr.Dispose();
+                        }
+                    }
+                }
+                finally
                 {
-                    new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY),
-                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                    new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
-                };
+                    // Dispose all public key search attributes
+                    foreach (var attr in publicKeySearchTemplate)
+                        attr.Dispose();
 
-                var privateKey = session.FindAllObjects(privKeySearchTemplate);
-
-
-                // Decrypt data
-                byte[] decryptedData = session.Decrypt(mechanism, privateKey.First(), encryptedData);
-
-                Console.WriteLine(Encoding.UTF8.GetString(decryptedData));
-
-                session.Logout();
+                    session.Logout();
+                }
             }
         }
 
         [Fact]
         public void TestEncryptDecrypt_SignedPublicCertandHsmPrivateKeys()
         {
-            var pkcs11 = new Pkcs11(TokenSettings.Pkcs11LibraryPath, TokenSettings.UseOsLocking);
+            var factories = new Pkcs11InteropFactories();
+
+            // Create library using factory
+            var pkcs11 = factories.Pkcs11LibraryFactory.LoadPkcs11Library(
+                factories,
+                TokenSettings.Pkcs11LibraryPath,
+                TokenSettings.UseOsLocking ? AppType.MultiThreaded : AppType.SingleThreaded);
+
             var slot = Pkcs11Util.FindSlot(pkcs11, TokenSettings);
 
             if (slot == null)
                 throw new ArgumentNullException(nameof(slot));
 
-            using (var session = slot.OpenSession(true))
+            using (var session = slot.OpenSession(SessionType.ReadWrite))
             {
                 session.Login(CKU.CKU_USER, TokenSettings.NormalUserPin);
 
@@ -861,54 +955,75 @@ namespace hsmCryptographer.tests
                 var x509Certificate = x509CertificateParser.ReadCertificate(m_singleUseEnciphermentPublicCert.RawData);
 
                 var pubKeyParams = x509Certificate.GetPublicKey(); //AsymmetricKeyParameter
+                if (!(pubKeyParams is RsaKeyParameters rsaPubKeyParams))
+                    throw new NotSupportedException("Unsupported keys. Currently supporting RSA keys only.");
 
-                if (!(pubKeyParams is RsaKeyParameters))
-                    throw new NotSupportedException("Unsupported keys.  Currently supporting RSA keys only.");
-
-                var rsaPubKeyParams = (RsaKeyParameters)pubKeyParams;
-
+                // Use .NET RSA provider to encrypt data with public key
                 byte[] sourceData = ConvertUtils.Utf8StringToBytes("Hello world");
                 var rsaProvider = (RSACryptoServiceProvider)m_singleUseEnciphermentPublicCert.PublicKey.Key;
 
-                // Encrypt data
+                // Encrypt data with PKCS#1 v1.5 padding (false parameter)
                 var encryptedData = rsaProvider.Encrypt(sourceData, false);
 
-                var privKeySearchTemplate = new List<ObjectAttribute>
+                // Create search attributes for private key using factory
+                var attrFactory = factories.ObjectAttributeFactory;
+                var privKeySearchTemplate = new List<IObjectAttribute>();
+
+                try
                 {
-                    new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY),
-                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                    new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
-                };
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY));
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA));
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()));
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned()));
 
-                var privateKey = session.FindAllObjects(privKeySearchTemplate);
+                    var privateKeys = session.FindAllObjects(privKeySearchTemplate);
 
-                Assert.NotNull(privateKey);
-                Assert.NotNull(privateKey.First());
+                    if (!privateKeys.Any())
+                        throw new InvalidOperationException("Private key not found in token");
 
+                    var privateKey = privateKeys.First();
 
-                // Specify encryption mechanism with parameters
-                var mechanism = new Mechanism(CKM.CKM_RSA_PKCS);
+                    // Create mechanism using factory
+                    using (var mechanism = factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS))
+                    {
+                        // Decrypt data using HSM
+                        byte[] decryptedData = session.Decrypt(mechanism, privateKey, encryptedData);
 
-                // Decrypt data
-                byte[] decryptedData = session.Decrypt(mechanism, privateKey.First(), encryptedData);
+                        string decryptedText = Encoding.UTF8.GetString(decryptedData);
+                        Console.WriteLine(decryptedText);
 
-                Console.WriteLine(Encoding.UTF8.GetString(decryptedData));
+                        // Verify successful decryption
+                        Assert.Equal("Hello world", decryptedText);
+                    }
+                }
+                finally
+                {
+                    // Dispose all attribute objects
+                    foreach (var attr in privKeySearchTemplate)
+                        attr.Dispose();
 
-                session.Logout();
+                    session.Logout();
+                }
             }
         }
 
         [Fact]
         public void TestEncryptDecrypt_SignedPublicX509CertandHsmPrivateKeys_With_OAEP()
         {
-            var pkcs11 = new Pkcs11(TokenSettings.Pkcs11LibraryPath, TokenSettings.UseOsLocking);
+            var factories = new Pkcs11InteropFactories();
+
+            // Create library using factory
+            var pkcs11 = factories.Pkcs11LibraryFactory.LoadPkcs11Library(
+                factories,
+                TokenSettings.Pkcs11LibraryPath,
+                TokenSettings.UseOsLocking ? AppType.MultiThreaded : AppType.SingleThreaded);
+
             var slot = Pkcs11Util.FindSlot(pkcs11, TokenSettings);
 
             if (slot == null)
                 throw new ArgumentNullException(nameof(slot));
 
-            using (var session = slot.OpenSession(true))
+            using (var session = slot.OpenSession(SessionType.ReadWrite))
             {
                 session.Login(CKU.CKU_USER, TokenSettings.NormalUserPin);
 
@@ -917,58 +1032,83 @@ namespace hsmCryptographer.tests
                 var x509Certificate = x509CertificateParser.ReadCertificate(m_singleUseEnciphermentPublicCert.RawData);
 
                 var pubKeyParams = x509Certificate.GetPublicKey(); //AsymmetricKeyParameter
+                if (!(pubKeyParams is RsaKeyParameters rsaPubKeyParams))
+                    throw new NotSupportedException("Unsupported keys. Currently supporting RSA keys only.");
 
-                if (!(pubKeyParams is RsaKeyParameters))
-                    throw new NotSupportedException("Unsupported keys.  Currently supporting RSA keys only.");
-
-                var rsaPubKeyParams = (RsaKeyParameters)pubKeyParams;
-
+                // Use .NET RSA provider to encrypt data with public key and OAEP padding (true parameter)
                 byte[] sourceData = ConvertUtils.Utf8StringToBytes("Hello world");
                 var rsaProvider = (RSACryptoServiceProvider)m_singleUseEnciphermentPublicCert.PublicKey.Key;
 
-                // Encrypt data
+                // Encrypt data with OAEP padding (true parameter)
                 var encryptedData = rsaProvider.Encrypt(sourceData, true);
 
-                var privKeySearchTemplate = new List<ObjectAttribute>
+                // Create private key search template using factory
+                var attrFactory = factories.ObjectAttributeFactory;
+                var privKeySearchTemplate = new List<IObjectAttribute>();
+
+                try
                 {
-                    new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY),
-                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                    new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
-                };
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY));
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA));
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()));
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned()));
 
-                var privateKey = session.FindAllObjects(privKeySearchTemplate);
+                    var privateKeys = session.FindAllObjects(privKeySearchTemplate);
 
-                Assert.NotNull(privateKey);
-                Assert.NotNull(privateKey.First());
+                    if (!privateKeys.Any())
+                        throw new InvalidOperationException("Private key not found in token");
 
-                var mechanismParams = new CkRsaPkcsOaepParams(
-                    (ulong)CKM.CKM_SHA_1,
-                    (ulong)CKG.CKG_MGF1_SHA1,
-                    (ulong)CKZ.CKZ_DATA_SPECIFIED, null);
+                    var privateKey = privateKeys.First();
 
-                // Specify encryption mechanism with parameters
-                var mechanism = new Mechanism(CKM.CKM_RSA_PKCS_OAEP, mechanismParams);
+                    // Create OAEP mechanism parameters using factory
+                    var paramsFactory = factories.MechanismParamsFactory;
+                    var oaepParams = paramsFactory.CreateCkRsaPkcsOaepParams(
+                        (ulong)CKM.CKM_SHA_1,    // Message digest algorithm
+                        (ulong)CKG.CKG_MGF1_SHA1, // Mask generation function
+                        (ulong)CKZ.CKZ_DATA_SPECIFIED, // Source of encoding parameter
+                        null);  // Encoding parameter (null = empty)
 
-                // Decrypt data
-                byte[] decryptedData = session.Decrypt(mechanism, privateKey.First(), encryptedData);
+                    // Create mechanism with parameters using factory
+                    using (var mechanism = factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS_OAEP, oaepParams))
+                    {
+                        // Decrypt data using HSM
+                        byte[] decryptedData = session.Decrypt(mechanism, privateKey, encryptedData);
 
-                Console.WriteLine(Encoding.UTF8.GetString(decryptedData));
+                        string decryptedText = Encoding.UTF8.GetString(decryptedData);
+                        Console.WriteLine(decryptedText);
 
-                session.Logout();
+                        // Verify successful decryption
+                        Assert.Equal("Hello world", decryptedText);
+                    }
+                }
+                finally
+                {
+                    // Dispose all attribute objects
+                    foreach (var attr in privKeySearchTemplate)
+                        attr.Dispose();
+
+                    session.Logout();
+                }
             }
         }
 
         [Fact]
         public void TestEncryptDecrypt_SignedPublicX509CertandHsmPrivateKeys_With_OAEP_As_CMS()
         {
-            var pkcs11 = new Pkcs11(TokenSettings.Pkcs11LibraryPath, TokenSettings.UseOsLocking);
+            var factories = new Pkcs11InteropFactories();
+
+            // Create library using factory
+            var pkcs11 = factories.Pkcs11LibraryFactory.LoadPkcs11Library(
+                factories,
+                TokenSettings.Pkcs11LibraryPath,
+                TokenSettings.UseOsLocking ? AppType.MultiThreaded : AppType.SingleThreaded);
+
             var slot = Pkcs11Util.FindSlot(pkcs11, TokenSettings);
 
             if (slot == null)
                 throw new ArgumentNullException(nameof(slot));
 
-            using (var session = slot.OpenSession(true))
+            using (var session = slot.OpenSession(SessionType.ReadWrite))
             {
                 session.Login(CKU.CKU_USER, TokenSettings.NormalUserPin);
 
@@ -978,14 +1118,12 @@ namespace hsmCryptographer.tests
                 Console.WriteLine(x509Certificate.SerialNumber);
                 var pubKeyParams = x509Certificate.GetPublicKey(); //AsymmetricKeyParameter
 
-                if (!(pubKeyParams is RsaKeyParameters))
-                    throw new NotSupportedException("Unsupported keys.  Currently supporting RSA keys only.");
-
-                var rsaPubKeyParams = (RsaKeyParameters)pubKeyParams;
+                if (!(pubKeyParams is RsaKeyParameters rsaPubKeyParams))
+                    throw new NotSupportedException("Unsupported keys. Currently supporting RSA keys only.");
 
                 byte[] sourceData = ConvertUtils.Utf8StringToBytes("Hello world");
 
-
+                // Create CMS envelope using .NET cryptography
                 var certs = new X509Certificate2Collection(m_singleUseEnciphermentPublicCert);
                 var recipients = new CmsRecipientCollection(SubjectIdentifierType.IssuerAndSerialNumber, certs);
 
@@ -1002,66 +1140,71 @@ namespace hsmCryptographer.tests
                 dataEnvelope.Encrypt(recipients);
                 var encryptedData = dataEnvelope.Encode();
 
+                // Create private key search template using factory
+                var attrFactory = factories.ObjectAttributeFactory;
+                var privKeySearchTemplate = new List<IObjectAttribute>();
 
-                var privKeySearchTemplate = new List<ObjectAttribute>
+                try
                 {
-                    new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY),
-                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                    new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
-                };
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY));
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA));
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()));
+                    privKeySearchTemplate.Add(attrFactory.Create(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned()));
 
-                var privateKey = session.FindAllObjects(privKeySearchTemplate);
+                    var privateKeys = session.FindAllObjects(privKeySearchTemplate);
 
-                Assert.NotNull(privateKey);
-                Assert.NotNull(privateKey.First());
+                    if (!privateKeys.Any())
+                        throw new InvalidOperationException("Private key not found in token");
 
-                var mechanismParams = new CkRsaPkcsOaepParams(
-                    (ulong)CKM.CKM_SHA_1,
-                    (ulong)CKG.CKG_MGF1_SHA1,
-                    (ulong)CKZ.CKZ_DATA_SPECIFIED, null);
+                    var privateKey = privateKeys.First();
 
-                // Specify encryption mechanism with parameters
-                var mechanism = new Mechanism(CKM.CKM_RSA_PKCS_OAEP, mechanismParams);
+                    // Create OAEP parameters using factory
+                    var paramsFactory = factories.MechanismParamsFactory;
+                    var oaepParams = paramsFactory.CreateCkRsaPkcsOaepParams(
+                        (ulong)CKM.CKM_SHA_1,       // SHA-1 digest mechanism
+                        (ulong)CKG.CKG_MGF1_SHA1,   // SHA-1 based MGF
+                        (ulong)CKZ.CKZ_DATA_SPECIFIED,
+                        null);                      // No source data
 
+                    // Create mechanism with parameters
+                    using (var mechanism = factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS_OAEP, oaepParams))
+                    {
+                        // Troubleshooting data - parse envelope using .NET
+                        EnvelopedCms envelopedCms = new EnvelopedCms();
+                        envelopedCms.Decode(encryptedData);
+                        var rsaEncryptKeyFromCMS = envelopedCms.RecipientInfos[0].EncryptedKey;
 
+                        // Display envelope information
+                        DisplayEnvelopedCms(envelopedCms, true);
 
-                //
-                // Troubleshooting data
-                //
-                EnvelopedCms envelopedCms = new EnvelopedCms();
-                //  Decode the message.
-                envelopedCms.Decode(encryptedData);
-                var rsaEncryptKeyFromCMS = envelopedCms.RecipientInfos[0].EncryptedKey;
-                //  Display the number of recipients the message is
-                //  enveloped for; it should be 1 for this example.
-                DisplayEnvelopedCms(envelopedCms, true);
+                        // Parse the same envelope using BouncyCastle
+                        var envelopedData = new CmsEnvelopedData(encryptedData);
+                        EnvelopedData envData = EnvelopedData.GetInstance(envelopedData.ContentInfo.Content);
+                        var recip = Org.BouncyCastle.Asn1.Cms.RecipientInfo.GetInstance((Asn1Sequence)envData.RecipientInfos[0]);
+                        var keyTransRecipientInfo = Org.BouncyCastle.Asn1.Cms.KeyTransRecipientInfo.GetInstance(recip.Info);
+                        var rsaEncryptKey = keyTransRecipientInfo.EncryptedKey.GetOctets();
 
+                        // Show EncryptedKey is the equivalent from both .NET and BouncyCastle parsers
+                        Assert.Equal(
+                            Convert.ToBase64String(rsaEncryptKeyFromCMS),
+                            Convert.ToBase64String(rsaEncryptKey));
 
-                //
-                // BouncyCastle CmsEnvelopedData
-                //
-                var envelopedData = new CmsEnvelopedData(encryptedData);
-                EnvelopedData envData = EnvelopedData.GetInstance(envelopedData.ContentInfo.Content);
-                var recip = Org.BouncyCastle.Asn1.Cms.RecipientInfo.GetInstance((Asn1Sequence)envData.RecipientInfos[0]);
-                var keyTransRecipientInfo = Org.BouncyCastle.Asn1.Cms.KeyTransRecipientInfo.GetInstance(recip.Info);
-                var rsaEncryptKey = keyTransRecipientInfo.EncryptedKey.GetOctets();
+                        // Decrypt data using HSM
+                        byte[] decryptedData = session.Decrypt(mechanism, privateKey, rsaEncryptKey);
+                        string decryptedText = Encoding.UTF8.GetString(decryptedData);
 
-                //
-                // Show EncryptedKey is the equivalent from both .NET and BouncyCastle parsers.
-                //
-                Assert.Equal(
-                    Convert.ToBase64String(rsaEncryptKeyFromCMS),
-                    Convert.ToBase64String(rsaEncryptKey));
+                        Console.WriteLine(decryptedText);
+                        Assert.Equal("Hello world", decryptedText);
+                    }
+                }
+                finally
+                {
+                    // Dispose all attribute objects
+                    foreach (var attr in privKeySearchTemplate)
+                        attr.Dispose();
 
-
-
-                // Decrypt data
-                byte[] decryptedData = session.Decrypt(mechanism, privateKey.First(), rsaEncryptKey);
-
-                Console.WriteLine(Encoding.UTF8.GetString(decryptedData));
-
-                session.Logout();
+                    session.Logout();
+                }
             }
         }
 

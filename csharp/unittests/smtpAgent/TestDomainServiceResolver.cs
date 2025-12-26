@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Health.Direct.Common.Caching;
 using Health.Direct.Config.Client;
-using Health.Direct.Config.Store;
+using Health.Direct.Config.Client.DomainManager;
 using Xunit;
 
 namespace Health.Direct.SmtpAgent.Tests

@@ -14,14 +14,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Threading;
-using Health.Direct.Agent;
-using Health.Direct.Common.Diagnostics;
-using Health.Direct.Config.Store;
 using Health.Direct.Common.Routing;
 using Health.Direct.Common.Extensions;
 using System.Xml.Serialization;

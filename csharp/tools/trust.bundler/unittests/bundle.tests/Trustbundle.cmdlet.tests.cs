@@ -1,5 +1,5 @@
 ﻿/* 
- Copyright (c) 2013, Direct Project
+ Copyright (c) 2015, Direct Project
  All rights reserved.
 
  Authors:
@@ -25,8 +25,8 @@ namespace Health.Direct.Trust.Tests
 {
     public class Trustbundle
     {
-        private string _incominganchors = @"..\..\..\..\..\..\unittests\agent\Certificates\nhind\IncomingAnchors";
-        private string _privateRedmondPfx = @"..\..\..\..\..\..\unittests\agent\Certificates\redmond\Private\redmond.pfx";
+        private string _incominganchors = @"..\..\..\..\..\..\..\unittests\agent\Certificates\nhind\IncomingAnchors";
+        private string _privateRedmondPfx = @"..\..\..\..\..\..\..\unittests\agent\Certificates\redmond\Private\redmond.pfx";
 
 
         [Fact]
@@ -97,7 +97,7 @@ namespace Health.Direct.Trust.Tests
             SignBundleCommand signCmd = new SignBundleCommand();
 
             var secString = new SecureString();
-            foreach (var secchar in "passw0rd!".ToCharArray())
+            foreach (var secchar in "Passw0rd!".ToCharArray())
             {
                 secString.AppendChar(secchar);
             }
@@ -132,7 +132,7 @@ namespace Health.Direct.Trust.Tests
             SignBundleCommand signCmd = new SignBundleCommand();
 
             var secString = new SecureString();
-            foreach (var secchar in "passw0rd!".ToCharArray())
+            foreach (var secchar in "Passw0rd!".ToCharArray())
             {
                 secString.AppendChar(secchar);
             }

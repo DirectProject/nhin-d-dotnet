@@ -29,8 +29,8 @@ using Health.Direct.Common.Diagnostics;
 using Health.Direct.Common.Extensions;
 using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mail.DSN;
-using Health.Direct.Config.Store;
 using Health.Direct.Common.Mail.Notifications;
+using Health.Direct.Config.Client.DomainManager;
 using Health.Direct.Diagnostics.NLog;
 using Health.Direct.SmtpAgent.Config;
 using Health.Direct.SmtpAgent.Diagnostics;
@@ -414,7 +414,7 @@ namespace Health.Direct.SmtpAgent
 
         private static bool IsMdnFault(FaultException<ConfigStoreFault> fe)
         {
-            return fe.Detail.Error == ConfigStoreError.MdnPreviouslyProcessed 
+            return fe.Detail.Error ==ConfigStoreError.MdnPreviouslyProcessed 
                    || fe.Detail.Error == ConfigStoreError.MdnPreviouslyFailed
                    || fe.Detail.Error == ConfigStoreError.MdnUncorrelated 
                    || fe.Detail.Error == ConfigStoreError.DuplicateDispatchedMdn

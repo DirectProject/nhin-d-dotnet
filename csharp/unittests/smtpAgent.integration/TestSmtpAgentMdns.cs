@@ -22,10 +22,12 @@ using Health.Direct.Agent;
 using Health.Direct.Agent.Tests;
 using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mail.Notifications;
+using Health.Direct.Common.Mdn;
 using Health.Direct.Common.Mime;
 using Health.Direct.Config.Client;
 using Health.Direct.Config.Store;
 using Xunit;
+using System.ServiceModel;
 
 namespace Health.Direct.SmtpAgent.Integration.Tests
 {
@@ -67,7 +69,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             m_agent.Settings.Notifications.AutoResponse = true;
             m_agent.Settings.Notifications.AlwaysAck = true;
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             //
             // Process loopback messages.  Leaves un-encrypted mdns in pickup folder
@@ -109,7 +111,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
                 //
                 var duplicateMessage = LoadMessage(messageText);
                 VerifyOutgoingMessage(duplicateMessage);         //Encryted Message
-                m_agent.ProcessMessage(duplicateMessage);        //Decrypts Message
+                Assert.Throws<FaultException<Health.Direct.Config.Client.MonitorService.ConfigStoreFault>>(() => m_agent.ProcessMessage(duplicateMessage));
                 //This proves we could not process the message because it is still encrypted
                 //Could possibly check to see if it was dropped.  This integration test is getting ugly...
                 VerifyOutgoingMessage(duplicateMessage);         //Encryted Message
@@ -137,7 +139,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             m_agent.Settings.Notifications.AutoResponse = true;
             m_agent.Settings.Notifications.AlwaysAck = true;
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             //
             // Process loopback messages.  Leaves un-encrypted mdns in pickup folder
@@ -214,7 +216,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
                 //
                 RunMdnOutBoundProcessingTest(duplicateMessage);
                 VerifyOutgoingMessage(duplicateMessage);         //Encryted Message
-                m_agent.ProcessMessage(duplicateMessage);        //Decrypts Message
+                Assert.Throws<FaultException<Health.Direct.Config.Client.MonitorService.ConfigStoreFault>>(() => m_agent.ProcessMessage(duplicateMessage));
                 //This proves we could not process the message because it is still encrypted
                 //Could possibly check to see if it was dropped.  This integration test is getting ugly...
                 VerifyOutgoingMessage(duplicateMessage);         //Encryted Message
@@ -243,7 +245,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             m_agent.Settings.Notifications.AlwaysAck = true;
             m_agent.Settings.Notifications.GatewayIsDestination = true;
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             //
             // Process loopback messages.  Leaves un-encrypted mdns in pickup folder
@@ -340,7 +342,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             m_agent.Settings.Notifications.AlwaysAck = true;
             m_agent.Settings.Notifications.GatewayIsDestination = true;
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             //
             // Process loopback messages.  Leaves un-encrypted mdns in pickup folder
@@ -432,7 +434,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             m_agent.Settings.Notifications.AlwaysAck = true;
             m_agent.Settings.Notifications.GatewayIsDestination = true;
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             //
             // Process loopback messages.  Leaves un-encrypted mdns in pickup folder
@@ -509,7 +511,7 @@ namespace Health.Direct.SmtpAgent.Integration.Tests
             m_agent.Settings.Notifications.AutoResponse = true;
             m_agent.Settings.Notifications.AlwaysAck = true;
             m_agent.Settings.MdnMonitor = new ClientSettings();
-            m_agent.Settings.MdnMonitor.Url = "http://localhost/ConfigService/MonitorService.svc/Dispositions";
+            m_agent.Settings.MdnMonitor.Url = "http://localhost:6692/MonitorService.svc/Dispositions";
 
             string textMessage = string.Format(TestMessageTimelyAndReliableMissingTo, Guid.NewGuid());
             //

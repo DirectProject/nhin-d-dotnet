@@ -1,5 +1,5 @@
 ﻿/* 
- Copyright (c) 2013, Direct Project
+ Copyright (c) 2013-2025, Direct Project
  All rights reserved.
 
  Authors:
@@ -21,21 +21,22 @@ using System.Xml;
 using System.Xml.Schema;
 using Health.Direct.Common.Certificates;
 using Xunit;
+using System;
 
 namespace Health.Direct.Trust.Tests
 {
     public class BundlerTests : BaseBundlerTests
     {
-        private string _incominganchors = @"..\..\..\..\..\..\unittests\agent\Certificates\nhind\IncomingAnchors";
-        private string _privateRedmondPfx = @"..\..\..\..\..\..\unittests\agent\Certificates\redmond\Private\redmond.pfx";
-        private string _fhaCrossoverDirectintLabDualusePfx = @"..\..\..\..\..\..\unittests\agent\Certificates\nhind\Private\fha-crossover.DirectInt.lab_dualUse.pfx";
+        private string _incominganchors = @"..\..\..\..\..\..\..\unittests\agent\Certificates\nhind\IncomingAnchors";
+        private string _privateRedmondPfx = @"..\..\..\..\..\..\..\unittests\agent\Certificates\redmond\Private\redmond.pfx";
+        private string _fhaCrossoverDirectintLabDualusePfx = @"..\..\..\..\..\..\..\unittests\agent\Certificates\nhind\Private\fha-crossover.DirectInt.lab_dualUse.pfx";
         
         [Fact]
         public void CreateBundleTest()
         {
             //Arrange
             Bundler bundle = new Bundler();
-            const string outputFileName = @"TestBundle.p7m";
+            string outputFileName = $"TestBundle_{Guid.NewGuid():N}.p7m";
 
             //Act
             IResourceProvider resourceProvider =
@@ -61,7 +62,7 @@ namespace Health.Direct.Trust.Tests
         {
             //Arrange
             Bundler bundle = new Bundler();
-            const string outputFileName = @"TestBundleWithMetadata.p7b";
+            string outputFileName = $"TestBundleWithMetadata_{Guid.NewGuid():N}.p7b";
 
             //Act
             IResourceProvider resourceProvider =
@@ -88,10 +89,10 @@ namespace Health.Direct.Trust.Tests
         {
             //Arrange
             Bundler bundle = new Bundler();
-            const string outputFileName = @"TestBundleWithMetadata.p7m";
+            string outputFileName = $"TestBundleWithMetadata_{Guid.NewGuid():N}.p7m";
 
             var secString = new SecureString();
-            foreach (var secchar in "passw0rd!".ToCharArray())
+            foreach (var secchar in "Passw0rd!".ToCharArray())
             {
                 secString.AppendChar(secchar);
             }
@@ -131,7 +132,7 @@ namespace Health.Direct.Trust.Tests
         {
             //Arrange
             Bundler bundle = new Bundler();
-            const string outputFileName = @"TestBundleWithMetadata.p7m";
+            string outputFileName = $"TestBundleWithMetadata_{Guid.NewGuid():N}.p7m";
 
             var secString = new SecureString();
             foreach (var secchar in "passw0rd!".ToCharArray())
@@ -166,10 +167,10 @@ namespace Health.Direct.Trust.Tests
         {
             //Arrange
             Bundler bundle = new Bundler();
-            const string outputFileName = @"TestBundleSignedIndependent.p7m";
+            string outputFileName = $"TestBundleSignedIndependent_{Guid.NewGuid():N}.p7m";
 
             var secString = new SecureString();
-            foreach (var secchar in "passw0rd!".ToCharArray())
+            foreach (var secchar in "Passw0rd!".ToCharArray())
             {
                 secString.AppendChar(secchar);
             }
@@ -201,10 +202,10 @@ namespace Health.Direct.Trust.Tests
         {
             //Arrange
             Bundler bundle = new Bundler();
-            const string outputFileName = @"TestBundleSignedWithMetadata.p7m";
+            string outputFileName = $"TestBundleSignedWithMetadata_{Guid.NewGuid():N}.p7m";
 
             var secString = new SecureString();
-            foreach (var secchar in "passw0rd!".ToCharArray())
+            foreach (var secchar in "Passw0rd!".ToCharArray())
             {
                 secString.AppendChar(secchar);
             }

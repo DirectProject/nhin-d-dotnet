@@ -16,6 +16,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 using System;
 using System.Data.Linq.Mapping;
 using System.Runtime.Serialization;
+using Health.Direct.Common;
 using Health.Direct.Common.DnsResolver;
 using Health.Direct.Common.Extensions;
 
