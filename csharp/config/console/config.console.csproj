@@ -49,7 +49,7 @@
     <ProjectReference Include="..\client\config.client.csproj" />
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.1" />
+	  <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
     <PackageReference Include="Pkcs11Interop.StrongName" Version="3.3.0" />
   </ItemGroup>
   <ItemGroup>
