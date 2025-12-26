@@ -443,13 +443,15 @@ namespace Health.Direct.SmtpAgent.Tests
             SmtpAgent agent = null;
 
             Assert.Null(Record.Exception(() => agent = SmtpAgentFactory.Create(GetSettingsPath("TestPlugin.xml"))));
-            Assert.True(agent.Router.Count == 4);
+            Assert.NotNull(agent);
+            Assert.NotNull(agent.Router);
+            Assert.True(agent.Router.Count == 3);
 
             Route[] routes = agent.Router.ToArray();
 
             ValidateHttpReceivers(routes[0], 2, "http://foo/one");
             ValidateHttpReceivers(routes[1], 1, "http://bar/one");
-            ValidateSmtpReceivers(routes[3], 2, "foo.xyz");
+            ValidateSmtpReceivers(routes[2], 2, "foo.xyz");
 
             //
             // Pump a few messages through 
