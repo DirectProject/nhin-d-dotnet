@@ -29,7 +29,7 @@ namespace Health.Direct.Common.Tests.Certificates
         {
             AnchorMetadata metadata = new AnchorMetadata();
             metadata.RequiredOids = new Oid[] {
-                new Oid(SMIMECryptographer.CryptoOids.SHA1.Value, "SHA1 Digest Algorithm"),
+                // new Oid(SMIMECryptographer.CryptoOids.SHA1.Value, "SHA1 Digest Algorithm"),
                 new Oid(SMIMECryptographer.CryptoOids.SHA256.Value, "SHA256 Digest Algorithm"),
             };
             metadata.BundleSource = "Toby's bundle";

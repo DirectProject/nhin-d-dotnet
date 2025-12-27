@@ -88,7 +88,7 @@ namespace Health.Direct.Common.Cryptography
         {
             // documentation for these is silly.
 #pragma warning disable 1591
-            public static readonly Oid SHA1 = new Oid("1.3.14.3.2.26");
+            // public static readonly Oid SHA1 = new Oid("1.3.14.3.2.26"); // Obsolete
             public static readonly Oid SHA256 = new Oid("2.16.840.1.101.3.4.2.1");
             public static readonly Oid SHA384 = new Oid("2.16.840.1.101.3.4.2.2");
             public static readonly Oid SHA512 = new Oid("2.16.840.1.101.3.4.2.3");
@@ -123,10 +123,10 @@ namespace Health.Direct.Common.Cryptography
             switch (type)
             {
                 default:
-                    throw new NotSupportedException();
+                    throw new NotSupportedException($"{type.ToString()} DigestAlgorithm is not supported.");
 
-                case DigestAlgorithm.SHA1:
-                    return CryptoOids.SHA1;
+                // case DigestAlgorithm.SHA1:   // obsolete
+                //     return CryptoOids.SHA1;
 
                 case DigestAlgorithm.SHA256:
                     return CryptoOids.SHA256;

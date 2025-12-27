@@ -54,7 +54,7 @@ namespace Health.Direct.Common.Cryptography
         /// Initializes an instance with the default set of encryption and digest algorithms.
         /// </summary>
         public SMIMECryptographer()
-            : this(EncryptionAlgorithm.AES128, DigestAlgorithm.SHA1)
+            : this(EncryptionAlgorithm.AES128, DigestAlgorithm.SHA256)
         {
         }
 

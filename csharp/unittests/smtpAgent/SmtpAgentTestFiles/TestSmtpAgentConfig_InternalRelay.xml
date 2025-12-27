@@ -16,7 +16,7 @@
   </Log>
   <Cryptographer>
     <DefaultEncryption>AES128</DefaultEncryption>
-    <DefaultDigest>SHA1</DefaultDigest>
+    <DefaultDigest>SHA256</DefaultDigest>
   </Cryptographer>
   <PrivateCerts>
     <MachineResolver>

@@ -82,10 +82,17 @@ namespace Health.Direct.Agent.Tests
         {
             string messageText = m_tester.ReadMessageText("simple.eml");
             m_cryptographer.DigestAlgorithm = algo;
-            SignedCms signedData = null;
-            
-            signedData = m_cryptographer.CreateSignature(Encoding.ASCII.GetBytes(messageText), new X509Certificate2Collection(m_cert)); 
-            
+
+            if (algo == DigestAlgorithm.SHA1)
+            {
+                var ex = Assert.Throws<NotSupportedException>(() =>
+                    m_cryptographer.CreateSignature(Encoding.ASCII.GetBytes(messageText), new X509Certificate2Collection(m_cert))
+                );
+                Assert.Equal("SHA1 DigestAlgorithm is not supported.", ex.Message);
+                return;
+            }
+
+            SignedCms signedData = m_cryptographer.CreateSignature(Encoding.ASCII.GetBytes(messageText), new X509Certificate2Collection(m_cert));
             Assert.True(signedData.SignerInfos.Count == 1);
             Assert.True(signedData.SignerInfos[0].DigestAlgorithm.Value == SMIMECryptographer.ToDigestAlgorithmOid(algo).Value);
         }
@@ -96,6 +103,7 @@ namespace Health.Direct.Agent.Tests
             string messageText = m_tester.ReadMessageText("simple.eml");
             Message message = MimeSerializer.Default.Deserialize<Message>(messageText);
 
+            m_cryptographer.DigestAlgorithm = DigestAlgorithm.SHA256;
             SignedEntity signedEntity = m_cryptographer.Sign(message, m_cert);
             string disposition = signedEntity.Signature.ContentDisposition;
             Assert.True(!string.IsNullOrEmpty(disposition));
