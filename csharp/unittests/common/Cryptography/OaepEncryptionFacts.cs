@@ -14,19 +14,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 using System;
-using System.IO;
 using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using Health.Direct.Common.Cryptography;
-using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mime;
 using Org.BouncyCastle.Asn1.Nist;
-using Org.BouncyCastle.Asn1;
-using Org.BouncyCastle.Asn1.Cms;
 using Org.BouncyCastle.Asn1.Pkcs;
-using Org.BouncyCastle.Asn1.X509;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -84,7 +79,7 @@ namespace Health.Direct.Common.Tests.Cryptography
             var recipient = GenerateSelfSignedEnciphermentCert("OAEP-SHA256-Params");
             var entity = CreatePlainTextEntity("Hello OAEP SHA256");
 
-            var bc = new BcSMIMECryptographer();
+            var bc = new SMIMECryptographer();
             var encryptedEntity = bc.Encrypt(entity, recipient);
             var encryptedBytes = bc.GetEncryptedBytes(encryptedEntity);
 
@@ -117,7 +112,7 @@ namespace Health.Direct.Common.Tests.Cryptography
             var recipient = GenerateSelfSignedEnciphermentCert("Default-OAEP-Params");
             var entity = CreatePlainTextEntity("Hello Default OAEP Params");
 
-            var def = SMIMECryptographer.Default;
+            var def = LegacySMIMECryptographer.Default;
             var encryptedEntity = def.Encrypt(entity, recipient);
             var encryptedBytes = def.GetEncryptedBytes(encryptedEntity);
 
@@ -156,7 +151,7 @@ namespace Health.Direct.Common.Tests.Cryptography
             var recipient = GenerateSelfSignedEnciphermentCert("OAEP-SHA256-Roundtrip");
             var entity = CreatePlainTextEntity("Hello OAEP Roundtrip");
 
-            var bc = new BcSMIMECryptographer();
+            var bc = new SMIMECryptographer();
             var encryptedEntity = bc.Encrypt(entity, recipient);
             var encryptedBytes = bc.GetEncryptedBytes(encryptedEntity);
 
@@ -168,7 +163,7 @@ namespace Health.Direct.Common.Tests.Cryptography
 
             var ex = Record.Exception(() =>
             {
-                var decrypted = SMIMECryptographer.Default.DecryptEntity(encryptedBytes, recipient);
+                var decrypted = LegacySMIMECryptographer.Default.DecryptEntity(encryptedBytes, recipient);
                 Assert.NotNull(decrypted);
                 Assert.Equal("Hello OAEP Roundtrip", decrypted.Body.Text);
             });
@@ -193,7 +188,7 @@ namespace Health.Direct.Common.Tests.Cryptography
             var recipient = GenerateSelfSignedEnciphermentCert("OAEP-SHA256-Roundtrip");
             var entity = CreatePlainTextEntity("Hello OAEP Roundtrip");
 
-            var sc = SMIMECryptographer.Default;
+            var sc = LegacySMIMECryptographer.Default;
             var encryptedEntity = sc.Encrypt(entity, recipient);
             var encryptedBytes = sc.GetEncryptedBytes(encryptedEntity);
 
@@ -205,7 +200,7 @@ namespace Health.Direct.Common.Tests.Cryptography
 
             var ex = Record.Exception(() =>
             {
-                var decrypted = new BcSMIMECryptographer().DecryptEntity(encryptedBytes, recipient);
+                var decrypted = new SMIMECryptographer().DecryptEntity(encryptedBytes, recipient);
                 Assert.NotNull(decrypted);
                 Assert.Equal("Hello OAEP Roundtrip", decrypted.Body.Text);
             });

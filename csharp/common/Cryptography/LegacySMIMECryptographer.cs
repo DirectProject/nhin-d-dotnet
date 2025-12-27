@@ -1,5 +1,5 @@
-﻿/*
- Copyright (c) 2010 -2025, Direct Project
+/* 
+ Copyright (c) 2010, Direct Project
  All rights reserved.
 
  Authors:
@@ -12,9 +12,8 @@ Redistributions of source code must retain the above copyright notice, this list
 Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 Neither the name of The Direct Project (directproject.org) nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ 
 */
-
 
 using System;
 using System.Net.Mime;
@@ -23,26 +22,18 @@ using System.Security.Cryptography.X509Certificates;
 using Health.Direct.Common.Extensions;
 using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mime;
-using Org.BouncyCastle.Asn1;
-using Org.BouncyCastle.Asn1.Nist;
-using Org.BouncyCastle.Asn1.Pkcs;
-using Org.BouncyCastle.Cms;
-using Org.BouncyCastle.Crypto.Operators;
-using Org.BouncyCastle.Security;
-using ContentInfo = System.Security.Cryptography.Pkcs.ContentInfo;
-
 
 namespace Health.Direct.Common.Cryptography
 {
     /// <summary>
     /// Encapsulates use of S/MIME PKCS7 (CMS) cryptography
     /// </summary>
-    public class SMIMECryptographer : SMIMECryptographerBase, ISmimeCryptographer
+    public class LegacySMIMECryptographer : SMIMECryptographerBase, ISmimeCryptographer
     {
         /// <summary>
         /// The default set of cryptographic algorithms.
         /// </summary>
-        public static readonly ISmimeCryptographer Default = new SMIMECryptographer();
+        public static readonly ISmimeCryptographer Default = new LegacySMIMECryptographer();
 
         /// <inheritdoc />
         public event Action<ISmimeCryptographer, Exception> Error;
@@ -62,7 +53,7 @@ namespace Health.Direct.Common.Cryptography
         /// <summary>
         /// Initializes an instance with the default set of encryption and digest algorithms.
         /// </summary>
-        public SMIMECryptographer()
+        public LegacySMIMECryptographer()
             : this(EncryptionAlgorithm.AES128, DigestAlgorithm.SHA256)
         {
         }
@@ -72,7 +63,7 @@ namespace Health.Direct.Common.Cryptography
         /// </summary>
         /// <param name="encryptionAlgorithm">The <see cref="EncryptionAlgorithm"/> to use in this cryptographer</param>
         /// <param name="digestAlgorithm">The <see cref="DigestAlgorithm"/> to use in this cryptographer</param>
-        public SMIMECryptographer(EncryptionAlgorithm encryptionAlgorithm, DigestAlgorithm digestAlgorithm)
+        public LegacySMIMECryptographer(EncryptionAlgorithm encryptionAlgorithm, DigestAlgorithm digestAlgorithm)
         {
             EncryptionAlgorithm = encryptionAlgorithm;
             DigestAlgorithm = digestAlgorithm;
@@ -165,46 +156,33 @@ namespace Health.Direct.Common.Cryptography
         /// <returns>The encrypted raw data.</returns>
         private byte[] Encrypt(byte[] content, X509Certificate2Collection encryptingCertificates)
         {
-            CmsEnvelopedDataGenerator gen = new CmsEnvelopedDataGenerator();
-
-            // OAEP parameters for RSA (SHA-256, MGF1 with SHA-256, pSource=PSpecified with empty string)
-            Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier oaepParams = new Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier(
-                PkcsObjectIdentifiers.IdRsaesOaep,
-                new RsaesOaepParameters(
-                    new Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier(NistObjectIdentifiers.IdSha256),
-                    new Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier(PkcsObjectIdentifiers.IdMgf1, new Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier(NistObjectIdentifiers.IdSha256)),
-                    new Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier(PkcsObjectIdentifiers.IdPSpecified, new DerOctetString(new byte[0]))
-                )
-            );
-
-            foreach (X509Certificate2 cert in encryptingCertificates)
-            {
-                var bcCert = DotNetUtilities.FromX509Certificate(cert);
-                // Use Asn1KeyWrapper with OAEP algorithm and public key
-                var keyWrapper = new Asn1KeyWrapper(oaepParams, bcCert.GetPublicKey());
-                var recipGen = new KeyTransRecipientInfoGenerator(bcCert, keyWrapper);
-                gen.AddRecipientInfoGenerator(recipGen);
-            }
-
-            string symAlgTag = GetSymmetricEncryptionTag(EncryptionAlgorithm);
-            CmsProcessableByteArray data = new CmsProcessableByteArray(content);
-            var encrypted = gen.Generate(data, symAlgTag);
-            return encrypted.GetEncoded();
+            EnvelopedCms envelope = CreateEncryptedEnvelope(content, encryptingCertificates);
+            return envelope.Encode();
         }
 
-        private static string GetSymmetricEncryptionTag(EncryptionAlgorithm alg)
+
+        /// <summary>
+        /// Encrypts raw data and returns a <see cref="EnvelopedCms"/> instance with the encrypted data.
+        /// </summary>
+        /// <param name="content">The content to encrypt</param>
+        /// <param name="encryptingCertificates">The collection of certificate used for encrytion</param>
+        /// <returns>The encrypted <see cref="EnvelopedCms"/> instance.</returns>
+        private EnvelopedCms CreateEncryptedEnvelope(byte[] content, X509Certificate2Collection encryptingCertificates)
         {
-            switch (alg)
+            if (content == null)
             {
-                case EncryptionAlgorithm.AES128:
-                    return CmsEnvelopedGenerator.Aes128Cbc;
-                case EncryptionAlgorithm.AES192:
-                    return CmsEnvelopedGenerator.Aes192Cbc;
-                case EncryptionAlgorithm.AES256:
-                    return CmsEnvelopedGenerator.Aes256Cbc;
-                default:
-                    return CmsEnvelopedGenerator.Aes128Cbc;
+                throw new EncryptionException(EncryptionError.NullContent);
             }
+            if (encryptingCertificates == null || encryptingCertificates.Count == 0)
+            {
+                throw new EncryptionException(EncryptionError.NoCertificates);
+            }
+
+            CmsRecipientCollection recipients = new CmsRecipientCollection(SubjectIdentifierType.IssuerAndSerialNumber, encryptingCertificates);
+            EnvelopedCms dataEnvelope = new EnvelopedCms(CreateDataContainer(content), ToAlgorithmID(EncryptionAlgorithm));
+            dataEnvelope.Encrypt(recipients);
+
+            return dataEnvelope;
         }
 
         //-----------------------------------------------------
@@ -292,7 +270,7 @@ namespace Health.Direct.Common.Cryptography
         /// Decrypts encrypted raw content with a collection of certificates, at least one of which can decrypt the encryption key.
         /// </summary>
         /// <remarks>
-        /// See <see cref="System.Security.Cryptography.Pkcs.EnvelopedCms.Decrypt()"/> for more information on underlying processing.
+        /// See <see cref="EnvelopedCms.Decrypt()"/> for more information on underlying processing.
         /// </remarks>
         /// <param name="encryptedContent">The raw data to decrypt</param>
         /// <param name="decryptingCertificates">The <see cref="X509Certificate2Collection"/> of certificates, at least one of which encrypted the message</param>
@@ -335,12 +313,12 @@ namespace Health.Direct.Common.Cryptography
             return dataEnvelope;
         }
 
-        internal System.Security.Cryptography.Pkcs.ContentInfo CreateDataContainer(byte[] content)
+        internal ContentInfo CreateDataContainer(byte[] content)
         {
-            return new System.Security.Cryptography.Pkcs.ContentInfo(CryptoOids.ContentType_Data, content);
+            return new ContentInfo(CryptoOids.ContentType_Data, content);
         }
 
-        internal bool IsDataContainer(System.Security.Cryptography.Pkcs.ContentInfo contentInfo)
+        internal bool IsDataContainer(ContentInfo contentInfo)
         {
             return (contentInfo.ContentType.Value == CryptoOids.ContentType_Data.Value);
         }
@@ -355,7 +333,7 @@ namespace Health.Direct.Common.Cryptography
         // Some mail readers ignore the epilogue when calculating signatures!
         //
 
-       
+
         /// <summary>
         /// Creates a detached signed entity from a message and a collection of signing certificate
         /// </summary>
@@ -536,7 +514,7 @@ namespace Health.Direct.Common.Cryptography
         /// <summary>
         /// Checks that a collection of signature was signed by the signer certificate.
         /// </summary>
-        /// <param name="signers">The collection of <see cref="Org.BouncyCastle.Asn1.Pkcs.SignerInfo"/>  to check</param>
+        /// <param name="signers">The collection of <see cref="SignerInfo"/>  to check</param>
         /// <param name="signerCertificate">The signer certificate that purports to sign the entity</param>
         /// <exception cref="SignatureException">If the entity was not signed by the claimed certificate</exception>
         private void CheckSignature(SignerInfoCollection signers, X509Certificate2 signerCertificate)
@@ -552,7 +530,7 @@ namespace Health.Direct.Common.Cryptography
             //
             // Find the signer
             //
-            System.Security.Cryptography.Pkcs.SignerInfo signer = signers.FindByThumbprint(signerCertificate.Thumbprint);
+            SignerInfo signer = signers.FindByThumbprint(signerCertificate.Thumbprint);
             if (signer == null)
             {
                 throw new SignatureException(SignatureError.NoSigners);
