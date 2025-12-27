@@ -22,7 +22,11 @@ using System.Security.Cryptography.X509Certificates;
 using Health.Direct.Common.Cryptography;
 using Health.Direct.Common.Mail;
 using Health.Direct.Common.Mime;
+using Org.BouncyCastle.Asn1.Nist;
+using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Cms;
 using Org.BouncyCastle.Asn1.Pkcs;
+using Org.BouncyCastle.Asn1.X509;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -62,15 +66,7 @@ namespace Health.Direct.Common.Tests.Cryptography
                 return cert;
             }
         }
-
-        private static X509Certificate2 LoadRecipientCert()
-        {
-            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            var certPath = Path.Combine(baseDir, "DnsResolver", "DnsTestCerts", "umesh.cer");
-            Assert.True(File.Exists(certPath), $"Test recipient certificate not found at {certPath}");
-            return new X509Certificate2(certPath);
-        }
-
+        
         private static MimeEntity CreatePlainTextEntity(string text)
         {
             return new MimeEntity
@@ -81,50 +77,79 @@ namespace Health.Direct.Common.Tests.Cryptography
             };
         }
 
+
         [Fact]
-        public void BcCryptographer_Encrypts_With_RSAES_OAEP()
+        public void BcCryptographer_OAEP_Uses_SHA256_Params()
         {
-            var recipient = LoadRecipientCert();
-            var entity = CreatePlainTextEntity("Hello OAEP");
+            var recipient = GenerateSelfSignedEnciphermentCert("OAEP-SHA256-Params");
+            var entity = CreatePlainTextEntity("Hello OAEP SHA256");
 
-            var crypt = new BcSMIMECryptographer();
-            var encryptedEntity = crypt.Encrypt(entity, recipient);
-            var encryptedBytes = crypt.GetEncryptedBytes(encryptedEntity);
+            var bc = new BcSMIMECryptographer();
+            var encryptedEntity = bc.Encrypt(entity, recipient);
+            var encryptedBytes = bc.GetEncryptedBytes(encryptedEntity);
 
-            var cms = new EnvelopedCms();
-            cms.Decode(encryptedBytes);
-            Assert.True(cms.RecipientInfos.Count > 0, "No recipient infos present");
+            var asn1 = Org.BouncyCastle.Asn1.Asn1Object.FromByteArray(encryptedBytes);
+            var contentInfo = Org.BouncyCastle.Asn1.Cms.ContentInfo.GetInstance(asn1);
+            var envelopedData = Org.BouncyCastle.Asn1.Cms.EnvelopedData.GetInstance(contentInfo.Content);
+            var recipientInfo = Org.BouncyCastle.Asn1.Cms.RecipientInfo.GetInstance(envelopedData.RecipientInfos[0]);
+            var ktri = Org.BouncyCastle.Asn1.Cms.KeyTransRecipientInfo.GetInstance(recipientInfo.Info);
+            var algId = Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier.GetInstance(ktri.KeyEncryptionAlgorithm);
 
-            var keyAlgOid = cms.RecipientInfos[0].KeyEncryptionAlgorithm.Oid.Value;
-            _output.WriteLine($"BcSMIMECryptographer KeyEncryptionAlgorithm OID: {keyAlgOid}");
-            _output.WriteLine($"Expected RSAES-OAEP OID: {PkcsObjectIdentifiers.IdRsaesOaep.Id}");
+            Assert.Equal(PkcsObjectIdentifiers.IdRsaesOaep.Id, algId.Algorithm.Id);
+
+            var oaep = Org.BouncyCastle.Asn1.Pkcs.RsaesOaepParameters.GetInstance(algId.Parameters);
+            var hashAlg = Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier.GetInstance(oaep.HashAlgorithm);
+            var mgfAlg = Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier.GetInstance(oaep.MaskGenAlgorithm);
+
+            _output.WriteLine($"Bc OAEP Hash: {hashAlg.Algorithm.Id}");
+            _output.WriteLine($"Bc OAEP MGF: {mgfAlg.Algorithm.Id}");
+
+            Assert.Equal(NistObjectIdentifiers.IdSha256.Id, hashAlg.Algorithm.Id);
+            // MGF1 OID with SHA-256 parameter
+            Assert.Equal(PkcsObjectIdentifiers.IdMgf1.Id, mgfAlg.Algorithm.Id);
+            var mgfParam = Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier.GetInstance(mgfAlg.Parameters);
+            Assert.Equal(NistObjectIdentifiers.IdSha256.Id, mgfParam.Algorithm.Id);
+        }
+
+        [Fact]
+        public void DefaultSmimeCryptographer_OAEP_Uses_SHA1()
+        {
+            var recipient = GenerateSelfSignedEnciphermentCert("Default-OAEP-Params");
+            var entity = CreatePlainTextEntity("Hello Default OAEP Params");
+
+            var def = SMIMECryptographer.Default;
+            var encryptedEntity = def.Encrypt(entity, recipient);
+            var encryptedBytes = def.GetEncryptedBytes(encryptedEntity);
+
+            var asn1 = Org.BouncyCastle.Asn1.Asn1Object.FromByteArray(encryptedBytes);
+            var contentInfo = Org.BouncyCastle.Asn1.Cms.ContentInfo.GetInstance(asn1);
+            var envelopedData = Org.BouncyCastle.Asn1.Cms.EnvelopedData.GetInstance(contentInfo.Content);
+            var recipientInfo = Org.BouncyCastle.Asn1.Cms.RecipientInfo.GetInstance(envelopedData.RecipientInfos[0]);
+            var ktri = Org.BouncyCastle.Asn1.Cms.KeyTransRecipientInfo.GetInstance(recipientInfo.Info);
+            var algId = Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier.GetInstance(ktri.KeyEncryptionAlgorithm);
+
+            var keyAlgOid = algId.Algorithm.Id;
+            _output.WriteLine($"Default KeyEncAlg OID: {keyAlgOid}");
+            
+
             Assert.Equal(PkcsObjectIdentifiers.IdRsaesOaep.Id, keyAlgOid);
+            var oaep = Org.BouncyCastle.Asn1.Pkcs.RsaesOaepParameters.GetInstance(algId.Parameters);
+            var hashAlg = Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier.GetInstance(oaep.HashAlgorithm);
+            var mgfAlg = Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier.GetInstance(oaep.MaskGenAlgorithm);
+
+            _output.WriteLine($"Default OAEP Hash: {hashAlg.Algorithm.Id}");
+            _output.WriteLine($"Default OAEP MGF: {mgfAlg.Algorithm.Id}");
+
+            // Expect legacy SHA-1-based OAEP if using OAEP
+            Assert.Equal("1.3.14.3.2.26", hashAlg.Algorithm.Id); // SHA-1
+            Assert.Equal(PkcsObjectIdentifiers.IdMgf1.Id, mgfAlg.Algorithm.Id);
+            var mgfParam = Org.BouncyCastle.Asn1.X509.AlgorithmIdentifier.GetInstance(mgfAlg.Parameters);
+            Assert.Equal("1.3.14.3.2.26", mgfParam.Algorithm.Id); // SHA-1
         }
 
-        [Fact]
-        public void DefaultSmimeCryptographer_Reports_Key_Encryption_Algorithm()
-        {
-            // This test documents what algorithm the default SMIMECryptographer uses.
-            // On modern .NET Framework 4.8 with recent Windows updates, EnvelopedCms may use OAEP.
-            // The BcSMIMECryptographer explicitly uses OAEP regardless of Windows policy.
-            var recipient = LoadRecipientCert();
-            var entity = CreatePlainTextEntity("Hello Default");
-
-            var crypt = SMIMECryptographer.Default;
-            var encryptedEntity = crypt.Encrypt(entity, recipient);
-            var encryptedBytes = crypt.GetEncryptedBytes(encryptedEntity);
-
-            var cms = new EnvelopedCms();
-            cms.Decode(encryptedBytes);
-            Assert.True(cms.RecipientInfos.Count > 0, "No recipient infos present");
-
-            var keyAlgOid = cms.RecipientInfos[0].KeyEncryptionAlgorithm.Oid.Value;
-            _output.WriteLine($"SMIMECryptographer.Default KeyEncryptionAlgorithm OID: {keyAlgOid}");
-            _output.WriteLine($"rsaEncryption (PKCS#1 v1.5) OID: {PkcsObjectIdentifiers.RsaEncryption.Id}");
-            _output.WriteLine($"RSAES-OAEP OID: {PkcsObjectIdentifiers.IdRsaesOaep.Id}");
-            Assert.NotNull(keyAlgOid);
-        }
-
+        /// <summary>
+        /// Encrypt with BouncyCastle OAEP-SHA256, decrypt with Default SMIMECryptographer
+        /// </summary>
         [Fact]
         public void BcEncrypt_OAEP_SHA256_DefaultDecrypt_Roundtrip()
         {
@@ -141,7 +166,7 @@ namespace Health.Direct.Common.Tests.Cryptography
             var keyAlgOid = cms.RecipientInfos[0].KeyEncryptionAlgorithm.Oid.Value;
             _output.WriteLine($"Encrypted with Bc; KeyEncAlg OID: {keyAlgOid} (OAEP expected)");
 
-            Exception ex = Record.Exception(() =>
+            var ex = Record.Exception(() =>
             {
                 var decrypted = SMIMECryptographer.Default.DecryptEntity(encryptedBytes, recipient);
                 Assert.NotNull(decrypted);
@@ -156,6 +181,43 @@ namespace Health.Direct.Common.Tests.Cryptography
             else
             {
                 _output.WriteLine("Default Decrypt succeeded with OAEP-SHA256.");
+            }
+        }
+
+        /// <summary>
+        /// Encrypt with Default SMIMECryptographer OAEP-SHA1, decrypt with BouncyCastle
+        /// </summary>
+        [Fact]
+        public void SMIMECryptographer_OAEP_SHA1_DefaultDecrypt_BCSMIMECryptographer_Roundtrip()
+        {
+            var recipient = GenerateSelfSignedEnciphermentCert("OAEP-SHA256-Roundtrip");
+            var entity = CreatePlainTextEntity("Hello OAEP Roundtrip");
+
+            var sc = SMIMECryptographer.Default;
+            var encryptedEntity = sc.Encrypt(entity, recipient);
+            var encryptedBytes = sc.GetEncryptedBytes(encryptedEntity);
+
+            var cms = new EnvelopedCms();
+            cms.Decode(encryptedBytes);
+            Assert.True(cms.RecipientInfos.Count > 0, "No recipient infos present");
+            var keyAlgOid = cms.RecipientInfos[0].KeyEncryptionAlgorithm.Oid.Value;
+            _output.WriteLine($"Encrypted with Sc; KeyEncAlg OID: {keyAlgOid} (OAEP expected)");
+
+            var ex = Record.Exception(() =>
+            {
+                var decrypted = new BcSMIMECryptographer().DecryptEntity(encryptedBytes, recipient);
+                Assert.NotNull(decrypted);
+                Assert.Equal("Hello OAEP Roundtrip", decrypted.Body.Text);
+            });
+
+            if (ex != null)
+            {
+                _output.WriteLine($"Default Decrypt failed: {ex.GetType().Name} - {ex.Message}");
+                Assert.Fail("Default SMIMECryptographer could not decrypt OAEP-SHA256 wrapped content key.");
+            }
+            else
+            {
+                _output.WriteLine("Default Decrypt succeeded with OAEP-SHA1.");
             }
         }
     }
