@@ -1,31 +1,56 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<AddressModel>>" %>
 <%@ Import Namespace="Health.Direct.Admin.Console.Common"%>
-<%@ Import Namespace="MvcContrib.UI.Grid"%>
-<%@ Import Namespace="MvcContrib.UI.Pager"%>
-<%@ Import Namespace="MvcContrib.Pagination"%>
 <%@ Import Namespace="Health.Direct.Admin.Console.Models"%>
 
-<%= Html.Grid(Model)
-    .Attributes(@class => "grid ui-widget ui-widget-content")
-    .HeaderRowAttributes(new Dictionary<string, object> { { "class", "ui-widget-header" } })
-    .Columns(
-        column =>
-            {
-                column.For(a => a.DomainID).Visible(ViewData["Domain"] == null).Named("Domain ID");
-                column.For(a => a.EmailAddress);
-                column.For(a => a.DisplayName);
-                column.For(a => a.Status).Attributes(@class => "status");
-                column.For(d => Html.Span(Formatter.Format(d.CreateDate), new { title = d.CreateDate })).Named("Created On");
-                column.For(d => Html.Span(Formatter.Format(d.UpdateDate), new { @class="update-date", title = d.UpdateDate })).Named("Updated On");
-                column.For(a => Html.ActionLink("View", "Details", new { id = a.ID }, new { @class = "view-details" }));
-                column.For(a => Html.ActionLink("Edit", "Edit", new { id = a.ID }));
-                column.For(a => a.IsEnabled
-                                    ? Html.ActionLink("Disable", "Disable", new { id = a.ID }, new { @class = "enable-disable-action" })
-                                    : Html.ActionLink("Enable", "Enable", new { id = a.ID }, new { @class = "enable-disable-action" }));
-                column.For(d => Html.ActionLink("Delete", "Delete", new { id = d.ID }, new { @class = "toolbar-button delete-action" }));
-            })%>
+<table class="grid ui-widget ui-widget-content">
+    <thead class="ui-widget-header">
+        <tr>
+            <th>Domain ID</th>
+            <th>Email Address</th>
+            <th>Display Name</th>
+            <th>Status</th>
+            <th>Created On</th>
+            <th>Updated On</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% foreach (var a in Model) { %>
+            <tr>
+                <td><%= a.DomainID %></td>
+                <td><%= a.EmailAddress %></td>
+                <td><%= a.DisplayName %></td>
+                <td class="status"><%= a.Status %></td>
+                <td><%= Html.Span(Formatter.Format(a.CreateDate), new { title = a.CreateDate }) %></td>
+                <td><%= Html.Span(Formatter.Format(a.UpdateDate), new { @class = "update-date", title = a.UpdateDate }) %></td>
+                <td>
+                    <%= Html.ActionLink("View", "Details", new { id = a.ID }, new { @class = "view-details" }) %> |
+                    <%= Html.ActionLink("Edit", "Edit", new { id = a.ID }) %> |
+                    <% if (a.IsEnabled) { %>
+                        <%= Html.ActionLink("Disable", "Disable", new { id = a.ID }, new { @class = "enable-disable-action" }) %>
+                    <% } else { %>
+                        <%= Html.ActionLink("Enable", "Enable", new { id = a.ID }, new { @class = "enable-disable-action" }) %>
+                    <% } %>
+                    |
+                    <%= Html.ActionLink("Delete", "Delete", new { id = a.ID }, new { @class = "toolbar-button delete-action" }) %>
+                </td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
 
-<%= Html.Pager((IPagination)Model) %>
+<% var paged = Model as Health.Direct.Admin.Console.Models.Pagination.PaginatedList<AddressModel>; %>
+<% if (paged != null) { %>
+<div class="pager">
+    <% if (paged.HasPreviousPage) { %>
+        <%= Html.ActionLink("Prev", ViewContext.RouteData.Values["action"].ToString(), new { page = paged.PageNumber - 1 }) %>
+    <% } %>
+    <span>Page <%= paged.PageNumber %> of <%= paged.PageCount %></span>
+    <% if (paged.HasNextPage) { %>
+        <%= Html.ActionLink("Next", ViewContext.RouteData.Values["action"].ToString(), new { page = paged.PageNumber + 1 }) %>
+    <% } %>
+</div>
+<% } %>
 
 <div id="confirm-dialog" style="display: none;"></div>
 

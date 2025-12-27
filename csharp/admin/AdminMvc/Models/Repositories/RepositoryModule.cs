@@ -36,6 +36,7 @@ namespace Health.Direct.Admin.Console.Models.Repositories
 
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof (DomainManagerClient)))
                 .Where(t => t.Name.EndsWith("Client"))
+                .AsSelf()
                 .AsImplementedInterfaces();
         }
     }
