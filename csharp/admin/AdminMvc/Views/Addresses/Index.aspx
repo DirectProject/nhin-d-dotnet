@@ -1,8 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<AddressModel>>" %>
 <%@ Import Namespace="Health.Direct.Admin.Console.Models"%>
-<%@ Import Namespace="MvcContrib.UI.Pager"%>
-<%@ Import Namespace="MvcContrib.Pagination"%>
-<%@ Import Namespace="MvcContrib.UI.Grid"%>
 <%@ Import Namespace="Health.Direct.Admin.Console.Controllers"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">

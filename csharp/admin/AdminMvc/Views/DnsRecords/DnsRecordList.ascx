@@ -1,28 +1,50 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<DnsRecordModel>>" %>
 <%@ Import Namespace="Health.Direct.Admin.Console.Common"%>
 <%@ Import Namespace="Health.Direct.Admin.Console.Models"%>
-<%@ Import Namespace="MvcContrib.UI.Pager"%>
-<%@ Import Namespace="MvcContrib.Pagination"%>
-<%@ Import Namespace="MvcContrib.UI.Grid"%>
 
-<%= Html.Grid(Model)
-    .Attributes(@class => "grid ui-widget ui-widget-content")
-    .HeaderRowAttributes(new Dictionary<string, object> { { "class", "ui-widget-header" } })
-    .Columns(
-        column =>
-            {
-                column.For(d => d.ID).Visible(false);
-                column.For(d => d.DomainName);
-                column.For(d => d.TypeString).Named("Type");
-                column.For(d => d.Notes);
-                column.For(d => Html.Span(Formatter.Format(d.CreateDate), new { title = d.CreateDate })).Named("Created On");
-                column.For(d => Html.Span(Formatter.Format(d.UpdateDate), new { @class = "update-date", title = d.UpdateDate })).Named("Updated On");
-                column.For(d => Html.ActionLink("View", d.TypeString + "Details", new {id = d.ID}, new { @class = "view-details"}));
-                column.For(d => Html.ActionLink("Edit", "Edit" + d.TypeString, new { id = d.ID }));
-                column.For(d => Html.ActionLink("Delete", "Delete", new { id = d.ID }, new { @class = "toolbar-button delete-action" }));
-            })%>
-            
-<%= Html.Pager((IPagination)Model) %>
+<table class="grid ui-widget ui-widget-content">
+    <thead class="ui-widget-header">
+        <tr>
+            <th style="display:none;">ID</th>
+            <th>Domain</th>
+            <th>Type</th>
+            <th>Notes</th>
+            <th>Created On</th>
+            <th>Updated On</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% foreach (var d in Model) { %>
+            <tr>
+                <td style="display:none;"><%= d.ID %></td>
+                <td><%= d.DomainName %></td>
+                <td><%= d.TypeString %></td>
+                <td><%= d.Notes %></td>
+                <td><%= Html.Span(Formatter.Format(d.CreateDate), new { title = d.CreateDate }) %></td>
+                <td><%= Html.Span(Formatter.Format(d.UpdateDate), new { @class = "update-date", title = d.UpdateDate }) %></td>
+                <td>
+                    <%= Html.ActionLink("View", d.TypeString + "Details", new { id = d.ID }, new { @class = "view-details" }) %> |
+                    <%= Html.ActionLink("Edit", "Edit" + d.TypeString, new { id = d.ID }) %> |
+                    <%= Html.ActionLink("Delete", "Delete", new { id = d.ID }, new { @class = "toolbar-button delete-action" }) %>
+                </td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
+<% var paged = Model as Health.Direct.Admin.Console.Models.Pagination.PaginatedList<DnsRecordModel>; %>
+<% if (paged != null) { %>
+<div class="pager">
+    <% if (paged.HasPreviousPage) { %>
+        <%= Html.ActionLink("Prev", ViewContext.RouteData.Values["action"].ToString(), new { page = paged.PageNumber - 1 }) %>
+    <% } %>
+    <span>Page <%= paged.PageNumber %> of <%= paged.PageCount %></span>
+    <% if (paged.HasNextPage) { %>
+        <%= Html.ActionLink("Next", ViewContext.RouteData.Values["action"].ToString(), new { page = paged.PageNumber + 1 }) %>
+    <% } %>
+</div>
+<% } %>
 
 <div id="confirm-dialog" style="display: none;"></div>
 

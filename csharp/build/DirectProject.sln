@@ -84,8 +84,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hsmCryptographer.tests", ".
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "smtpEventHandler", "..\gateway\smtpEventHandler\smtpEventHandler.vcxproj", "{1C4EFA2C-943E-4ABA-9EDC-F92BD561EAC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminMvc", "..\admin\AdminMvc\AdminMvc.csproj", "{8E284E54-B6E7-4F16-B362-719C34E95762}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xd.tests", "..\unittests\xdtests\xd.tests.csproj", "{C6AF9782-1F93-4B72-9281-754456D053A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xdm.tests", "..\unittests\xdm.tests\xdm.tests.csproj", "{2C3A196B-AA5A-4D35-8DE3-953F8DD3501F}"
@@ -121,6 +119,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{FD
 		..\external\microsoft\vcredist\vcredist_x64.exe = ..\external\microsoft\vcredist\vcredist_x64.exe
 		..\external\microsoft\vcredist\vcredist_x86.exe = ..\external\microsoft\vcredist\vcredist_x86.exe
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminMvc", "..\admin\AdminMvc\AdminMvc.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -256,10 +256,6 @@ Global
 		{1C4EFA2C-943E-4ABA-9EDC-F92BD561EAC2}.Debug|Any CPU.Build.0 = Debug|x64
 		{1C4EFA2C-943E-4ABA-9EDC-F92BD561EAC2}.Release|Any CPU.ActiveCfg = Release|x64
 		{1C4EFA2C-943E-4ABA-9EDC-F92BD561EAC2}.Release|Any CPU.Build.0 = Release|x64
-		{8E284E54-B6E7-4F16-B362-719C34E95762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E284E54-B6E7-4F16-B362-719C34E95762}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E284E54-B6E7-4F16-B362-719C34E95762}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E284E54-B6E7-4F16-B362-719C34E95762}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C6AF9782-1F93-4B72-9281-754456D053A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C6AF9782-1F93-4B72-9281-754456D053A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6AF9782-1F93-4B72-9281-754456D053A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -320,6 +316,10 @@ Global
 		{533AA11A-7C3C-4F3D-9901-534301D3F036}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{533AA11A-7C3C-4F3D-9901-534301D3F036}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{533AA11A-7C3C-4F3D-9901-534301D3F036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

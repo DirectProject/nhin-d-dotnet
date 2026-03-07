@@ -90,7 +90,7 @@ namespace Health.Direct.Agent.Tests
         public void TestOutgoing(string fileName)
         {
             m_tester.AgentA.Cryptographer.EncryptionAlgorithm = EncryptionAlgorithm.AES128;
-            m_tester.AgentA.Cryptographer.DigestAlgorithm = DigestAlgorithm.SHA1;            
+            m_tester.AgentA.Cryptographer.DigestAlgorithm = DigestAlgorithm.SHA256;            
             
             OutgoingMessage message = null;            
             Assert.Null(Record.Exception(() => message = m_tester.ProcessOutgoingFile(fileName)));
@@ -121,7 +121,8 @@ namespace Health.Direct.Agent.Tests
             //
             // All recipients are untrusted. The agent should reject the message completely
             //
-            Assert.Throws<OutgoingAgentException>(() => m_tester.ProcessOutgoingFileToString(fileName));
+            var ex = Assert.Throws<OutgoingAgentException>(() => m_tester.ProcessOutgoingFileToString(fileName));
+            Assert.False(string.IsNullOrEmpty(ex.Message));
         }
 
         //
@@ -131,6 +132,7 @@ namespace Health.Direct.Agent.Tests
         [MemberData("OutgoingUntrustedFiles")]
         public void OutgoingUntrusted(string fileName)
         {
+            m_tester.AgentA.Cryptographer.DigestAlgorithm = DigestAlgorithm.SHA256;
             OutgoingMessage outgoing = m_tester.ProcessOutgoingFile(fileName);
             Assert.True(outgoing.RejectedRecipients.Count > 0);
         }
@@ -143,7 +145,8 @@ namespace Health.Direct.Agent.Tests
         {
             var message = MimeSerializer.Default.Deserialize<Message>(m_tester.ReadMessageText("simple.eml"));
             
-            var outgoing = new OutgoingMessage(message);                        
+            var outgoing = new OutgoingMessage(message);
+            m_tester.AgentA.Cryptographer.DigestAlgorithm = DigestAlgorithm.SHA256;
             outgoing = m_tester.AgentA.ProcessOutgoing(outgoing);
                        
             Assert.True(outgoing.Message.HasHeader(MailStandard.Headers.Date));
@@ -192,6 +195,14 @@ namespace Health.Direct.Agent.Tests
             m_tester.AgentA.Cryptographer.DigestAlgorithm = digestAlgorithm;
             m_tester.AgentB.Cryptographer.EncryptionAlgorithm = encryptionAlgorithm;
             m_tester.AgentB.Cryptographer.DigestAlgorithm = digestAlgorithm;
+
+            if (digestAlgorithm == DigestAlgorithm.SHA1)
+            {
+                var ex = Assert.Throws<NotSupportedException>(() => m_tester.TestEndToEndFile(fileName));
+                Assert.Equal("SHA1 DigestAlgorithm is not supported.", ex.Message);
+                return;
+            }
+
             m_tester.TestEndToEndFile(fileName);
         }
         
@@ -204,6 +215,14 @@ namespace Health.Direct.Agent.Tests
         {
             m_tester.AgentA.Cryptographer.EncryptionAlgorithm = encryptionAlgorithm;
             m_tester.AgentA.Cryptographer.DigestAlgorithm = digestAlgorithm;
+
+            if (digestAlgorithm == DigestAlgorithm.SHA1)
+            {
+                var ex = Assert.Throws<NotSupportedException>(() => m_tester.TestEndToEndFile(fileName));
+                Assert.Equal("SHA1 DigestAlgorithm is not supported.", ex.Message);
+                return;
+            }
+
             m_tester.TestEndToEndFile(fileName);
         }
         

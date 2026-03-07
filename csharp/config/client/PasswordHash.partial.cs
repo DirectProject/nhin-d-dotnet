@@ -36,17 +36,14 @@ namespace Health.Direct.Config.Client.AuthManagerService
         {
             if (user == null) throw new ArgumentNullException(nameof(user));
             if (password == null) throw new ArgumentNullException(nameof(password));
-            this.HashedPassword = ComputeHash(user.Username, password);
+            this.HashedPassword = ComputeHash(user, password);
         }
 
-        static string ComputeHash(string username, string password)
+        static string ComputeHash(Administrator user, string password)
         {
-            // Replace with the exact original server algorithm if it differs.
-            using (var sha = SHA256.Create())
-            {
-                var material = Encoding.UTF8.GetBytes((username ?? string.Empty).ToLowerInvariant() + ":" + password);
-                return Convert.ToBase64String(sha.ComputeHash(material));
-            }
+            // Must match the server-side algorithm in config.store\PasswordHash.cs
+            var source = user.Username.ToLower() + "|" + user.CreateDate.ToString("yyyyMMdd'T'HHmmss") + "|" + password;
+            return Convert.ToBase64String(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(source)));
         }
     }
 }

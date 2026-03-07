@@ -33,7 +33,7 @@ namespace Health.Direct.Config.Store
         private static string HashPassword(Administrator user, string password)
         {
             var source = user.Username.ToLower() + "|" + user.CreateDate.ToString("yyyyMMdd'T'HHmmss") + "|" + password;
-            return Convert.ToBase64String(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(source)));
+            return Convert.ToBase64String(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(source)));
         }
 
         [DataMember(IsRequired = true)]
